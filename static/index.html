@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NIKKE PVP Tracker</title>
+<style>
+/* ── Reset & Base ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0f1a;
+  --surface:#1a1a2e;
+  --card:#22223a;
+  --card-hover:#2a2a48;
+  --primary:#7b61ff;
+  --primary-dim:#5a47c0;
+  --win:#4ade80;
+  --lose:#f87171;
+  --text:#e2e2f0;
+  --text-dim:#8888aa;
+  --border:#333355;
+  --radius:8px;
+  --radius-lg:12px;
+}
+body{font-family:'Segoe UI','Noto Sans SC',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.app-header{
+  background:linear-gradient(135deg,var(--surface),var(--card));
+  padding:16px 24px;display:flex;align-items:center;gap:32px;
+  border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100
+}
+.app-header h1{font-size:20px;display:flex;align-items:center;gap:10px}
+.app-header h1 span{background:var(--primary);padding:2px 8px;border-radius:4px;font-size:11px;color:#fff}
+.tabs{display:flex;gap:4px;margin-left:auto}
+.tab-btn{
+  padding:8px 20px;border:none;background:transparent;color:var(--text-dim);
+  cursor:pointer;border-radius:var(--radius);font-size:14px;transition:all .2s
+}
+.tab-btn:hover{background:var(--card-hover);color:var(--text)}
+.tab-btn.active{background:var(--primary);color:#fff}
+main{max-width:1200px;margin:0 auto;padding:24px}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ── Record Tab ── */
+.record-layout{display:flex;flex-direction:column;gap:20px}
+.team-section{background:var(--surface);border-radius:var(--radius-lg);padding:20px}
+.team-section h3{font-size:14px;color:var(--text-dim);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.slots{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.slot{
+  width:110px;height:120px;border:2px dashed var(--border);border-radius:var(--radius);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;cursor:pointer;transition:all .2s;position:relative;
+  background:var(--card);user-select:none
+}
+.slot.drag-over{border-color:var(--primary);background:var(--card-hover);transform:scale(1.05)}
+.slot.filled{border-style:solid;border-color:var(--primary-dim);background:var(--card-hover)}
+.slot .placeholder{font-size:28px;color:var(--text-dim);opacity:.4}
+.slot .slot-name{font-size:11px;color:var(--text);text-align:center;line-height:1.2;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.slot .slot-badge{font-size:9px;color:var(--text-dim);padding:1px 4px;background:var(--bg);border-radius:3px}
+.slot .slot-avatar{width:50px;height:50px;border-radius:6px;object-fit:cover;border:2px solid var(--border)}
+.slot .remove-btn{
+  position:absolute;top:-6px;right:-6px;width:20px;height:20px;
+  border-radius:6px;background:var(--lose);color:#fff;border:none;
+  font-size:12px;cursor:pointer;display:none;align-items:center;justify-content:center;
+  line-height:1
+}
+.slot.filled .remove-btn{display:flex}
+.team-label{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.team-label h3{margin-bottom:0}
+
+/* ── Filters ── */
+.filter-bar{
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px
+}
+.filter-bar select{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:6px 10px;color:var(--text);font-size:12px;cursor:pointer;min-width:80px
+}
+.filter-bar select:focus{outline:none;border-color:var(--primary)}
+
+/* ── Character Pool ── */
+.char-pool{background:var(--surface);border-radius:var(--radius-lg);padding:20px}
+.char-pool-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px}
+.char-pool-header .left{display:flex;align-items:center;gap:12px}
+.char-pool-header .right{display:flex;align-items:center;gap:8px}
+.char-pool-header input[type=text]{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:6px 12px;color:var(--text);font-size:13px;width:160px
+}
+.char-grid{display:flex;flex-wrap:wrap;gap:6px;max-height:260px;overflow-y:auto;padding:4px}
+.char-grid::-webkit-scrollbar{width:6px}
+.char-grid::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.char-card{
+  width:82px;padding:6px;border-radius:var(--radius);background:var(--card);
+  display:flex;flex-direction:column;align-items:center;gap:3px;cursor:grab;
+  transition:all .12s;user-select:none;border:1px solid transparent;position:relative
+}
+.char-card:hover{background:var(--card-hover);border-color:var(--primary-dim)}
+.char-card:active{cursor:grabbing;transform:scale(.93)}
+.char-card img{width:40px;height:40px;border-radius:6px;object-fit:cover;border:2px solid var(--border)}
+.char-card .char-name{font-size:10px;text-align:center;line-height:1.2;color:var(--text)}
+.char-card .char-tag{font-size:8px;color:var(--text-dim);padding:1px 4px;background:var(--bg);border-radius:3px}
+.char-card .burst-badge{
+  position:absolute;top:2px;right:2px;font-size:8px;padding:1px 4px;
+  border-radius:3px;font-weight:700
+}
+.burst-B1{background:#3b82f6;color:#fff}
+.burst-B2{background:#f59e0b;color:#fff}
+.burst-B3{background:#ef4444;color:#fff}
+
+/* ── Match Form ── */
+.match-form{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.match-form label{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-dim)}
+.match-form select,.match-form input{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:6px 12px;color:var(--text);font-size:13px
+}
+.match-form select:focus,.match-form input:focus{outline:none;border-color:var(--primary)}
+.btn{
+  padding:8px 24px;border:none;border-radius:var(--radius);cursor:pointer;
+  font-size:14px;font-weight:600;transition:all .2s
+}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-dim)}
+.btn-sm{padding:6px 14px;font-size:12px}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
+.btn-danger{background:var(--lose);color:#fff}
+.btn-win{background:var(--win);color:#000}
+.btn-lose{background:var(--lose);color:#fff}
+.mt-12{margin-top:12px}
+
+/* ── Stats ── */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:24px}
+.stat-card{background:var(--surface);border-radius:var(--radius-lg);padding:20px;text-align:center}
+.stat-card .num{font-size:32px;font-weight:700;margin:4px 0}
+.stat-card .label{font-size:12px;color:var(--text-dim)}
+.stat-card .num.green{color:var(--win)}
+.stat-card .num.red{color:var(--lose)}
+.stat-card .num.purple{color:var(--primary)}
+.stat-card .sub{font-size:11px;color:var(--text-dim);margin-top:4px}
+.data-table{width:100%;border-collapse:collapse;font-size:13px}
+.data-table th,.data-table td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.data-table th{color:var(--text-dim);font-size:12px;position:sticky;top:0;background:var(--surface)}
+.data-table tr:hover{background:var(--card-hover)}
+.data-table .win{color:var(--win);font-weight:600}
+.data-table .lose{color:var(--lose);font-weight:600}
+.team-tag{display:inline-block;padding:2px 6px;margin:1px;background:var(--card);border-radius:4px;font-size:11px}
+
+/* ── Character Management ── */
+.char-mgmt{display:grid;grid-template-columns:380px 1fr;gap:20px}
+.char-mgmt .panel{background:var(--surface);border-radius:var(--radius-lg);padding:20px}
+.char-mgmt .panel h3{margin-bottom:12px;font-size:15px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.form-group{margin-bottom:8px}
+.form-group label{display:block;font-size:11px;color:var(--text-dim);margin-bottom:2px}
+.form-group input,.form-group select{width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:6px 10px;color:var(--text);font-size:13px}
+.form-group select{cursor:pointer}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--primary)}
+.char-list{display:flex;flex-direction:column;gap:4px;max-height:540px;overflow-y:auto}
+.char-list-item{
+  display:flex;align-items:center;gap:8px;padding:6px 10px;
+  background:var(--card);border-radius:var(--radius);transition:all .12s
+}
+.char-list-item:hover{background:var(--card-hover)}
+.char-list-item .char-preview{width:32px;height:32px;border-radius:6px;object-fit:cover;flex-shrink:0;border:1px solid var(--border)}
+.char-list-item .info{flex:1;min-width:0}
+.char-list-item .info .name{font-size:13px}
+.char-list-item .info .tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:2px}
+.char-list-item .info .tag{font-size:9px;padding:1px 5px;border-radius:3px;background:var(--bg);color:var(--text-dim)}
+.char-list-item .del-btn{
+  width:24px;height:24px;border-radius:6px;border:none;background:transparent;
+  color:var(--lose);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;
+  opacity:.4;transition:opacity .15s;flex-shrink:0
+}
+.char-list-item .del-btn:hover{opacity:1;background:rgba(248,113,113,.15)}
+
+/* ── Records Tab ── */
+.records-controls{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.records-controls select,.records-controls input{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:6px 12px;color:var(--text);font-size:13px
+}
+.records-table-wrap{max-height:600px;overflow-y:auto}
+
+/* ── Import / Export ── */
+.file-upload-wrap{position:relative;display:inline-block}
+.file-upload-wrap input[type=file]{position:absolute;opacity:0;width:100%;height:100%;cursor:pointer;top:0;left:0}
+
+/* ── Toast ── */
+.toast{
+  position:fixed;top:20px;right:20px;padding:12px 24px;border-radius:var(--radius);
+  color:#fff;font-size:14px;z-index:999;animation:slideIn .3s ease;pointer-events:none
+}
+.toast.success{background:var(--win);color:#000}
+.toast.error{background:var(--lose)}
+.toast.info{background:var(--primary)}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* ── Empty State ── */
+.empty-state{text-align:center;padding:40px;color:var(--text-dim)}
+.empty-state .icon{font-size:48px;margin-bottom:12px}
+.empty-state p{font-size:14px}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .char-mgmt{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .slots{gap:6px}
+  .slot{width:72px;height:90px}
+  .slot .slot-avatar{width:34px;height:34px}
+  .char-card{width:72px}
+  .form-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <h1>⚔️ NIKKE PVP <span>JJC</span></h1>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('record')">📝 录战绩</button>
+    <button class="tab-btn" onclick="switchTab('characters')">👤 角色</button>
+    <button class="tab-btn" onclick="switchTab('stats')">📊 统计</button>
+    <button class="tab-btn" onclick="switchTab('records')">📋 记录</button>
+  </div>
+</div>
+
+<main>
+  <!-- ════ 录战绩 ════ -->
+  <div id="tab-record" class="tab-panel active">
+    <div class="record-layout">
+
+      <!-- 筛选条 -->
+      <div class="char-pool">
+        <div class="char-pool-header">
+          <div class="left">
+            <h3>👤 角色池</h3>
+            <span style="font-size:12px;color:var(--text-dim)" id="pool-count"></span>
+          </div>
+          <div class="right">
+            <input type="text" id="pool-search" placeholder="搜索名称/别名..." oninput="loadCharacters()">
+            <button class="btn btn-sm btn-outline" onclick="switchTab('characters')">+ 添加</button>
+          </div>
+        </div>
+        <div class="filter-bar" id="filter-bar"></div>
+        <div class="char-grid" id="char-pool-grid"></div>
+      </div>
+
+      <!-- 我方队伍 -->
+      <div class="team-section">
+        <div class="team-label">
+          <h3>🛡️ 我方队伍</h3>
+          <span class="badge" style="background:#3b82f6;padding:2px 8px;border-radius:4px;font-size:11px;color:#fff">5/5</span>
+          <span style="font-size:11px;color:var(--text-dim);margin-left:auto" id="my-team-names"></span>
+        </div>
+        <div class="slots" id="my-slots"></div>
+      </div>
+
+      <!-- 对方队伍 -->
+      <div class="team-section">
+        <div class="team-label">
+          <h3>⚔️ 对方队伍</h3>
+          <span class="badge" style="background:#ef4444;padding:2px 8px;border-radius:4px;font-size:11px;color:#fff">5/5</span>
+          <span style="font-size:11px;color:var(--text-dim);margin-left:auto" id="opp-team-names"></span>
+        </div>
+        <div class="slots" id="opp-slots"></div>
+      </div>
+
+      <!-- 表单 -->
+      <div class="team-section">
+        <div class="match-form">
+          <label>结果
+            <select id="record-result">
+              <option value="win">胜利 ✅</option>
+              <option value="lose">失败 ❌</option>
+            </select>
+          </label>
+          <label>对手
+            <input type="text" id="record-opponent" placeholder="对手名" size="10">
+          </label>
+          <button class="btn btn-primary" onclick="saveRecord()">💾 保存</button>
+          <button class="btn btn-outline btn-sm" onclick="clearTeams()">🗑️ 清空</button>
+          <div style="margin-left:auto;display:flex;gap:8px">
+            <a class="btn btn-sm btn-outline" href="/api/records/export?format=json" download>📤 导出 JSON</a>
+            <a class="btn btn-sm btn-outline" href="/api/records/export?format=csv" download>📤 导出 CSV</a>
+            <div class="file-upload-wrap">
+              <button class="btn btn-sm btn-outline">📥 导入 JSON</button>
+              <input type="file" accept=".json" onchange="importRecords(this)">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════ 角色管理 ════ -->
+  <div id="tab-characters" class="tab-panel">
+    <div class="char-mgmt">
+      <div class="panel">
+        <h3>➕ 添加 / 编辑角色</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>角色名 *</label>
+            <input type="text" id="char-name" placeholder="例：红莲">
+          </div>
+          <div class="form-group">
+            <label>别名</label>
+            <input type="text" id="char-alias" placeholder="例：scarlet">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>职业</label>
+            <select id="char-class"></select>
+          </div>
+          <div class="form-group">
+            <label>企业</label>
+            <select id="char-manufacturer"></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>武器</label>
+            <select id="char-weapon"></select>
+          </div>
+          <div class="form-group">
+            <label>代码</label>
+            <select id="char-code"></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>爆裂阶段</label>
+            <select id="char-burst"></select>
+          </div>
+          <div class="form-group">
+            <label>头像图片 URL</label>
+            <input type="url" id="char-avatar-url" placeholder="https://...png" oninput="previewAvatarUrl(this.value)">
+            <div id="avatar-url-preview" style="margin-top:4px"></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>上传本地图片</label>
+            <input type="file" id="char-avatar-input" accept="image/png,image/jpeg,image/gif,image/webp" onchange="previewAvatarFile(event)">
+            <div id="avatar-file-preview" style="margin-top:4px"></div>
+          </div>
+          <div class="form-group" style="display:flex;align-items:flex-end">
+            <span style="font-size:11px;color:var(--text-dim)">URL 优先，留空则用上传</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-primary btn-sm" onclick="addCharacter()">添加</button>
+          <button class="btn btn-outline btn-sm" id="btn-edit-cancel" style="display:none" onclick="cancelEdit()">取消编辑</button>
+        </div>
+        <div id="add-char-msg" style="font-size:12px;margin-top:8px"></div>
+      </div>
+      <div class="panel">
+        <h3>📋 已录入角色 <span style="font-size:12px;color:var(--text-dim)" id="char-count"></span></h3>
+        <div class="char-list" id="char-mgmt-list"></div>
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <button class="btn btn-outline btn-sm" onclick="seedCharacters(this)">📥 导入初始角色 (185个SSR)</button>
+          <button class="btn btn-outline btn-sm" onclick="syncAvatars(this)">🔄 同步头像 (153个URL)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ 统计 ════ -->
+  <div id="tab-stats" class="tab-panel">
+    <div class="stats-grid" id="stats-cards"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="team-section">
+        <h3>🏆 角色胜率排行</h3>
+        <div id="stats-by-unit"></div>
+      </div>
+      <div class="team-section">
+        <h3>📋 阵容胜率排行</h3>
+        <div id="stats-by-team"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ 记录列表 ════ -->
+  <div id="tab-records" class="tab-panel">
+    <div class="records-controls">
+      <select id="filter-result" onchange="renderRecords()"><option value="">全部结果</option><option value="win">胜利</option><option value="lose">失败</option></select>
+      <input type="text" id="filter-opponent" placeholder="搜索对手..." oninput="renderRecords()">
+      <span style="font-size:12px;color:var(--text-dim)" id="records-count"></span>
+    </div>
+    <div class="records-table-wrap">
+      <table class="data-table" id="records-table"></table>
+    </div>
+  </div>
+</main>
+
+<script>
+// ═══════════════════ 状态 ═══════════════════
+const state = {
+  characters: [],
+  myTeam: [null,null,null,null,null],
+  oppTeam: [null,null,null,null,null],
+  records: [],
+  enums: {},
+  filters: {manufacturer:'',weapon:'',code:'',burst:''},
+};
+
+let editingCharId = null; // 编辑中的角色ID
+
+// ═══════════════════ Toast ═══════════════════
+function toast(msg, type='info'){
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(), 2500);
+}
+
+// ═══════════════════ Tab Switch ═══════════════════
+function switchTab(name){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(`tab-${name}`).classList.add('active');
+  const map = {record:0,characters:1,stats:2,records:3};
+  document.querySelectorAll('.tab-btn')[map[name]].classList.add('active');
+  if(name==='stats') renderStats();
+  if(name==='records') renderRecords();
+  if(name==='characters') renderCharMgmt();
+}
+
+// ═══════════════════ API ═══════════════════
+async function api(url, opts={}){
+  const resp = await fetch(url, {
+    headers:{'Content-Type':'application/json',...opts.headers},
+    ...opts
+  });
+  if(!resp.ok){
+    const err = await resp.json().catch(()=>({error:resp.statusText}));
+    throw new Error(err.error || resp.statusText);
+  }
+  return resp.json().catch(()=>null);
+}
+
+// ═══════════════════ Enums ═══════════════════
+async function loadEnums(){
+  state.enums = await api('/api/enums') || {};
+  ['class','manufacturer','weapon','code','burst'].forEach(k => {
+    const opts = state.enums[k+'s'] || [];
+    const sel = document.getElementById('char-'+k);
+    if(!sel) return;
+    sel.innerHTML = '<option value="">--</option>' +
+      opts.map(v => `<option value="${v}">${v}</option>`).join('');
+  });
+  // Filter bar
+  renderFilterBar();
+}
+
+function renderFilterBar(){
+  const bar = document.getElementById('filter-bar');
+  const en = state.enums;
+  const labels = {manufacturer:'企业',weapon:'武器',code:'代码',burst:'爆裂'};
+  bar.innerHTML = Object.entries(labels).map(([k,label]) => `
+    <select onchange="setFilter('${k}',this.value)">
+      <option value="">${label}</option>
+      ${(en[k+'s']||[]).map(v => `<option value="${v}">${v}</option>`).join('')}
+    </select>
+  `).join('') + `<button class="btn btn-sm btn-outline" onclick="clearFilters()">✕ 清除</button>`;
+}
+
+function setFilter(key, val){
+  state.filters[key] = val;
+  loadCharacters();
+}
+
+function clearFilters(){
+  Object.keys(state.filters).forEach(k => state.filters[k]='');
+  document.querySelectorAll('#filter-bar select').forEach(s => s.value='');
+  loadCharacters();
+}
+
+// ═══════════════════ Characters ═══════════════════
+async function loadCharacters(){
+  const params = new URLSearchParams();
+  Object.entries(state.filters).forEach(([k,v]) => {if(v) params.set(k,v);});
+  const q = document.getElementById('pool-search').value.trim().toLowerCase();
+  if(q) params.set('q',q);
+  state.characters = await api(`/api/characters?${params}`) || [];
+  const total = await api('/api/characters');
+  document.getElementById('pool-count').textContent =
+    `${state.characters.length} / ${(total||[]).length} 个角色`;
+  renderCharPool();
+}
+
+async function addCharacter(){
+  const name = document.getElementById('char-name').value.trim();
+  const msg = document.getElementById('add-char-msg');
+  if(!name){msg.textContent='⚠️ 请输入角色名';msg.style.color='var(--lose)';return}
+  const avatarUrl = document.getElementById('char-avatar-url').value.trim() || null;
+  const data = {
+    name,
+    alias: document.getElementById('char-alias').value.trim() || undefined,
+    class: document.getElementById('char-class').value,
+    manufacturer: document.getElementById('char-manufacturer').value,
+    weapon: document.getElementById('char-weapon').value,
+    code: document.getElementById('char-code').value,
+    burst: document.getElementById('char-burst').value,
+    avatar_url: avatarUrl,
+  };
+  try{
+    let char;
+    if(editingCharId){
+      // 编辑模式：PUT
+      char = await api(`/api/characters/${editingCharId}`,{
+        method:'PUT',body:JSON.stringify(data)
+      });
+      msg.textContent='✅ 保存成功';
+    } else {
+      // 添加模式：POST
+      char = await api('/api/characters',{
+        method:'POST',body:JSON.stringify(data)
+      });
+      // 如果没填 URL 但有上传图片，用文件
+      if(!avatarUrl){
+        const fileInput = document.getElementById('char-avatar-input');
+        if(fileInput.files.length){
+          const fd = new FormData();
+          fd.append('file', fileInput.files[0]);
+          await fetch(`/api/characters/${char.id}/avatar`, {method:'POST', body:fd});
+        }
+      }
+      msg.textContent='✅ 添加成功';
+    }
+    clearCharForm();
+    msg.style.color='var(--win)';
+    await loadCharacters();
+    renderCharMgmt();
+  }catch(e){
+    msg.textContent=`⚠️ ${e.message}`;
+    msg.style.color='var(--lose)';
+  }
+}
+function clearCharForm(){
+  editingCharId = null;
+  document.getElementById('char-name').value='';
+  document.getElementById('char-alias').value='';
+  document.querySelectorAll('#char-class,#char-manufacturer,#char-weapon,#char-code,#char-burst').forEach(s=>s.value='');
+  document.getElementById('char-avatar-url').value='';
+  document.getElementById('char-avatar-input').value='';
+  document.getElementById('avatar-url-preview').innerHTML='';
+  document.getElementById('avatar-file-preview').innerHTML='';
+  document.getElementById('btn-edit-cancel').style.display='none';
+  document.querySelector('#tab-characters .panel h3').textContent = '➕ 添加 / 编辑角色';
+  document.querySelector('#tab-characters .btn-primary').textContent = '添加';
+}
+
+function cancelEdit(){clearCharForm()}
+
+async function seedCharacters(btn){
+  btn.disabled = true;
+  btn.textContent = '⏳ 导入中...';
+  try{
+    const res = await fetch('/api/characters/seed',{method:'POST'});
+    const data = await res.json();
+    if(data.error){toast('❌ '+data.error,'error')}
+    else{
+      toast('✅ '+data.message,'success');
+      loadEnums();
+    }
+  }catch(e){toast('❌ 导入失败: '+e.message,'error')}
+  finally{btn.disabled=false;btn.textContent='📥 导入初始角色 (185个SSR)'}
+}
+
+async function syncAvatars(btn){
+  btn.disabled = true;
+  btn.textContent = '⏳ 同步中...';
+  try{
+    const res = await fetch('/api/characters/sync-avatars',{method:'POST'});
+    const data = await res.json();
+    if(data.error){toast('❌ '+data.error,'error')}
+    else{
+      toast(`✅ 已同步 ${data.updated}/${data.total} 个头像URL`,'success');
+      loadCharacters();
+    }
+  }catch(e){toast('❌ 同步失败: '+e.message,'error')}
+  finally{btn.disabled=false;btn.textContent='🔄 同步头像 (153个URL)'}
+}
+
+async function editCharacter(id){
+  const all = await api('/api/characters');
+  const c = all.find(x => x.id === id);
+  if(!c){toast('❌ 角色不存在','error');return}
+  editingCharId = id;
+  document.getElementById('char-name').value = c.name;
+  document.getElementById('char-alias').value = c.alias || '';
+  document.getElementById('char-class').value = c.class || '';
+  document.getElementById('char-manufacturer').value = c.manufacturer || '';
+  document.getElementById('char-weapon').value = c.weapon || '';
+  document.getElementById('char-code').value = c.code || '';
+  document.getElementById('char-burst').value = c.burst || '';
+  document.getElementById('char-avatar-url').value = c.avatar_url || '';
+  document.getElementById('avatar-url-preview').innerHTML = c.avatar_url
+    ? `<img src="${c.avatar_url}" style="max-width:80px;border-radius:4px">`
+    : '';
+  document.getElementById('btn-edit-cancel').style.display = 'inline-block';
+  document.querySelector('#tab-characters .panel h3').textContent = '✏️ 编辑角色';
+  document.querySelector('#tab-characters .btn-primary').textContent = '保存修改';
+}
+
+async function deleteCharacter(id){
+  if(!confirm('确定删除该角色？')) return;
+  await api(`/api/characters/${id}`,{method:'DELETE'});
+  for(let i=0;i<5;i++){
+    if(state.myTeam[i] && state.myTeam[i].id===id) state.myTeam[i]=null;
+    if(state.oppTeam[i] && state.oppTeam[i].id===id) state.oppTeam[i]=null;
+  }
+  renderSlots();
+  await loadCharacters();
+  renderCharMgmt();
+}
+
+function previewAvatarFile(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    document.getElementById('avatar-file-preview').innerHTML =
+      `<img src="${ev.target.result}" style="width:50px;height:50px;border-radius:6px;object-fit:cover;border:2px solid var(--primary)" title="本地图片预览">`;
+  };
+  reader.readAsDataURL(file);
+}
+
+function previewAvatarUrl(url){
+  const div = document.getElementById('avatar-url-preview');
+  if(!url){
+    div.innerHTML='';
+    return;
+  }
+  div.innerHTML = `<img src="${url}" style="width:50px;height:50px;border-radius:6px;object-fit:cover;border:2px solid var(--primary)" title="URL 图片预览" onerror="this.outerHTML='<span style=\\'font-size:11px;color:var(--lose)\\'>图片加载失败</span>'">`;
+}
+
+// ═══════════════════ Char Pool ═══════════════════
+function renderCharPool(){
+  const grid = document.getElementById('char-pool-grid');
+  const chars = state.characters;
+  grid.innerHTML = chars.map(c => `
+    <div class="char-card" draggable="true"
+         data-id="${c.id}"
+         ondragstart="onCharDragStart(event,'${c.id}')">
+      ${c.avatar_url
+        ? `<img src="${c.avatar_url}" alt="${c.name}" onerror="this.outerHTML=fallbackAvatar('${c.name}')">`
+        : fallbackAvatar(c.name)
+      }
+      ${c.burst ? `<div class="burst-badge burst-${c.burst}">${c.burst}</div>` : ''}
+      <div class="char-name">${c.name}</div>
+      ${c.weapon ? `<div class="char-tag">${c.weapon}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+function fallbackAvatar(name){
+  return `<img src="/default-avatar.png" style="width:40px;height:40px;border-radius:6px;object-fit:cover;background:${hashColor(name)}" alt="${name}" title="${name}">`;
+}
+
+function onCharDragStart(e, charId){
+  e.dataTransfer.setData('text/plain', charId);
+  e.dataTransfer.effectAllowed = 'copy';
+}
+
+function hashColor(name){
+  let h=0; for(let i=0;i<name.length;i++) h=name.charCodeAt(i)+((h<<5)-h);
+  const colors=['#7b61ff','#3b82f6','#ef4444','#4ade80','#f59e0b','#ec4899','#06b6d4','#8b5cf6','#84cc16','#14b8a6'];
+  return colors[Math.abs(h)%colors.length];
+}
+
+// ═══════════════════ Slots ═══════════════════
+function initSlots(){
+  renderSlots();
+}
+
+function renderSlots(){
+  ['my','opp'].forEach(side => {
+    const container = document.getElementById(`${side}-slots`);
+    const team = side==='my' ? state.myTeam : state.oppTeam;
+    container.innerHTML = team.map((char, i) => {
+      const filled = char !== null;
+      return `
+        <div class="slot ${filled?'filled':''}"
+             data-side="${side}" data-index="${i}"
+             ondragover="onSlotDragOver(event)"
+             ondragleave="onSlotDragLeave(event)"
+             ondrop="onSlotDrop(event,'${side}',${i})"
+             onclick="onSlotClick('${side}',${i})">
+          ${filled ? `
+            <img class="slot-avatar" src="${char.avatar_url||''}"
+                 alt="${char.name}"
+                 onerror="this.outerHTML=fallbackAvatar('${char.name}')">
+            <div class="slot-name">${char.name}</div>
+            ${char.burst ? `<div class="slot-badge">${char.burst}</div>` : ''}
+            <button class="remove-btn" onclick="event.stopPropagation();removeFromSlot('${side}',${i})">✕</button>
+          ` : `
+            <div class="placeholder">+</div>
+            <div class="slot-name" style="color:var(--text-dim)">拖入</div>
+          `}
+        </div>
+      `;
+    }).join('');
+  });
+  updateTeamLabels();
+}
+
+function updateTeamLabels(){
+  const my = state.myTeam.filter(Boolean).map(c=>c.name).join(', ') || '空';
+  const opp = state.oppTeam.filter(Boolean).map(c=>c.name).join(', ') || '空';
+  document.getElementById('my-team-names').textContent = `[ ${my} ]`;
+  document.getElementById('opp-team-names').textContent = `[ ${opp} ]`;
+}
+
+function onSlotDragOver(e){e.preventDefault();e.dataTransfer.dropEffect='copy';e.currentTarget.classList.add('drag-over')}
+function onSlotDragLeave(e){e.currentTarget.classList.remove('drag-over')}
+
+function onSlotDrop(e, side, index){
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  const charId = e.dataTransfer.getData('text/plain');
+  const char = state.characters.find(c=>c.id===charId);
+  if(!char) return;
+  const team = side==='my' ? state.myTeam : state.oppTeam;
+  team[index] = char;
+  renderSlots();
+}
+
+function onSlotClick(side, index){
+  const team = side==='my' ? state.myTeam : state.oppTeam;
+  if(team[index]) {team[index]=null;renderSlots()}
+}
+
+function removeFromSlot(side, index){
+  const team = side==='my' ? state.myTeam : state.oppTeam;
+  team[index]=null;renderSlots();
+}
+
+function clearTeams(){
+  for(let i=0;i<5;i++){state.myTeam[i]=null;state.oppTeam[i]=null}
+  renderSlots();
+}
+
+// ═══════════════════ Save Record ═══════════════════
+async function saveRecord(){
+  const my = state.myTeam.filter(Boolean);
+  const opp = state.oppTeam.filter(Boolean);
+  if(my.length!==5) return toast('我方需要 5 个角色！','error');
+  if(opp.length!==5) return toast('对方需要 5 个角色！','error');
+  try{
+    await api('/api/records',{method:'POST',body:JSON.stringify({
+      my_team: my.map(c=>c.name),
+      opp_team: opp.map(c=>c.name),
+      result: document.getElementById('record-result').value,
+      opponent: document.getElementById('record-opponent').value.trim()||'未知',
+    })});
+    toast('✅ 保存成功','success');
+    clearTeams();
+  }catch(e){toast(`⚠️ ${e.message}`,'error')}
+}
+
+// ═══════════════════ Import / Export ═══════════════════
+async function importRecords(input){
+  const file = input.files[0];
+  if(!file) return;
+  try{
+    const text = await file.text();
+    const data = JSON.parse(text);
+    if(!Array.isArray(data)) throw new Error('需要 JSON 数组');
+    toast(`正在导入 ${data.length} 条记录...`,'info');
+    const fd = new FormData();
+    fd.append('file', file);
+    const resp = await fetch('/api/records/import', {method:'POST', body:fd});
+    const result = await resp.json();
+    if(result.status==='ok'){
+      toast(`✅ 导入 ${result.imported} 条（共 ${result.total} 条）`,'success');
+    }else{
+      toast(`⚠️ 导入失败: ${result.error}`,'error');
+    }
+  }catch(e){
+    toast(`⚠️ 导入失败: ${e.message}`,'error');
+  }
+  input.value='';
+}
+
+// ═══════════════════ Stats ═══════════════════
+async function renderStats(){
+  const [overview, byUnit, byTeam] = await Promise.all([
+    api('/api/stats/overview'),api('/api/stats/by-unit'),api('/api/stats/by-team'),
+  ]);
+  if(!overview) return;
+  document.getElementById('stats-cards').innerHTML = `
+    <div class="stat-card"><div class="label">总场次</div><div class="num purple">${overview.total}</div></div>
+    <div class="stat-card"><div class="label">总胜率</div><div class="num ${overview.win_rate>=50?'green':'red'}">${overview.win_rate}%</div><div class="sub">${overview.wins}W / ${overview.losses}L</div></div>
+  `;
+  const unitDiv = document.getElementById('stats-by-unit');
+  unitDiv.innerHTML = (byUnit||[]).length ? `
+    <table class="data-table"><tr><th>角色</th><th>出场</th><th>胜率</th></tr>
+    ${(byUnit||[]).slice(0,40).map(u => `
+      <tr><td>${u.name}</td><td>${u.appearances}</td>
+      <td class="${u.win_rate>=50?'win':'lose'}">${u.win_rate}%</td></tr>
+    `).join('')}</table>
+  ` : '<div class="empty-state"><p>暂无数据</p></div>';
+  const teamDiv = document.getElementById('stats-by-team');
+  teamDiv.innerHTML = (byTeam||[]).length ? `
+    <table class="data-table"><tr><th>阵容</th><th>场次</th><th>胜率</th></tr>
+    ${(byTeam||[]).slice(0,40).map(t => `
+      <tr><td>${t.team.map(n=>`<span class="team-tag">${n}</span>`).join('')}</td>
+      <td>${t.appearances}</td>
+      <td class="${t.win_rate>=50?'win':'lose'}">${t.win_rate}%</td></tr>
+    `).join('')}</table>
+  ` : '<div class="empty-state"><p>暂无数据</p></div>';
+}
+
+// ═══════════════════ Records List ═══════════════════
+async function renderRecords(){
+  const params = new URLSearchParams({limit:'200'});
+  const r = document.getElementById('filter-result').value; if(r) params.set('result',r);
+  const o = document.getElementById('filter-opponent').value.trim(); if(o) params.set('opponent',o);
+  const records = await api(`/api/records?${params}`) || [];
+  document.getElementById('records-count').textContent = `共 ${records.length} 条`;
+  const table = document.getElementById('records-table');
+  if(!records.length){table.innerHTML='<div class="empty-state"><p>暂无对战记录</p></div>';return}
+  table.innerHTML = `<tr><th>时间</th><th>结果</th><th>对手</th><th>我方</th><th>对方</th><th></th></tr>
+    ${records.map(r => `
+      <tr>
+        <td style="font-size:11px;color:var(--text-dim)">${fmtTime(r.timestamp)}</td>
+        <td class="${r.result}">${r.result==='win'?'✅ 胜利':'❌ 失败'}</td>
+        <td>${r.opponent}</td>
+        <td>${r.my_team.map(n=>`<span class="team-tag">${n}</span>`).join('')}</td>
+        <td>${r.opp_team.map(n=>`<span class="team-tag">${n}</span>`).join('')}</td>
+        <td><button class="btn btn-sm btn-outline" onclick="deleteRecord('${r.id}')">🗑️</button></td>
+      </tr>
+    `).join('')}`;
+}
+
+async function deleteRecord(id){
+  if(!confirm('删除这条记录？')) return;
+  await api(`/api/records/${id}`,{method:'DELETE'});
+  toast('已删除','info');
+  renderRecords();
+}
+
+function fmtTime(ts){
+  try{return new Date(ts).toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})}catch{return ts}
+}
+
+// ═══════════════════ Character Management List ═══════════════════
+function renderCharMgmt(){
+  (async ()=>{
+    const all = await api('/api/characters') || [];
+    document.getElementById('char-count').textContent = `(${all.length})`;
+    const list = document.getElementById('char-mgmt-list');
+    list.innerHTML = all.length ? all.map(c => {
+      const tags = [c.class, c.manufacturer, c.weapon, c.code, c.burst].filter(Boolean);
+      return `
+        <div class="char-list-item">
+          ${c.avatar_url
+            ? `<img class="char-preview" src="${c.avatar_url}" alt="${c.name}" onerror="this.outerHTML=fallbackAvatar('${c.name}')">`
+            : fallbackAvatar(c.name)
+          }
+          <div class="info">
+            <div class="name">${c.name} ${c.alias ? `<span style="color:var(--text-dim);font-size:11px">📎${c.alias}</span>`:''}</div>
+            <div class="tags">${tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+          </div>
+          <div style="display:flex;gap:4px">
+            <button class="btn btn-outline btn-xs" onclick="editCharacter('${c.id}')" title="编辑" style="padding:2px 6px;font-size:12px">✎</button>
+            <button class="del-btn" onclick="deleteCharacter('${c.id}')" title="删除">✕</button>
+          </div>
+        </div>
+      `;
+    }).join('') : '<div class="empty-state"><p>尚未添加角色</p></div>';
+  })();
+}
+
+// ═══════════════════ Init ═══════════════════
+(async function init(){
+  await loadEnums();
+  await loadCharacters();
+  initSlots();
+})();
+</script>
+</body>
+</html>
