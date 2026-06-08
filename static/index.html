@@ -153,12 +153,25 @@ main{max-width:1200px;margin:0 auto;padding:24px}
 .char-card .char-name{font-size:9px;text-align:center;line-height:1.2;color:var(--text)}
 .char-card .char-tag{font-size:7px;color:var(--text-dim);padding:1px 3px;background:var(--bg)}
 .char-card .burst-badge{
-  position:absolute;top:2px;right:2px;font-size:7px;padding:1px 4px;
-  font-weight:700;color:#fff
+  position:absolute;top:2px;right:2px;width:18px;height:18px;
+  font-size:9px;font-weight:700;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  text-shadow:0 0 3px rgba(0,0,0,.6);
+  letter-spacing:0;line-height:1
 }
-.burst-B1{background:#1a6bff}
-.burst-B2{background:#e89500}
-.burst-B3{background:#d42a2a}
+.burst-B1{background:linear-gradient(135deg,#3b82f6,#1a6bff);box-shadow:0 0 4px rgba(59,130,246,.4)}
+.burst-B2{background:linear-gradient(135deg,#f59e0b,#e89500);box-shadow:0 0 4px rgba(245,158,11,.4)}
+.burst-B3{background:linear-gradient(135deg,#ef4444,#d42a2a);box-shadow:0 0 4px rgba(239,68,68,.4)}
+.burst-全{background:linear-gradient(135deg,#a78bfa,#7c3aed);box-shadow:0 0 4px rgba(167,139,250,.4)}
+.slot .burst-badge{
+  position:absolute;top:-6px;right:-6px;width:16px;height:16px;
+  font-size:7px;font-weight:700;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  text-shadow:0 0 2px rgba(0,0,0,.6);z-index:3
+}
+.slot-badge{display:none}
 .star-btn{
   position:absolute;top:2px;left:2px;font-size:12px;cursor:pointer;
   background:none;border:none;padding:0;line-height:1;
@@ -792,7 +805,7 @@ function renderSlots(){
                  alt="${char.name}"
                  onerror="this.outerHTML=fallbackAvatar('${char.name}')">
             <div class="slot-name">${char.name}</div>
-            ${char.burst ? `<div class="slot-badge">${char.burst}</div>` : ''}
+            ${char.burst ? `<div class="burst-badge burst-${char.burst}">${char.burst}</div>` : ''}
             <button class="remove-btn" onclick="event.stopPropagation();removeFromSlot('${side}',${i})">✕</button>
           ` : `
             <div class="placeholder">+</div>
