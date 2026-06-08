@@ -449,6 +449,7 @@ def api_update_character(char_id):
             c["code"] = data.get("code", c.get("code", ""))
             c["burst"] = data.get("burst", c.get("burst", ""))
             save_characters(chars)
+            c["avatar_url"] = data.get("avatar_url", c.get("avatar_url"))
             return jsonify(c)
     return jsonify({"error": "角色不存在"}), 404
 

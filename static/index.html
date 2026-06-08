@@ -515,23 +515,22 @@ async function addCharacter(){
       char = await api(`/api/characters/${editingCharId}`,{
         method:'PUT',body:JSON.stringify(data)
       });
-      msg.textContent='✅ 保存成功';
     } else {
       // 添加模式：POST
       char = await api('/api/characters',{
         method:'POST',body:JSON.stringify(data)
       });
-      // 如果没填 URL 但有上传图片，用文件
-      if(!avatarUrl){
-        const fileInput = document.getElementById('char-avatar-input');
-        if(fileInput.files.length){
-          const fd = new FormData();
-          fd.append('file', fileInput.files[0]);
-          await fetch(`/api/characters/${char.id}/avatar`, {method:'POST', body:fd});
-        }
-      }
-      msg.textContent='✅ 添加成功';
     }
+    // 编辑和添加均支持文件上传
+    if(!avatarUrl){
+      const fileInput = document.getElementById('char-avatar-input');
+      if(fileInput.files.length){
+        const fd = new FormData();
+        fd.append('file', fileInput.files[0]);
+        await fetch(`/api/characters/${char.id}/avatar`, {method:'POST', body:fd});
+      }
+    }
+    msg.textContent='✅ 保存成功';
     clearCharForm();
     msg.style.color='var(--win)';
     await loadCharacters();
