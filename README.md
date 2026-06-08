@@ -27,7 +27,7 @@ python app.py
 | **角色篩選** | 按企業/武器/代碼/爆裂四維過濾角色池 |
 | **拖拽組隊** | 從角色池拖入 5 個槽位，組建我方/對方隊伍 |
 | **錄戰績** | 選擇進攻/防禦，記錄勝/負/平，附對手名和備註 |
-| **頭像庫** | 153 個角色配備 Prydwen 原版頭像，其餘使用默認佔位 |
+| **頭像庫** | 角色配備對應頭像，其餘使用默認佔位 |
 | **批量導入** | 導入 JSON 格式的戰績記錄 |
 | **批量導出** | 導出為 JSON 或 CSV |
 | **統計分析** | 總勝率、角色勝率排行、陣容勝率排行 |
@@ -46,7 +46,6 @@ nikke-pvp-tracker/
 │   └── nikke_characters.json # 185 SSR 角色數據庫
 ├── avatars/                  # 角色頭像圖片庫
 ├── scripts/
-│   ├── scrape_characters_v4.py  # Prydwen 角色爬蟲
 │   ├── merge_attributes.py      # 屬性合併
 │   └── import_characters.py     # 角色導入工具
 ├── nikke-pvp-tracker.spec    # PyInstaller 編譯配置
@@ -54,13 +53,6 @@ nikke-pvp-tracker/
 ├── start.bat                 # Windows 一鍵啟動
 └── README.md
 ```
-
-## 🖼️ 頭像
-
-- 153 個角色頭像自動從 Prydwen.gg CDN 下載
-- 頭像存儲為 `.webp` 格式，圓角正方形顯示
-- 首次運行後點擊「同步頭像」即可生效
-- 其餘角色顯示彩色默認佔位頭像
 
 ## 📊 數據存儲
 
@@ -84,9 +76,6 @@ python app.py
 
 # 編譯 Windows exe（需 Wine + PyInstaller）
 wine pyinstaller nikke-pvp-tracker.spec
-
-# 爬取最新角色數據
-python scripts/scrape_characters_v4.py
 ```
 
 ## 📦 依賴
@@ -94,8 +83,6 @@ python scripts/scrape_characters_v4.py
 - flask >= 3.0
 - Pillow >= 10.0
 - requests >= 2.30
-
-可選（角色爬蟲）：`beautifulsoup4`, `scrapling`
 
 ## 📝 版本
 
