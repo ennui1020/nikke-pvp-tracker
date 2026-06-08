@@ -1,84 +1,84 @@
 # NIKKE PVP Tracker ⚔️
 
-記錄《勝利女神：妮姬》特殊競技場對戰勝負的桌面工具。支援繁中角色名、拖拽組隊、頭像庫、勝率統計。
+记录《胜利女神：妮姬》特殊竞技场对战胜负的桌面工具。支持繁中角色名、拖拽组队、头像库、胜率统计。
 
-## 🚀 快速開始（Windows）
+## 🚀 快速开始（Windows）
 
-### 編譯版（推薦）
+### 编译版（推荐）
 
-1. 下載最新 Release 的 zip 包
-2. 解壓後雙擊 `start.bat`
-3. 瀏覽器自動打開 http://localhost:5000
+1. 下载最新 Release 的 zip 包
+2. 解压后双击 `start.bat`
+3. 浏览器自动打开 http://localhost:5000
 
-### 源碼啟動
+### 源码启动
 
 ```bash
 pip install -r requirements.txt
 python app.py
 ```
 
-瀏覽器打開 http://localhost:5000
+浏览器打开 http://localhost:5000
 
-## ✨ 功能一覽
+## ✨ 功能一览
 
-| 功能 | 說明 |
+| 功能 | 说明 |
 |------|------|
-| **角色管理** | 185 SSR 角色庫，支援編輯/刪除/自定義頭像 |
-| **角色篩選** | 按企業/武器/代碼/爆裂四維過濾角色池 |
-| **拖拽組隊** | 從角色池拖入 5 個槽位，組建我方/對方隊伍 |
-| **錄戰績** | 選擇進攻/防禦，記錄勝/負/平，附對手名和備註 |
-| **頭像庫** | 角色配備對應頭像，其餘使用默認佔位 |
-| **批量導入** | 導入 JSON 格式的戰績記錄 |
-| **批量導出** | 導出為 JSON 或 CSV |
-| **統計分析** | 總勝率、角色勝率排行、陣容勝率排行 |
+| **角色管理** | 185 SSR 角色库，支持编辑/删除/自定义头像 |
+| **角色筛选** | 按企业/武器/代码/爆裂四维过滤角色池 |
+| **拖拽组队** | 从角色池拖入 5 个槽位，组建我方/对方队伍 |
+| **录战绩** | 选择进攻/防御，记录胜/负/平，附对手名和备注 |
+| **头像库** | 角色配备对应头像，其余使用默认占位 |
+| **批量导入** | 导入 JSON 格式的战绩记录 |
+| **批量导出** | 导出为 JSON 或 CSV |
+| **统计分析** | 总胜率、角色胜率排行、阵容胜率排行 |
 
-## 📁 項目結構
+## 📁 项目结构
 
 ```
 nikke-pvp-tracker/
-├── app.py                    # Flask 後端（單文件）
+├── app.py                    # Flask 后端（单文件）
 ├── static/
-│   ├── index.html            # 前端頁面
-│   └── default-avatar.png    # 默認佔位頭像
+│   ├── index.html            # 前端页面
+│   └── default-avatar.png    # 默认占位头像
 ├── data/
-│   ├── characters.json       # 用戶角色數據（運行時生成）
-│   ├── records.json          # 戰績記錄（運行時生成）
-│   └── nikke_characters.json # 185 SSR 角色數據庫
-├── avatars/                  # 角色頭像圖片庫
+│   ├── characters.json       # 用户角色数据（运行时生成）
+│   ├── records.json          # 战绩记录（运行时生成）
+│   └── nikke_characters.json # 185 SSR 角色数据库
+├── avatars/                  # 角色头像图片库
 ├── scripts/
-│   ├── merge_attributes.py      # 屬性合併
-│   └── import_characters.py     # 角色導入工具
-├── nikke-pvp-tracker.spec    # PyInstaller 編譯配置
+│   ├── merge_attributes.py      # 属性合并
+│   └── import_characters.py     # 角色导入工具
+├── nikke-pvp-tracker.spec    # PyInstaller 编译配置
 ├── requirements.txt
-├── start.bat                 # Windows 一鍵啟動
+├── start.bat                 # Windows 一键启动
 └── README.md
 ```
 
-## 📊 數據存儲
+## 📊 数据存储
 
-所有數據為純 JSON，位於 `data/` 目錄：
+所有数据为纯 JSON，位于 `data/` 目录：
 
 ```
 data/
-├── records.json       # 戰績記錄
-├── characters.json    # 角色數據（含頭像 URL）
-└── nikke_characters.json  # 原始種子數據
+├── records.json       # 战绩记录
+├── characters.json    # 角色数据（含头像 URL）
+└── nikke_characters.json  # 原始种子数据
 ```
 
-## 🔧 開發
+## 🔧 开发
 
 ```bash
-# 安裝依賴
+# 安装依赖
 pip install -r requirements.txt
 
-# 啟動開發服務器
+# 启动开发服务器
 python app.py
 
-# 編譯 Windows exe（需 Wine + PyInstaller）
+# 编译 Windows exe（需 Wine + PyInstaller）
 wine pyinstaller nikke-pvp-tracker.spec
 ```
 
-## 📦 依賴
+## 📦 依赖
 
 - flask >= 3.0
 - Pillow >= 10.0
@@ -86,4 +86,4 @@ wine pyinstaller nikke-pvp-tracker.spec
 
 ## 📝 版本
 
-**v0.5** — 頭像庫 + 同步修復 + 圓角顯示 + 完整編譯包
+**v0.5** — 头像库 + 同步修复 + 圆角显示 + 完整编译包
