@@ -388,6 +388,7 @@ def api_list_characters():
     wpn = request.args.get("weapon")
     code = request.args.get("code")
     burst = request.args.get("burst")
+    starred = request.args.get("starred")
     q = request.args.get("q", "").strip().lower()
 
     if cls:
@@ -400,6 +401,8 @@ def api_list_characters():
         chars = [c for c in chars if c.get("code") == code]
     if burst:
         chars = [c for c in chars if c.get("burst") == burst]
+    if starred:
+        chars = [c for c in chars if c.get("starred")]
     if q:
         chars = [c for c in chars if q in c["name"].lower() or (c.get("alias") and q in c["alias"].lower())]
 
@@ -512,6 +515,18 @@ def api_sync_avatars():
     return jsonify({"status": "ok", "updated": updated, "total": len(chars)})
 
 
+@app.route("/api/characters/<char_id>/toggle-star", methods=["POST"])
+def api_toggle_star(char_id):
+    """切换角色标⭐状态"""
+    chars = load_characters()
+    for c in chars:
+        if c["id"] == char_id:
+            c["starred"] = not c.get("starred", False)
+            save_characters(chars)
+            return jsonify({"status": "ok", "starred": c["starred"]})
+    return jsonify({"error": "角色不存在"}), 404
+
+
 # ── 战绩 API ──
 
 @app.route("/api/records", methods=["GET"])
@@ -522,6 +537,7 @@ def api_list_records():
     mode = request.args.get("mode")
     result = request.args.get("result")
     opponent = request.args.get("opponent")
+    q = request.args.get("q", "").strip().lower()
 
     if mode:
         records = [r for r in records if r["mode"] == mode]
@@ -529,6 +545,13 @@ def api_list_records():
         records = [r for r in records if r["result"] == result]
     if opponent:
         records = [r for r in records if opponent.lower() in r.get("opponent", "").lower()]
+    if q:
+        records = [
+            r for r in records
+            if q in r.get("opponent", "").lower()
+            or any(q in n.lower() for n in r.get("my_team", []))
+            or any(q in n.lower() for n in r.get("opp_team", []))
+        ]
 
     records.sort(key=lambda r: r["timestamp"], reverse=True)
     if limit and limit > 0:
@@ -802,10 +825,50 @@ def api_import_records():
     return jsonify({"status": "ok", "imported": added, "total": len(records)})
 
 
+# ── 端口侦测 ──
+def _find_free_port(start):
+    """从 start 开始递增查找可用端口"""
+    import socket
+    for port in range(start, start + 20):
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.settimeout(0.5)
+            s.bind(("0.0.0.0", port))
+            s.close()
+            return port
+        except OSError:
+            continue
+    return None
+
 # ── 启动 ──
 if __name__ == "__main__":
+    # 数据自动备份
+    _data_dir = Path(str(CHARACTERS_FILE)).parent
+    _backup_dir = _data_dir / "backup"
+    _backup_dir.mkdir(exist_ok=True)
+    _ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    _dest = _backup_dir / f"backup_{_ts}"
+    _dest.mkdir(exist_ok=True)
+    for _f in _data_dir.glob("*.json"):
+        if _f.is_file():
+            import shutil
+            shutil.copy2(str(_f), str(_dest / _f.name))
+    # 清理旧备份，保留最近 7 个
+    _all_backups = sorted([d for d in _backup_dir.iterdir() if d.is_dir()])
+    while len(_all_backups) > 7:
+        _old = _all_backups.pop(0)
+        import shutil
+        shutil.rmtree(str(_old))
+    print(f"[backup] 已备份到 {_dest.name}（保留最近 7 个）")
+
     import webbrowser
-    port = int(os.environ.get("PORT", 5000))
+    _want_port = int(os.environ.get("PORT", 5000))
+    port = _find_free_port(_want_port)
+    if port is None:
+        print(f"[error] 无法找到可用端口（从 {_want_port} 起 20 个均被占用）")
+        sys.exit(1)
+    if port != _want_port:
+        print(f"[port] 端口 {_want_port} 已被占用，自动切换至 {port}")
     print(f"  ╔══════════════════════════════════╗")
     print(f"  ║   NIKKE PVP Tracker 启动成功     ║")
     print(f"  ║   http://localhost:{port}          ║")

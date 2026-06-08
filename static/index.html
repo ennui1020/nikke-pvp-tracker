@@ -107,6 +107,14 @@ main{max-width:1200px;margin:0 auto;padding:24px}
 .burst-B1{background:#3b82f6;color:#fff}
 .burst-B2{background:#f59e0b;color:#fff}
 .burst-B3{background:#ef4444;color:#fff}
+.star-btn{
+  position:absolute;top:2px;left:2px;font-size:13px;cursor:pointer;
+  background:none;border:none;padding:0;line-height:1;
+  color:var(--text-dim);transition:transform .12s;z-index:2
+}
+.star-btn:hover{transform:scale(1.25)}
+.star-btn.starred{color:#f59e0b}
+.char-card:has(.star-btn.starred){border-color:#f59e0b33}
 
 /* ── Match Form ── */
 .match-form{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
@@ -387,7 +395,7 @@ main{max-width:1200px;margin:0 auto;padding:24px}
   <div id="tab-records" class="tab-panel">
     <div class="records-controls">
       <select id="filter-result" onchange="renderRecords()"><option value="">全部结果</option><option value="win">胜利</option><option value="lose">失败</option></select>
-      <input type="text" id="filter-opponent" placeholder="搜索对手..." oninput="renderRecords()">
+      <input type="text" id="filter-records-q" placeholder="搜索对手/角色..." oninput="renderRecords()">
       <span style="font-size:12px;color:var(--text-dim)" id="records-count"></span>
     </div>
     <div class="records-table-wrap">
@@ -460,13 +468,23 @@ async function loadEnums(){
 function renderFilterBar(){
   const bar = document.getElementById('filter-bar');
   const en = state.enums;
-  const labels = {manufacturer:'企业',weapon:'武器',code:'代码',burst:'爆裂'};
-  bar.innerHTML = Object.entries(labels).map(([k,label]) => `
+  const labels = {manufacturer:'企业',weapon:'武器',code:'代码',burst:'爆裂',starred:'⭐'};
+  bar.innerHTML = Object.entries(labels).map(([k,label]) => {
+    if (k === 'starred') {
+      return `<button class="btn btn-sm ${state.filters.starred ? 'btn-primary' : 'btn-outline'}" onclick="toggleStarFilter()">⭐ ${state.filters.starred ? '已标星' : '全部'}</button>`;
+    }
+    return `
     <select onchange="setFilter('${k}',this.value)">
       <option value="">${label}</option>
       ${(en[k+'s']||[]).map(v => `<option value="${v}">${v}</option>`).join('')}
-    </select>
-  `).join('') + `<button class="btn btn-sm btn-outline" onclick="clearFilters()">✕ 清除</button>`;
+    </select>`;
+  }).join('') + `<button class="btn btn-sm btn-outline" onclick="clearFilters()">✕ 清除</button>`;
+}
+
+function toggleStarFilter(){
+  state.filters.starred = state.filters.starred ? '' : '1';
+  loadCharacters();
+  renderFilterBar();
 }
 
 function setFilter(key, val){
@@ -477,6 +495,7 @@ function setFilter(key, val){
 function clearFilters(){
   Object.keys(state.filters).forEach(k => state.filters[k]='');
   document.querySelectorAll('#filter-bar select').forEach(s => s.value='');
+  renderFilterBar();
   loadCharacters();
 }
 
@@ -647,6 +666,7 @@ function renderCharPool(){
     <div class="char-card" draggable="true"
          data-id="${c.id}"
          ondragstart="onCharDragStart(event,'${c.id}')">
+      <button class="star-btn ${c.starred?'starred':''}" onclick="event.stopPropagation();toggleStar('${c.id}')">${c.starred?'⭐':'☆'}</button>
       ${c.avatar_url
         ? `<img src="${c.avatar_url}" alt="${c.name}" onerror="this.outerHTML=fallbackAvatar('${c.name}')">`
         : fallbackAvatar(c.name)
@@ -656,6 +676,15 @@ function renderCharPool(){
       ${c.weapon ? `<div class="char-tag">${c.weapon}</div>` : ''}
     </div>
   `).join('');
+}
+
+async function toggleStar(charId){
+  const result = await api(`/api/characters/${charId}/toggle-star`,{method:'POST'});
+  if(result && result.status === 'ok'){
+    const c = state.characters.find(x => x.id === charId);
+    if(c) c.starred = result.starred;
+    renderCharPool();
+  }
 }
 
 function fallbackAvatar(name){
@@ -820,7 +849,7 @@ async function renderStats(){
 async function renderRecords(){
   const params = new URLSearchParams({limit:'200'});
   const r = document.getElementById('filter-result').value; if(r) params.set('result',r);
-  const o = document.getElementById('filter-opponent').value.trim(); if(o) params.set('opponent',o);
+  const q = document.getElementById('filter-records-q').value.trim(); if(q) params.set('q',q);
   const records = await api(`/api/records?${params}`) || [];
   document.getElementById('records-count').textContent = `共 ${records.length} 条`;
   const table = document.getElementById('records-table');

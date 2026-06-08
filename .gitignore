@@ -1,0 +1,18 @@
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+# 運行時生成的數據（不上傳）
+data/characters.json
+data/records.json
+# 種子數據需要上傳
+# data/nikke_characters.json 不要排除
+data/backup/
+avatars/*.png
+*.db
+.DS_Store
+dist/
+build/
+*.egg-info/
