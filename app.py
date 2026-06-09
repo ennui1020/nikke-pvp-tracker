@@ -83,6 +83,18 @@ def save_records(records):
     _save_json(RECORDS_FILE, records)
 
 
+def _find_duplicate_character(name, alias=None, exclude_id=None):
+    chars = load_characters()
+    for c in chars:
+        if exclude_id and c.get("id") == exclude_id:
+            continue
+        if c.get("name") == name or c.get("alias") == name:
+            return c
+        if alias and (c.get("name") == alias or c.get("alias") == alias):
+            return c
+    return None
+
+
 # 查找 nikke_characters.json（支援開發環境和 PyInstaller 打包）
 def _find_seed_file():
     candidates = [
@@ -407,7 +419,7 @@ def _try_download_avatar(char_name, avatar_id):
 
 def get_avatar_url(char_name):
     # 先检查本地
-    safe = char_name.replace(" ", "_")
+    safe = re.sub(r"[^A-Za-z0-9_.-]", "_", char_name.replace(" ", "_"))
     local = AVATAR_DIR / f"{safe}.png"
     if local.exists():
         return f"/avatars/{safe}.png"
@@ -528,16 +540,17 @@ def api_list_characters():
 
 @app.route("/api/characters", methods=["POST"])
 def api_add_character():
-    data = request.get_json()
+    data = request.get_json() or {}
     name = data.get("name", "").strip()
     alias = data.get("alias", "").strip() or None
     if not name:
         return jsonify({"error": "角色名不能为空"}), 400
 
-    chars = load_characters()
-    if any(c["name"] == name for c in chars):
-        return jsonify({"error": f"角色「{name}」已存在"}), 409
+    duplicate = _find_duplicate_character(name, alias)
+    if duplicate:
+        return jsonify({"error": "角色名或别名已存在"}), 409
 
+    chars = load_characters()
     char = {
         "id": str(uuid.uuid4())[:8],
         "name": name,
@@ -557,19 +570,34 @@ def api_add_character():
 
 @app.route("/api/characters/<char_id>", methods=["PUT"])
 def api_update_character(char_id):
-    data = request.get_json()
+    data = request.get_json() or {}
     chars = load_characters()
+    name = data.get("name")
+    alias = data.get("alias") if "alias" in data else None
+
+    if name:
+        name = name.strip()
     for c in chars:
         if c["id"] == char_id:
-            c["name"] = data.get("name", c["name"]).strip()
-            c["alias"] = data.get("alias", "").strip() or None
+            new_name = name or c["name"]
+            new_alias = alias.strip() if alias is not None else c.get("alias")
+            if new_alias == "":
+                new_alias = None
+
+            duplicate = _find_duplicate_character(new_name, new_alias, exclude_id=char_id)
+            if duplicate:
+                return jsonify({"error": "角色名或别名已存在"}), 409
+
+            c["name"] = new_name
+            if alias is not None:
+                c["alias"] = new_alias
             c["class"] = data.get("class", c.get("class", ""))
             c["manufacturer"] = data.get("manufacturer", c.get("manufacturer", ""))
             c["weapon"] = data.get("weapon", c.get("weapon", ""))
             c["code"] = data.get("code", c.get("code", ""))
             c["burst"] = data.get("burst", c.get("burst", ""))
-            save_characters(chars)
             c["avatar_url"] = data.get("avatar_url", c.get("avatar_url"))
+            save_characters(chars)
             return jsonify(c)
     return jsonify({"error": "角色不存在"}), 404
 
@@ -597,7 +625,7 @@ def api_upload_avatar(char_id):
             ext = file.filename.rsplit(".", 1)[-1].lower() if "." in file.filename else "png"
             if ext not in ("png", "jpg", "jpeg", "gif", "webp"):
                 return jsonify({"error": "不支持的图片格式"}), 400
-            safe_name = f"{char_id}_{c['name']}.{ext}"
+            safe_name = re.sub(r"[^A-Za-z0-9_.-]", "_", f"{char_id}_{c['name']}.{ext}")
             filepath = AVATAR_DIR / safe_name
             file.save(filepath)
             c["avatar_url"] = f"/avatars/{safe_name}"
@@ -669,24 +697,24 @@ def api_list_records():
             q_hans = convert(q, "zh-hans")
             records = [
                 r for r in records
-                if q_hant in r.get("opponent", "")
-                or q_hans in r.get("opponent", "")
-                or any(q_hant in n for n in r.get("my_team", []))
-                or any(q_hans in n for n in r.get("my_team", []))
-                or any(q_hant in n for n in r.get("opp_team", []))
-                or any(q_hans in n for n in r.get("opp_team", []))
+                if q_hant in r.get("opponent", "").lower()
+                or q_hans in r.get("opponent", "").lower()
+                or any(q_hant in n.lower() for n in r.get("my_team", []))
+                or any(q_hans in n.lower() for n in r.get("my_team", []))
+                or any(q_hant in n.lower() for n in r.get("opp_team", []))
+                or any(q_hans in n.lower() for n in r.get("opp_team", []))
             ]
         except Exception:
             q_hans = _to_simplified(q)
             q_hant = _to_traditional(q)
             records = [
                 r for r in records
-                if q_hant in r.get("opponent", "")
-                or q_hans in r.get("opponent", "")
-                or any(q_hant in n for n in r.get("my_team", []))
-                or any(q_hans in n for n in r.get("my_team", []))
-                or any(q_hant in n for n in r.get("opp_team", []))
-                or any(q_hans in n for n in r.get("opp_team", []))
+                if q_hant in r.get("opponent", "").lower()
+                or q_hans in r.get("opponent", "").lower()
+                or any(q_hant in n.lower() for n in r.get("my_team", []))
+                or any(q_hans in n.lower() for n in r.get("my_team", []))
+                or any(q_hant in n.lower() for n in r.get("opp_team", []))
+                or any(q_hans in n.lower() for n in r.get("opp_team", []))
             ]
 
     records.sort(key=lambda r: r["timestamp"], reverse=True)
@@ -697,13 +725,13 @@ def api_list_records():
 
 @app.route("/api/records", methods=["POST"])
 def api_add_record():
-    data = request.get_json()
+    data = request.get_json() or {}
     my_team = data.get("my_team", [])
     opp_team = data.get("opp_team", [])
 
-    if len(my_team) != 5:
+    if not isinstance(my_team, list) or len(my_team) != 5:
         return jsonify({"error": "我方需要恰好 5 个角色"}), 400
-    if len(opp_team) != 5:
+    if not isinstance(opp_team, list) or len(opp_team) != 5:
         return jsonify({"error": "对方需要恰好 5 个角色"}), 400
 
     record = {
@@ -955,6 +983,10 @@ def api_import_records():
     for item in imported:
         # 自动补全缺失字段
         if "my_team" not in item or "opp_team" not in item:
+            continue
+        if not isinstance(item.get("my_team"), list) or not isinstance(item.get("opp_team"), list):
+            continue
+        if len(item.get("my_team", [])) != 5 or len(item.get("opp_team", [])) != 5:
             continue
         rid = item.get("id", str(uuid.uuid4())[:8])
         if rid in existing_ids:

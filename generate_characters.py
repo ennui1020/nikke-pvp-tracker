@@ -4,12 +4,39 @@ Generate characters.json from blablalink data.
 - Names + rarity from blablalink (SSR/SR by 2-gold-stars)
 - Other fields keep existing data, override only when blablalink has values
 """
-import re, json, hashlib
+import argparse
+import hashlib
+import json
+import re
+from pathlib import Path
 
-with open('/root/.hermes/cache/documents/doc_52059f6bd2a4_1.md', 'r') as f:
+BASE_DIR = Path(__file__).resolve().parent
+
+parser = argparse.ArgumentParser(description="Generate characters.json from blablalink HTML data")
+parser.add_argument("html_file", nargs="?", help="Source HTML/MD file containing character cards")
+parser.add_argument("--characters-file", default=BASE_DIR / "data/characters.json", help="Path to existing characters.json")
+args = parser.parse_args()
+
+if args.html_file:
+    html_path = Path(args.html_file)
+else:
+    candidates = list(BASE_DIR.glob("*.md"))
+    if len(candidates) == 1:
+        html_path = candidates[0]
+    else:
+        raise SystemExit("请提供包含 blablalink 数据的 HTML/MD 文件路径。")
+
+if not html_path.exists():
+    raise SystemExit(f"文件不存在: {html_path}")
+
+characters_file = Path(args.characters_file)
+if not characters_file.exists():
+    raise SystemExit(f"找不到 characters.json: {characters_file}")
+
+with open(html_path, 'r', encoding='utf-8') as f:
     content = f.read()
 
-with open('data/characters.json', 'r') as f:
+with open(characters_file, 'r', encoding='utf-8') as f:
     existing = json.load(f)
 
 cards = re.findall(

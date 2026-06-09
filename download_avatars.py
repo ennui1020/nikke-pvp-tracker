@@ -1,13 +1,35 @@
 #!/usr/bin/env python3
 """Download avatars in batches from blablalink CDN."""
-import re, json, os, time, sys
-from urllib.request import urlopen, Request
+import argparse
+import json
+import os
+import re
+import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
+from urllib.request import Request, urlopen
 
-HTML_FILE = '/root/.hermes/cache/documents/doc_aa0bc806d187_2.md'
-AVATARS_DIR = 'avatars'
+BASE_DIR = Path(__file__).resolve().parent
 
-with open(HTML_FILE, 'r') as f:
+parser = argparse.ArgumentParser(description="Download avatars from blablalink HTML data")
+parser.add_argument("html_file", nargs="?", help="Source HTML/MD file containing avatar cards")
+parser.add_argument("--avatars-dir", default=BASE_DIR / "avatars", help="Output avatars directory")
+parser.add_argument("--characters-file", default=BASE_DIR / "data/characters.json", help="Path to data/characters.json")
+args = parser.parse_args()
+
+if args.html_file:
+    HTML_FILE = Path(args.html_file)
+else:
+    raise SystemExit("请提供包含 blablalink 数据的 HTML/MD 文件路径。")
+
+if not HTML_FILE.exists():
+    raise SystemExit(f"文件不存在: {HTML_FILE}")
+
+AVATARS_DIR = Path(args.avatars_dir)
+CHARACTERS_FILE = Path(args.characters_file)
+AVATARS_DIR.mkdir(parents=True, exist_ok=True)
+
+with open(HTML_FILE, 'r', encoding='utf-8') as f:
     content = f.read()
 
 cards = re.findall(
@@ -81,12 +103,15 @@ with ThreadPoolExecutor(max_workers=8) as executor:
 print(f"\nDone: {success} new downloaded, {failed} failed")
 
 # Update characters.json
-with open('data/characters.json', 'r') as f:
+if not CHARACTERS_FILE.exists():
+    raise SystemExit(f"找不到 characters.json: {CHARACTERS_FILE}")
+
+with open(CHARACTERS_FILE, 'r', encoding='utf-8') as f:
     chars = json.load(f)
 
 actual_names = set()
 for f in os.listdir(AVATARS_DIR):
-    if f.endswith(('.webp', '.png')):
+    if f.endswith((".webp", ".png")):
         actual_names.add(os.path.splitext(f)[0])
 
 for ch in chars:
@@ -97,7 +122,7 @@ for ch in chars:
     else:
         ch['avatar_url'] = None
 
-with open('data/characters.json', 'w', encoding='utf-8') as f:
+with open(CHARACTERS_FILE, 'w', encoding='utf-8') as f:
     json.dump(chars, f, ensure_ascii=False, indent=2)
 
 av_with = sum(1 for c in chars if c.get('avatar_url'))
