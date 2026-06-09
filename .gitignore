@@ -1,2 +1,6 @@
-# Keep local release helper script out of version control
+# Keep local release helper scripts and build artifacts out of version control
 release_v1.1.py
+release_v1.2.py
+build/
+dist/
+.vscode/
