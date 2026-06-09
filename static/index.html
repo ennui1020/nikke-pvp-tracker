@@ -88,19 +88,21 @@ main{max-width:1200px;margin:0 auto;padding:24px}
   display:flex;align-items:center;gap:8px;
   letter-spacing:1px;text-transform:uppercase;font-weight:600
 }
+.teams-row{display:flex;gap:16px}
+.teams-row .team-section{flex:1;min-width:0}
 .slots{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .slot{
-  width:120px;height:130px;border:1px solid var(--border);
+  width:76px;height:86px;border:1px solid var(--border);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:2px;cursor:pointer;transition:all .2s;position:relative;
+  gap:1px;cursor:pointer;transition:all .2s;position:relative;
   background:var(--card);user-select:none
 }
 .slot.drag-over{border-color:var(--primary);background:var(--card-hover);transform:scale(1.05);box-shadow:0 0 12px var(--primary-glow)}
 .slot.filled{border-color:var(--primary-dim);background:var(--card-hover)}
 .slot .placeholder{font-size:24px;color:var(--text-dim);opacity:.3}
-.slot .slot-name{font-size:10px;color:var(--text);text-align:center;line-height:1.2;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.slot .slot-name{font-size:8px;color:var(--text);text-align:center;line-height:1.1;max-width:68px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .slot .slot-badge{font-size:8px;color:var(--text-dim);padding:1px 4px;background:var(--bg);border-radius:2px}
-.slot .slot-avatar{width:56px;height:56px;object-fit:cover;border:1px solid var(--border)}
+.slot .slot-avatar{width:50px;height:50px;object-fit:cover;border:1px solid var(--border)}
 .slot .remove-btn{
   position:absolute;top:-6px;right:-6px;width:18px;height:18px;
   background:var(--lose);color:#fff;border:none;
@@ -118,6 +120,8 @@ main{max-width:1200px;margin:0 auto;padding:24px}
   padding:5px 8px;color:var(--text);font-size:11px;cursor:pointer;min-width:72px
 }
 .filter-bar select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 6px var(--primary-glow)}
+.filter-bar input{height:28px}
+.filter-bar .btn{height:28px;line-height:1}
 
 /* ── Character Pool ── */
 .char-pool{background:var(--surface);padding:18px;border:1px solid var(--border);position:relative}
@@ -139,43 +143,41 @@ main{max-width:1200px;margin:0 auto;padding:24px}
   padding:5px 10px;color:var(--text);font-size:12px;width:160px
 }
 .char-pool-header input[type=text]:focus{outline:none;border-color:var(--primary);box-shadow:0 0 6px var(--primary-glow)}
-.char-grid{display:flex;flex-wrap:wrap;gap:4px;max-height:260px;overflow-y:auto;padding:4px}
+.char-grid{display:flex;flex-wrap:wrap;gap:4px;max-height:400px;overflow-y:auto;padding:4px}
 .char-grid::-webkit-scrollbar{width:4px}
 .char-grid::-webkit-scrollbar-thumb{background:var(--border)}
 .char-card{
-  width:90px;padding:6px;background:var(--card);border:1px solid var(--border);
+  width:110px;padding:8px;background:var(--card);border:1px solid var(--border);
   display:flex;flex-direction:column;align-items:center;gap:3px;cursor:grab;
   transition:all .15s;user-select:none;position:relative
 }
 .char-card:hover{background:var(--card-hover);border-color:var(--primary-dim);box-shadow:0 0 8px var(--primary-glow)}
 .char-card:active{cursor:grabbing;transform:scale(.92)}
-.char-card img{width:48px;height:48px;object-fit:cover;border:1px solid var(--border)}
+.char-card img{width:85px;height:85px;object-fit:cover;border:1px solid var(--border)}
 .char-card .char-name{font-size:10px;text-align:center;line-height:1.2;color:var(--text)}
 .char-card .char-tag{font-size:8px;color:var(--text-dim);padding:1px 4px;background:var(--bg)}
 .char-card .burst-badge{
   position:absolute;top:2px;right:2px;width:20px;height:20px;
-  font-size:10px;font-weight:700;color:#fff;
+  font-size:10px;font-weight:700;color:#000;
   display:flex;align-items:center;justify-content:center;
   clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
-  text-shadow:0 0 3px rgba(0,0,0,.6);
+  background:#d4d4d8;
   letter-spacing:0;line-height:1
 }
-.burst-B1{background:linear-gradient(135deg,#3b82f6,#1a6bff);box-shadow:0 0 4px rgba(59,130,246,.4)}
-.burst-B2{background:linear-gradient(135deg,#f59e0b,#e89500);box-shadow:0 0 4px rgba(245,158,11,.4)}
-.burst-B3{background:linear-gradient(135deg,#ef4444,#d42a2a);box-shadow:0 0 4px rgba(239,68,68,.4)}
-.burst-全{background:linear-gradient(135deg,#a78bfa,#7c3aed);box-shadow:0 0 4px rgba(167,139,250,.4)}
+.burst-B1,.burst-B2,.burst-B3,.burst-全{background:#d4d4d8;color:#000;box-shadow:0 0 4px rgba(0,0,0,.2)}
 .slot .burst-badge{
   position:absolute;top:-6px;right:-6px;width:16px;height:16px;
-  font-size:7px;font-weight:700;color:#fff;
+  font-size:7px;font-weight:700;color:#000;
   display:flex;align-items:center;justify-content:center;
   clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
-  text-shadow:0 0 2px rgba(0,0,0,.6);z-index:3
+  background:#d4d4d8;z-index:3
 }
 .slot-badge{display:none}
 .star-btn{
-  position:absolute;top:2px;left:2px;font-size:12px;cursor:pointer;
-  background:none;border:none;padding:0;line-height:1;
-  color:var(--text-dim);transition:transform .12s;z-index:2
+  position:absolute;top:0;left:0;font-size:16px;cursor:pointer;
+  background:none;border:none;padding:4px 8px;line-height:1;
+  color:var(--text-dim);transition:transform .12s;z-index:2;
+  min-width:36px;min-height:36px;display:flex;align-items:center;justify-content:center
 }
 .star-btn:hover{transform:scale(1.3)}
 .star-btn.starred{color:#f0b000;text-shadow:0 0 6px rgba(240,176,0,.5)}
@@ -226,8 +228,7 @@ main{max-width:1200px;margin:0 auto;padding:24px}
 .data-table tr:hover{background:var(--card-hover)}
 .data-table .win{color:var(--win);font-weight:600}
 .data-table .lose{color:var(--lose);font-weight:600}
-.team-tag{display:inline-block;padding:2px 5px;margin:1px;background:var(--card);border:1px solid var(--border);font-size:10px}
-.cell-avatar{width:22px;height:22px;object-fit:cover;border:1px solid var(--border);vertical-align:middle;margin-right:4px;border-radius:2px}
+.cell-avatar{width:50px;height:50px;object-fit:cover;border:1px solid var(--border);border-radius:4px}
 .char-td{white-space:nowrap}
 
 /* ── Character Management ── */
@@ -251,7 +252,7 @@ main{max-width:1200px;margin:0 auto;padding:24px}
   background:var(--card);transition:all .12s;border:1px solid transparent
 }
 .char-list-item:hover{background:var(--card-hover);border-color:var(--border)}
-.char-list-item .char-preview{width:30px;height:30px;object-fit:cover;flex-shrink:0;border:1px solid var(--border)}
+.char-list-item .char-preview{width:85px;height:85px;object-fit:cover;flex-shrink:0;border:1px solid var(--border)}
 .char-list-item .info{flex:1;min-width:0}
 .char-list-item .info .name{font-size:12px}
 .char-list-item .info .tags{display:flex;gap:3px;flex-wrap:wrap;margin-top:2px}
@@ -287,27 +288,53 @@ main{max-width:1200px;margin:0 auto;padding:24px}
 .toast.info{background:rgba(0,212,255,.15);border-color:var(--primary);color:var(--primary)}
 @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
 
+.stats-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
 /* ── Empty State ── */
 .empty-state{text-align:center;padding:36px;color:var(--text-dim)}
 .empty-state .icon{font-size:40px;margin-bottom:10px;opacity:.4}
 .empty-state p{font-size:13px}
 
 /* ── Responsive ── */
+@media(max-width:900px){
+  .stats-cols{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .tabs{gap:0}
+  .tab-btn{padding:8px 10px;font-size:12px}
+}
 @media(max-width:768px){
   .char-mgmt{grid-template-columns:1fr}
   .stats-grid{grid-template-columns:repeat(2,1fr)}
   .slots{gap:4px}
-  .slot{width:68px;height:86px}
+  .slot{width:56px;height:68px}
   .slot .slot-avatar{width:32px;height:32px}
+  .slot .slot-name{font-size:7px;max-width:50px}
   .char-card{width:68px}
   .form-row{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .app-header{padding:10px 12px;flex-wrap:wrap;gap:10px}
+  .app-header h1{font-size:16px}
+  .tabs{margin-left:0;width:100%;overflow-x:auto;flex-wrap:nowrap}
+  .tab-btn{flex-shrink:0;padding:6px 10px;font-size:11px}
+  main{padding:12px}
+  .stats-grid{grid-template-columns:1fr}
+  .record-layout{gap:10px}
+  .team-section{padding:12px}
+  .char-grid{max-height:300px}
+  .char-pool-header{flex-direction:column;align-items:stretch}
+  .char-pool-header .right input{width:100%}
+  .match-form{flex-direction:column;align-items:stretch}
+  .match-form label{justify-content:space-between}
+  .match-form select,.match-form input{width:auto;flex:1}
+  .teams-row{flex-direction:column;gap:10px}
 }
 </style>
 </head>
 <body>
 
 <div class="app-header">
-  <h1>⚔️ NIKKE PVP <span>JJC</span></h1>
+  <h1>⚔️ NIKKE PVP Tracker</h1>
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('record')">📝 录战绩</button>
     <button class="tab-btn" onclick="switchTab('characters')">👤 角色</button>
@@ -328,33 +355,27 @@ main{max-width:1200px;margin:0 auto;padding:24px}
             <h3>👤 角色池</h3>
             <span style="font-size:12px;color:var(--text-dim)" id="pool-count"></span>
           </div>
-          <div class="right">
-            <input type="text" id="pool-search" placeholder="搜索名称/别名..." oninput="loadCharacters()">
-            <button class="btn btn-sm btn-outline" onclick="switchTab('characters')">+ 添加</button>
-          </div>
         </div>
         <div class="filter-bar" id="filter-bar"></div>
         <div class="char-grid" id="char-pool-grid"></div>
       </div>
 
-      <!-- 我方队伍 -->
-      <div class="team-section">
-        <div class="team-label">
-          <h3>🛡️ 我方队伍</h3>
-          <span class="badge" style="background:#3b82f6;padding:2px 8px;border-radius:4px;font-size:11px;color:#fff">5/5</span>
-          <span style="font-size:11px;color:var(--text-dim);margin-left:auto" id="my-team-names"></span>
+      <!-- 我方 + 对方并列 -->
+      <div class="teams-row">
+        <div class="team-section">
+          <div class="team-label">
+            <h3>🛡️ 我方队伍</h3>
+            <span class="badge" style="background:#3b82f6;padding:2px 8px;border-radius:4px;font-size:11px;color:#fff">5/5</span>
+          </div>
+          <div class="slots" id="my-slots"></div>
         </div>
-        <div class="slots" id="my-slots"></div>
-      </div>
-
-      <!-- 对方队伍 -->
-      <div class="team-section">
-        <div class="team-label">
-          <h3>⚔️ 对方队伍</h3>
-          <span class="badge" style="background:#ef4444;padding:2px 8px;border-radius:4px;font-size:11px;color:#fff">5/5</span>
-          <span style="font-size:11px;color:var(--text-dim);margin-left:auto" id="opp-team-names"></span>
+        <div class="team-section">
+          <div class="team-label">
+            <h3>⚔️ 对方队伍</h3>
+            <span class="badge" style="background:#ef4444;padding:2px 8px;border-radius:4px;font-size:11px;color:#fff">5/5</span>
+          </div>
+          <div class="slots" id="opp-slots"></div>
         </div>
-        <div class="slots" id="opp-slots"></div>
       </div>
 
       <!-- 表单 -->
@@ -449,11 +470,11 @@ main{max-width:1200px;margin:0 auto;padding:24px}
       </div>
       <div class="panel">
         <h3>📋 已录入角色 <span style="font-size:12px;color:var(--text-dim)" id="char-count"></span></h3>
-        <div class="char-list" id="char-mgmt-list"></div>
-        <div style="margin-top:12px;display:flex;gap:8px">
-          <button class="btn btn-outline btn-sm" onclick="seedCharacters(this)">📥 导入初始角色 (185个SSR)</button>
-          <button class="btn btn-outline btn-sm" onclick="syncAvatars(this)">🔄 同步头像 (153个URL)</button>
+        <div style="display:flex;gap:6px;margin-bottom:8px">
+          <input type="text" id="char-mgmt-search" placeholder="搜索名称/别名..." oninput="renderCharMgmt()" style="background:var(--card);border:1px solid var(--border);padding:5px 10px;color:var(--text);font-size:12px;flex:1">
+          <button class="btn btn-sm btn-outline" onclick="document.getElementById('char-mgmt-search').value='';renderCharMgmt()">✕ 清除</button>
         </div>
+        <div class="char-list" id="char-mgmt-list"></div>
       </div>
     </div>
   </div>
@@ -461,7 +482,7 @@ main{max-width:1200px;margin:0 auto;padding:24px}
   <!-- ════ 统计 ════ -->
   <div id="tab-stats" class="tab-panel">
     <div class="stats-grid" id="stats-cards"></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="stats-cols">
       <div class="team-section">
         <h3>🏆 角色胜率排行</h3>
         <div id="stats-by-unit"></div>
@@ -494,7 +515,7 @@ const state = {
   oppTeam: [null,null,null,null,null],
   records: [],
   enums: {},
-  filters: {manufacturer:'',weapon:'',code:'',burst:''},
+  filters: {manufacturer:'',weapon:'',code:'',burst:'',class:''},
 };
 
 let editingCharId = null; // 编辑中的角色ID
@@ -537,11 +558,12 @@ async function api(url, opts={}){
 async function loadEnums(){
   state.enums = await api('/api/enums') || {};
   ['class','manufacturer','weapon','code','burst'].forEach(k => {
-    const opts = state.enums[k+'s'] || [];
+    const key = k === 'class' ? 'classes' : k+'s';
+    const opts = state.enums[key] || [];
     const sel = document.getElementById('char-'+k);
     if(!sel) return;
     sel.innerHTML = '<option value="">--</option>' +
-      opts.map(v => `<option value="${v}">${v}</option>`).join('');
+      opts.map(v => `<option value="${v}">${k === 'burst' && v === '全' ? 'Λ' : v}</option>`).join('');
   });
   // Filter bar
   renderFilterBar();
@@ -550,17 +572,20 @@ async function loadEnums(){
 function renderFilterBar(){
   const bar = document.getElementById('filter-bar');
   const en = state.enums;
-  const labels = {manufacturer:'企业',weapon:'武器',code:'代码',burst:'爆裂',starred:'⭐'};
+  // 枚举键名映射（前端key → 后端API枚举字段）
+  const enumKeys = {manufacturer:'manufacturers',weapon:'weapons',code:'codes',burst:'bursts',class:'classes'};
+  const labels = {manufacturer:'企业',weapon:'武器',code:'代码',burst:'爆裂',class:'职业'};
   bar.innerHTML = Object.entries(labels).map(([k,label]) => {
-    if (k === 'starred') {
-      return `<button class="btn btn-sm ${state.filters.starred ? 'btn-primary' : 'btn-outline'}" onclick="toggleStarFilter()">⭐ ${state.filters.starred ? '已标星' : '全部'}</button>`;
-    }
+    const opts = en[enumKeys[k]] || [];
     return `
     <select onchange="setFilter('${k}',this.value)">
       <option value="">${label}</option>
-      ${(en[k+'s']||[]).map(v => `<option value="${v}">${v}</option>`).join('')}
+      ${opts.map(v => `<option value="${v}">${k === 'burst' && v === '全' ? '\u039b' : v}</option>`).join('')}
     </select>`;
-  }).join('') + `<button class="btn btn-sm btn-outline" onclick="clearFilters()">✕ 清除</button>`;
+  }).join('') +
+  `<button class="btn btn-sm ${state.filters.starred ? 'btn-primary' : 'btn-outline'}" onclick="toggleStarFilter()">⭐ ${state.filters.starred ? '已标星' : '全部'}</button>
+  <input type="text" id="pool-search" placeholder="搜索名称/别名...🗲" style="background:var(--card);border:1px solid var(--border);padding:5px 10px;color:var(--text);font-size:12px;width:160px;min-width:0" oninput="loadCharacters()" onkeyup="loadCharacters()">
+  <button class="btn btn-sm btn-outline" onclick="clearFilters()">✕ 清除</button>`;
 }
 
 function toggleStarFilter(){
@@ -577,21 +602,30 @@ function setFilter(key, val){
 function clearFilters(){
   Object.keys(state.filters).forEach(k => state.filters[k]='');
   document.querySelectorAll('#filter-bar select').forEach(s => s.value='');
+  const searchInput = document.getElementById('pool-search');
+  if(searchInput) searchInput.value = '';
   renderFilterBar();
   loadCharacters();
 }
 
 // ═══════════════════ Characters ═══════════════════
 async function loadCharacters(){
-  const params = new URLSearchParams();
-  Object.entries(state.filters).forEach(([k,v]) => {if(v) params.set(k,v);});
-  const q = document.getElementById('pool-search').value.trim().toLowerCase();
-  if(q) params.set('q',q);
-  state.characters = await api(`/api/characters?${params}`) || [];
-  const total = await api('/api/characters');
-  document.getElementById('pool-count').textContent =
-    `${state.characters.length} / ${(total||[]).length} 个角色`;
-  renderCharPool();
+  try{
+    const params = new URLSearchParams();
+    Object.entries(state.filters).forEach(([k,v]) => {if(v) params.set(k,v);});
+    const el = document.getElementById('pool-search');
+    if(!el) { renderCharPool(); return; }
+    const q = el.value.trim().toLowerCase();
+    if(q) params.set('q',q);
+    state.characters = await api(`/api/characters?${params}`) || [];
+    const total = await api('/api/characters');
+    document.getElementById('pool-count').textContent =
+      `${state.characters.length} / ${(total||[]).length} 个角色`;
+    renderCharPool();
+  }catch(e){
+    console.error('loadCharacters error:', e);
+    toast('⚠️ 搜索失败: '+e.message,'error');
+  }
 }
 
 async function addCharacter(){
@@ -657,36 +691,7 @@ function clearCharForm(){
 
 function cancelEdit(){clearCharForm()}
 
-async function seedCharacters(btn){
-  btn.disabled = true;
-  btn.textContent = '⏳ 导入中...';
-  try{
-    const res = await fetch('/api/characters/seed',{method:'POST'});
-    const data = await res.json();
-    if(data.error){toast('❌ '+data.error,'error')}
-    else{
-      toast('✅ '+data.message,'success');
-      loadEnums();
-    }
-  }catch(e){toast('❌ 导入失败: '+e.message,'error')}
-  finally{btn.disabled=false;btn.textContent='📥 导入初始角色 (185个SSR)'}
-}
-
-async function syncAvatars(btn){
-  btn.disabled = true;
-  btn.textContent = '⏳ 同步中...';
-  try{
-    const res = await fetch('/api/characters/sync-avatars',{method:'POST'});
-    const data = await res.json();
-    if(data.error){toast('❌ '+data.error,'error')}
-    else{
-      toast(`✅ 已同步 ${data.updated}/${data.total} 个头像URL`,'success');
-      loadCharacters();
-    }
-  }catch(e){toast('❌ 同步失败: '+e.message,'error')}
-  finally{btn.disabled=false;btn.textContent='🔄 同步头像 (153个URL)'}
-}
-
+// ═══════════════════ Char Pool ═══════════════════
 async function editCharacter(id){
   const all = await api('/api/characters');
   const c = all.find(x => x.id === id);
@@ -750,10 +755,10 @@ function renderCharPool(){
          ondragstart="onCharDragStart(event,'${c.id}')">
       <button class="star-btn ${c.starred?'starred':''}" onclick="event.stopPropagation();toggleStar('${c.id}')">${c.starred?'⭐':'☆'}</button>
       ${c.avatar_url
-        ? `<img src="${c.avatar_url}" alt="${c.name}" onerror="this.outerHTML=fallbackAvatar('${c.name}')">`
-        : fallbackAvatar(c.name)
+        ? `<img src="${c.avatar_url}" alt="${c.name}" onerror="this.outerHTML=fallbackAvatar('${c.name}',85)">`
+        : fallbackAvatar(c.name,85)
       }
-      ${c.burst ? `<div class="burst-badge burst-${c.burst}">${c.burst}</div>` : ''}
+      ${c.burst ? `<div class="burst-badge burst-${c.burst}">${burstLabel(c.burst)}</div>` : ''}
       <div class="char-name">${c.name}</div>
       ${c.weapon ? `<div class="char-tag">${c.weapon}</div>` : ''}
     </div>
@@ -769,12 +774,15 @@ async function toggleStar(charId){
   }
 }
 
-function fallbackAvatar(name){
+function fallbackAvatar(name, size){
+  size = size || 48;
   const color = hashColor(name);
   const initial = name.charAt(0) || '?';
-  return `<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" style="border-radius:4px;flex-shrink:0">
-    <rect width="48" height="48" fill="${color}" rx="4"/>
-    <text x="24" y="31" text-anchor="middle" font-size="22" fill="white" font-family="sans-serif" font-weight="600">${escHtml(initial)}</text>
+  const fontSize = Math.round(size * 0.46);
+  const y = Math.round(size * 0.65);
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" style="border-radius:4px;flex-shrink:0">
+    <rect width="${size}" height="${size}" fill="${color}" rx="4"/>
+    <text x="${size/2}" y="${y}" text-anchor="middle" font-size="${fontSize}" fill="white" font-family="sans-serif" font-weight="600">${escHtml(initial)}</text>
   </svg>`;
 }
 
@@ -787,6 +795,10 @@ function hashColor(name){
   let h=0; for(let i=0;i<name.length;i++) h=name.charCodeAt(i)+((h<<5)-h);
   const colors=['#7b61ff','#3b82f6','#ef4444','#4ade80','#f59e0b','#ec4899','#06b6d4','#8b5cf6','#84cc16','#14b8a6'];
   return colors[Math.abs(h)%colors.length];
+}
+function burstLabel(b){
+  const map={B1:'Ⅰ',B2:'Ⅱ',B3:'Ⅲ',全:'Λ'};
+  return map[b]||b;
 }
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
@@ -813,7 +825,7 @@ function renderSlots(){
                  alt="${char.name}"
                  onerror="this.outerHTML=fallbackAvatar('${char.name}')">
             <div class="slot-name">${char.name}</div>
-            ${char.burst ? `<div class="burst-badge burst-${char.burst}">${char.burst}</div>` : ''}
+            ${char.burst ? `<div class="burst-badge burst-${char.burst}">${burstLabel(char.burst)}</div>` : ''}
             <button class="remove-btn" onclick="event.stopPropagation();removeFromSlot('${side}',${i})">✕</button>
           ` : `
             <div class="placeholder">+</div>
@@ -823,16 +835,9 @@ function renderSlots(){
       `;
     }).join('');
   });
-  updateTeamLabels();
 }
 
-function updateTeamLabels(){
-  const my = state.myTeam.filter(Boolean).map(c=>c.name).join(', ') || '空';
-  const opp = state.oppTeam.filter(Boolean).map(c=>c.name).join(', ') || '空';
-  document.getElementById('my-team-names').textContent = `[ ${my} ]`;
-  document.getElementById('opp-team-names').textContent = `[ ${opp} ]`;
-}
-
+// ═══════════════════ Slot Helpers ═══════════════════
 function onSlotDragOver(e){e.preventDefault();e.dataTransfer.dropEffect='copy';e.currentTarget.classList.add('drag-over')}
 function onSlotDragLeave(e){e.currentTarget.classList.remove('drag-over')}
 
@@ -921,7 +926,7 @@ async function renderStats(){
   unitDiv.innerHTML = (byUnit||[]).length ? `
     <table class="data-table"><tr><th>角色</th><th>出场</th><th>胜率</th></tr>
     ${(byUnit||[]).slice(0,40).map(u => `
-      <tr><td class="char-td">${avatarCell(u.name, avatarMap[u.name])}${u.name}</td><td>${u.appearances}</td>
+      <tr><td class="char-td">${avatarCell(u.name, avatarMap[u.name])}</td><td>${u.appearances}</td>
       <td class="${u.win_rate>=50?'win':'lose'}">${u.win_rate}%</td></tr>
     `).join('')}</table>
   ` : '<div class="empty-state"><p>暂无数据</p></div>';
@@ -929,7 +934,7 @@ async function renderStats(){
   teamDiv.innerHTML = (byTeam||[]).length ? `
     <table class="data-table"><tr><th>阵容</th><th>场次</th><th>胜率</th></tr>
     ${(byTeam||[]).slice(0,40).map(t => `
-      <tr><td>${t.team.map(n=>`<span class="team-tag">${avatarCell(n, avatarMap[n])}${n}</span>`).join('')}</td>
+      <tr><td>${t.team.map(n=>`${avatarCell(n, avatarMap[n])}`).join('')}</td>
       <td>${t.appearances}</td>
       <td class="${t.win_rate>=50?'win':'lose'}">${t.win_rate}%</td></tr>
     `).join('')}</table>
@@ -958,8 +963,8 @@ async function renderRecords(){
         <td style="font-size:11px;color:var(--text-dim)">${fmtTime(r.timestamp)}</td>
         <td class="${r.result}">${r.result==='win'?'✅ 胜利':'❌ 失败'}</td>
         <td>${r.opponent}</td>
-        <td>${r.my_team.map(n=>`<span class="team-tag">${avatarCell(n, avatarMap[n])}${n}</span>`).join(' ')}</td>
-        <td>${r.opp_team.map(n=>`<span class="team-tag">${avatarCell(n, avatarMap[n])}${n}</span>`).join(' ')}</td>
+        <td>${r.my_team.map(n=>`${avatarCell(n, avatarMap[n])}`).join(' ')}</td>
+        <td>${r.opp_team.map(n=>`${avatarCell(n, avatarMap[n])}`).join(' ')}</td>
         <td><button class="btn btn-sm btn-outline" onclick="deleteRecord('${r.id}')">🗑️</button></td>
       </tr>
     `).join('')}`;
@@ -979,16 +984,20 @@ function fmtTime(ts){
 // ═══════════════════ Character Management List ═══════════════════
 function renderCharMgmt(){
   (async ()=>{
-    const all = await api('/api/characters') || [];
-    document.getElementById('char-count').textContent = `(${all.length})`;
+    const q = document.getElementById('char-mgmt-search').value.trim();
+    const url = q ? `/api/characters?q=${encodeURIComponent(q)}` : '/api/characters';
+    const all = await api(url) || [];
+    document.getElementById('char-count').textContent = q
+      ? `(${all.length} / 过滤)`
+      : `(${all.length})`;
     const list = document.getElementById('char-mgmt-list');
     list.innerHTML = all.length ? all.map(c => {
       const tags = [c.class, c.manufacturer, c.weapon, c.code, c.burst].filter(Boolean);
       return `
         <div class="char-list-item">
           ${c.avatar_url
-            ? `<img class="char-preview" src="${c.avatar_url}" alt="${c.name}" onerror="this.outerHTML=fallbackAvatar('${c.name}')">`
-            : fallbackAvatar(c.name)
+            ? `<img class="char-preview" src="${c.avatar_url}" alt="${c.name}" onerror="this.outerHTML=fallbackAvatar('${c.name}',85)">`
+            : fallbackAvatar(c.name,85)
           }
           <div class="info">
             <div class="name">${c.name} ${c.alias ? `<span style="color:var(--text-dim);font-size:11px">📎${c.alias}</span>`:''}</div>

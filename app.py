@@ -148,11 +148,11 @@ if not default_avatar.exists():
 """
 角色分类枚举
 """
-CHAR_CLASSES = ["火力", "防御", "辅助"]
+CHAR_CLASSES = ["火力", "防御", "支援"]
 CHAR_MANUFACTURERS = ["极乐净土", "泰特拉", "米西利斯", "朝圣者", "反常"]
 CHAR_WEAPONS = ["AR", "SMG", "SG", "SR", "MG", "RL"]
 CHAR_CODES = ["风压", "水冷", "铁甲", "燃烧", "电击", "无"]
-CHAR_BURSTS = ["B1", "B2", "B3"]
+CHAR_BURSTS = ["B1", "B2", "B3", "全"]
 
 
 
@@ -226,9 +226,35 @@ def _is_similar(a, b):
     return False
 
 
-# ──────────────────────────────────────
-# 头像抓取
-# ──────────────────────────────────────
+# 简繁字符映射表（zhconv 不可用时的备用方案）
+_SIMPLIFIED_TABLE = str.maketrans({
+    '愛': '爱', '蓮': '莲', '紅': '红', '長': '长', '髮': '发', '發': '发',
+    '麗': '丽', '絲': '丝', '貝': '贝', '爾': '尔', '聖': '圣', '潔': '洁',
+    '亞': '亚', '瑪': '玛', '維': '维', '爾': '尔', '爾': '尔',
+    '緋': '绯', '蒼': '苍', '鋒': '锋', '颯': '飒', '華': '华',
+    '櫻': '樱', '純': '纯', '戀': '恋', '戀': '恋',
+    '極': '极', '樂': '乐', '淨': '净', '土': '土',
+    '泰': '泰', '特': '特', '拉': '拉',
+    '米': '米', '西': '西', '利': '利', '斯': '斯',
+    '朝': '朝', '聖': '圣', '者': '者',
+    '反': '反', '常': '常',
+    '風': '风', '壓': '压', '水': '水', '冷': '冷',
+    '鐵': '铁', '甲': '甲', '燃': '燃', '燒': '烧',
+    '電': '电', '擊': '击', '無': '无',
+    '火': '火', '力': '力', '防': '防', '禦': '御',
+    '支': '支', '援': '援',
+    '軍': '军', '火': '火', '衝': '冲', '槍': '枪',
+    '步': '步', '機': '机', '關': '关',
+    '全': '全',
+})
+_TRADITIONAL_TABLE = str.maketrans({v: k for k, v in _SIMPLIFIED_TABLE.items()})
+
+def _to_simplified(text):
+    return text.translate(_SIMPLIFIED_TABLE)
+
+
+def _to_traditional(text):
+    return text.translate(_TRADITIONAL_TABLE)
 
 AVATAR_LOOKUP = {
     # 常用 PVP 角色名 → Prydwen 图标 ID
@@ -449,7 +475,7 @@ def api_list_characters():
     if code:
         chars = [c for c in chars if c.get("code") == code]
     if burst:
-        chars = [c for c in chars if c.get("burst") == burst]
+        chars = [c for c in chars if c.get("burst") == burst or c.get("burst") == "全"]
     if starred:
         chars = [c for c in chars if c.get("starred")]
     if q:
@@ -457,12 +483,45 @@ def api_list_characters():
             from zhconv import convert
             q_hant = convert(q, "zh-hant")
             q_hans = convert(q, "zh-hans")
-            chars = [c for c in chars if q_hant in c["name"]
-                     or (c.get("alias") and q_hant in c["alias"])
-                     or q_hans in c["name"]
-                     or (c.get("alias") and q_hans in c["alias"])]
-        except ImportError:
-            chars = [c for c in chars if q in c["name"].lower() or (c.get("alias") and q in c["alias"].lower())]
+            def _match(c):
+                name = c["name"].lower()
+                alias = (c.get("alias") or "").lower()
+                # Direct: converted query against raw name/alias
+                if q_hant in name or q_hans in name:
+                    return True
+                if alias and (q_hant in alias or q_hans in alias):
+                    return True
+                # Cross-conversion: also convert name/alias to simplified
+                # 解决 zhconv 短词歧义问题（如 长发→長發但数据是 長髮）
+                name_hans = convert(c["name"], "zh-hans").lower()
+                if q_hans in name_hans:
+                    return True
+                if alias:
+                    alias_hans = convert(alias, "zh-hans").lower()
+                    if q_hans in alias_hans:
+                        return True
+                return False
+            chars = [c for c in chars if _match(c)]
+        except Exception:
+            # zhconv 不可用时降级：双向简繁匹配
+            q_hans = _to_simplified(q)
+            q_hant = _to_traditional(q)
+            def _match(c):
+                name = c["name"].lower()
+                alias = (c.get("alias") or "").lower()
+                if q_hant in name or q_hans in name:
+                    return True
+                if alias and (q_hant in alias or q_hans in alias):
+                    return True
+                name_hans = _to_simplified(name)
+                if q_hans in name_hans:
+                    return True
+                if alias:
+                    alias_hans = _to_simplified(alias)
+                    if q_hans in alias_hans:
+                        return True
+                return False
+            chars = [c for c in chars if _match(c)]
 
     return jsonify(chars)
 
@@ -617,12 +676,17 @@ def api_list_records():
                 or any(q_hant in n for n in r.get("opp_team", []))
                 or any(q_hans in n for n in r.get("opp_team", []))
             ]
-        except ImportError:
+        except Exception:
+            q_hans = _to_simplified(q)
+            q_hant = _to_traditional(q)
             records = [
                 r for r in records
-                if q in r.get("opponent", "").lower()
-                or any(q in n.lower() for n in r.get("my_team", []))
-                or any(q in n.lower() for n in r.get("opp_team", []))
+                if q_hant in r.get("opponent", "")
+                or q_hans in r.get("opponent", "")
+                or any(q_hant in n for n in r.get("my_team", []))
+                or any(q_hans in n for n in r.get("my_team", []))
+                or any(q_hant in n for n in r.get("opp_team", []))
+                or any(q_hans in n for n in r.get("opp_team", []))
             ]
 
     records.sort(key=lambda r: r["timestamp"], reverse=True)
@@ -780,9 +844,16 @@ def api_search_characters():
             if q_hant in c["name"] or (c.get("alias") and q_hant in c["alias"])\
                or q_hans in c["name"] or (c.get("alias") and q_hans in c["alias"]):
                 results.append(c)
-    except ImportError:
+    except Exception:
+        q_hans = _to_simplified(q)
+        q_hant = _to_traditional(q)
         for c in chars:
-            if q in c["name"].lower() or (c.get("alias") and q in c["alias"].lower()):
+            name = c["name"].lower()
+            alias = (c.get("alias") or "").lower()
+            if q_hant in name or q_hans in name \
+               or (alias and (q_hant in alias or q_hans in alias)) \
+               or q_hans in _to_simplified(name) \
+               or (alias and q_hans in _to_simplified(alias)):
                 results.append(c)
     return jsonify(results)
 
@@ -921,39 +992,90 @@ def _find_free_port(start):
             continue
     return None
 
+# ── 系统托盘 ──
+def _run_tray(port):
+    """在 Windows 系统托盘运行图标"""
+    try:
+        from PIL import Image, ImageDraw
+        import pystray
+
+        # 生成一个 32x32 的图标：青色圆底 + 白色 "P" 字
+        img = Image.new("RGBA", (32, 32), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(img)
+        draw.ellipse([1, 1, 30, 30], fill=(0, 212, 255, 255))
+        draw.text((8, 5), "P", fill=(0, 0, 0, 255))
+
+        def on_open():
+            import webbrowser
+            webbrowser.open(f"http://localhost:{port}")
+
+        def on_exit():
+            # 先强行退出，Flask 主线程随之结束
+            import os as _os
+            _os._exit(0)
+
+        menu = pystray.Menu(
+            pystray.MenuItem("打开浏览器 (Open Browser)", on_open, default=True),
+            pystray.Menu.SEPARATOR,
+            pystray.MenuItem("退出 (Exit)", on_exit),
+        )
+
+        icon = pystray.Icon("nikke-pvp", img, "NIKKE PVP Tracker", menu)
+        icon.run()
+    except Exception:
+        # 托盘启动失败不阻塞主流程
+        pass
+
+
+# ── 全局错误处理 ──
+@app.errorhandler(Exception)
+def handle_error(e):
+    import traceback
+    print(f"[ERROR] {e}", file=_sys.stderr)
+    traceback.print_exc()
+    return jsonify({"error": str(e) or "Internal Server Error"}), 500
+
+
 # ── 启动 ──
 if __name__ == "__main__":
-    # 数据自动备份
-    _data_dir = Path(str(CHARACTERS_FILE)).parent
-    _backup_dir = _data_dir / "backup"
-    _backup_dir.mkdir(exist_ok=True)
-    _ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-    _dest = _backup_dir / f"backup_{_ts}"
-    _dest.mkdir(exist_ok=True)
-    for _f in _data_dir.glob("*.json"):
-        if _f.is_file():
+    try:
+        # 数据自动备份
+        _data_dir = Path(str(CHARACTERS_FILE)).parent
+        _backup_dir = _data_dir / "backup"
+        _backup_dir.mkdir(exist_ok=True)
+        _ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        _dest = _backup_dir / f"backup_{_ts}"
+        _dest.mkdir(exist_ok=True)
+        for _f in _data_dir.glob("*.json"):
+            if _f.is_file():
+                import shutil
+                shutil.copy2(str(_f), str(_dest / _f.name))
+        # 清理旧备份，保留最近 7 个
+        _all_backups = sorted([d for d in _backup_dir.iterdir() if d.is_dir()])
+        while len(_all_backups) > 7:
+            _old = _all_backups.pop(0)
             import shutil
-            shutil.copy2(str(_f), str(_dest / _f.name))
-    # 清理旧备份，保留最近 7 个
-    _all_backups = sorted([d for d in _backup_dir.iterdir() if d.is_dir()])
-    while len(_all_backups) > 7:
-        _old = _all_backups.pop(0)
-        import shutil
-        shutil.rmtree(str(_old))
-    print(f"[backup] 已备份到 {_dest.name}（保留最近 7 个）")
+            shutil.rmtree(str(_old))
 
-    import webbrowser
-    _want_port = int(os.environ.get("PORT", 5000))
-    port = _find_free_port(_want_port)
-    if port is None:
-        _sys.exit(1)
-    if port != _want_port:
-        print(f"[port] 端口 {_want_port} 已被占用，自动切换至 {port}")
-    print(f"  ╔══════════════════════════════════╗")
-    print(f"  ║   NIKKE PVP Tracker 启动成功     ║")
-    print(f"  ║   http://localhost:{port}          ║")
-    print(f"  ╚══════════════════════════════════╝")
-    # 在 Windows 上自动打开浏览器
-    if _sys.platform == "win32":
-        webbrowser.open(f"http://localhost:{port}")
-    app.run(host="0.0.0.0", port=port, debug=False)
+        import webbrowser
+        _want_port = int(os.environ.get("PORT", 5000))
+        port = _find_free_port(_want_port)
+        if port is None:
+            _sys.exit(1)
+
+        # 在 Windows 上自动打开浏览器 + 启动托盘
+        if _sys.platform == "win32":
+            webbrowser.open(f"http://localhost:{port}")
+            import threading
+            threading.Thread(target=_run_tray, args=(port,), daemon=True).start()
+
+        app.run(host="0.0.0.0", port=port, debug=False)
+    except Exception as _e:
+        if _sys.platform == "win32":
+            try:
+                import ctypes
+                ctypes.windll.user32.MessageBoxW(0, str(_e),
+                    "NIKKE PVP Tracker - 启动失败", 0x10)
+            except Exception:
+                pass
+        raise
