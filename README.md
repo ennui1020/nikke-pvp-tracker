@@ -83,7 +83,8 @@ wine pyinstaller nikke-pvp-tracker.spec
 - flask >= 3.0
 - Pillow >= 10.0
 - requests >= 2.30
+- zhconv >= 1.4.3
 
 ## 📝 版本
 
-**v0.5** — 头像库 + 同步修复 + 圆角显示 + 完整编译包
+**v0.9** — 修复 exe 启动崩溃 + 简繁搜索兼容 + zip Unicode 文件名 (2026-06-09)

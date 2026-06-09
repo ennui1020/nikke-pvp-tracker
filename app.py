@@ -18,6 +18,14 @@ from flask import Flask, jsonify, request, send_from_directory, send_file, Respo
 # 路径常量（支持 PyInstaller 打包）
 # ──────────────────────────────────────
 import sys as _sys
+# Windows cp1252 修复：在 print() 前配置 stdout/stderr 编码
+if getattr(_sys, 'frozen', False) and _sys.platform == 'win32':
+    try:
+        _sys.stdout.reconfigure(encoding='utf-8')
+        _sys.stderr.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+
 if getattr(_sys, 'frozen', False):
     # 从环境变量或 exe 所在目录读取
     BASE_DIR = Path(os.environ.get('NIKKE_PVP_BASE', _sys.executable)).parent \
@@ -161,7 +169,7 @@ def find_character(name_or_id):
 
 
 def resolve_team_names(team_list):
-    """将别名/ID 列表解析为角色名列表"""
+    """将别名/ID 列表解析为角色名列表（支持简繁匹配）"""
     resolved = []
     chars = load_characters()
     name_map = {}
@@ -173,8 +181,49 @@ def resolve_team_names(team_list):
 
     for item in team_list:
         item = item.strip()
-        resolved.append(name_map.get(item, item))
+        if item in name_map:
+            resolved.append(name_map[item])
+        else:
+            # 简繁模糊匹配：如果输入是简体，尝试匹配繁体
+            matched = False
+            for key, val in name_map.items():
+                if _is_similar(item, key):
+                    resolved.append(val)
+                    matched = True
+                    break
+            if not matched:
+                resolved.append(item)
     return resolved
+
+
+def _norm(text):
+    """统一文本对比基准：NFKC + 小写 + 去空格"""
+    import unicodedata
+    return unicodedata.normalize("NFKC", text.strip().lower())
+
+
+def _is_similar(a, b):
+    """判断两个文本是否视为同一角色名（处理繁简差异 + 分隔符差异）"""
+    try:
+        from zhconv import convert
+        variants_a = {a, convert(a, "zh-hans"), convert(a, "zh-hant")}
+        variants_b = {b, convert(b, "zh-hans"), convert(b, "zh-hant")}
+        # 精确匹配
+        for va in variants_a:
+            for vb in variants_b:
+                if _norm(va) == _norm(vb):
+                    return True
+        # 宽松匹配：去除常见的分隔符（: ：·）后再比
+        import re
+        for va in variants_a:
+            stripped_a = re.sub(r"[:：·\s]", "", _norm(va))
+            for vb in variants_b:
+                stripped_b = re.sub(r"[:：·\s]", "", _norm(vb))
+                if stripped_a == stripped_b:
+                    return True
+    except ImportError:
+        return _norm(a) == _norm(b)
+    return False
 
 
 # ──────────────────────────────────────
@@ -404,7 +453,16 @@ def api_list_characters():
     if starred:
         chars = [c for c in chars if c.get("starred")]
     if q:
-        chars = [c for c in chars if q in c["name"].lower() or (c.get("alias") and q in c["alias"].lower())]
+        try:
+            from zhconv import convert
+            q_hant = convert(q, "zh-hant")
+            q_hans = convert(q, "zh-hans")
+            chars = [c for c in chars if q_hant in c["name"]
+                     or (c.get("alias") and q_hant in c["alias"])
+                     or q_hans in c["name"]
+                     or (c.get("alias") and q_hans in c["alias"])]
+        except ImportError:
+            chars = [c for c in chars if q in c["name"].lower() or (c.get("alias") and q in c["alias"].lower())]
 
     return jsonify(chars)
 
@@ -546,12 +604,26 @@ def api_list_records():
     if opponent:
         records = [r for r in records if opponent.lower() in r.get("opponent", "").lower()]
     if q:
-        records = [
-            r for r in records
-            if q in r.get("opponent", "").lower()
-            or any(q in n.lower() for n in r.get("my_team", []))
-            or any(q in n.lower() for n in r.get("opp_team", []))
-        ]
+        try:
+            from zhconv import convert
+            q_hant = convert(q, "zh-hant")
+            q_hans = convert(q, "zh-hans")
+            records = [
+                r for r in records
+                if q_hant in r.get("opponent", "")
+                or q_hans in r.get("opponent", "")
+                or any(q_hant in n for n in r.get("my_team", []))
+                or any(q_hans in n for n in r.get("my_team", []))
+                or any(q_hant in n for n in r.get("opp_team", []))
+                or any(q_hans in n for n in r.get("opp_team", []))
+            ]
+        except ImportError:
+            records = [
+                r for r in records
+                if q in r.get("opponent", "").lower()
+                or any(q in n.lower() for n in r.get("my_team", []))
+                or any(q in n.lower() for n in r.get("opp_team", []))
+            ]
 
     records.sort(key=lambda r: r["timestamp"], reverse=True)
     if limit and limit > 0:
@@ -700,9 +772,18 @@ def api_search_characters():
     q = request.args.get("q", "").strip().lower()
     chars = load_characters()
     results = []
-    for c in chars:
-        if q in c["name"].lower() or (c.get("alias") and q in c["alias"].lower()):
-            results.append(c)
+    try:
+        from zhconv import convert
+        q_hant = convert(q, "zh-hant")
+        q_hans = convert(q, "zh-hans")
+        for c in chars:
+            if q_hant in c["name"] or (c.get("alias") and q_hant in c["alias"])\
+               or q_hans in c["name"] or (c.get("alias") and q_hans in c["alias"]):
+                results.append(c)
+    except ImportError:
+        for c in chars:
+            if q in c["name"].lower() or (c.get("alias") and q in c["alias"].lower()):
+                results.append(c)
     return jsonify(results)
 
 
@@ -865,8 +946,7 @@ if __name__ == "__main__":
     _want_port = int(os.environ.get("PORT", 5000))
     port = _find_free_port(_want_port)
     if port is None:
-        print(f"[error] 无法找到可用端口（从 {_want_port} 起 20 个均被占用）")
-        sys.exit(1)
+        _sys.exit(1)
     if port != _want_port:
         print(f"[port] 端口 {_want_port} 已被占用，自动切换至 {port}")
     print(f"  ╔══════════════════════════════════╗")
@@ -874,7 +954,6 @@ if __name__ == "__main__":
     print(f"  ║   http://localhost:{port}          ║")
     print(f"  ╚══════════════════════════════════╝")
     # 在 Windows 上自动打开浏览器
-    import sys
-    if sys.platform == "win32":
+    if _sys.platform == "win32":
         webbrowser.open(f"http://localhost:{port}")
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=port, debug=False)

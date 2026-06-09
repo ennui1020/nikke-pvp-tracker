@@ -17,7 +17,7 @@ a = Analysis(
         ('static\\*', 'static'),
         ('avatars\\*', 'avatars'),
     ],
-    hiddenimports=['flask', 'requests', 'PIL'],
+    hiddenimports=['flask', 'requests', 'PIL', 'zhconv'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
