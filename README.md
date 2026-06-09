@@ -5,5 +5,5 @@
 ## 使用
 
 1. 下载最新 [Release](https://github.com/ennui1020/nikke-pvp-tracker/releases) 的 zip 包
-2. 解压双击 `start.bat`
-3. 浏览器打开 http://localhost:5000
+2. 解压双击 `nikke-pvp-tracker.exe`
+3. 浏览器自动打开 http://localhost:5000
