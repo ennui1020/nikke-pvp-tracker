@@ -27,11 +27,6 @@ def create_release_zip(dist_dir, output_path, zip_name="nikke-pvp-tracker"):
                 arcname = os.path.join(arc_prefix, rel)
                 zf.write(full_path, arcname)
 
-        # 确保 start.bat 也在顶层（它在 dist 目录内）
-        start_bat = dist_dir / "start.bat"
-        if start_bat.exists():
-            zf.write(str(start_bat), f"{arc_prefix}/start.bat")
-
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
