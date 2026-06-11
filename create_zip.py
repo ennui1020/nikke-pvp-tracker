@@ -18,10 +18,13 @@ def create_release_zip(dist_dir, output_path, zip_name="nikke-pvp-tracker"):
     # 如果 zip 不存在则创建
     arc_prefix = zip_name  # 顶层文件夹名
 
+    output_path = output_path.resolve()
     with zipfile.ZipFile(output_path, "w", zipfile.ZIP_DEFLATED) as zf:
         for root, dirs, files in os.walk(str(dist_dir)):
             for file in files:
                 full_path = os.path.join(root, file)
+                if Path(full_path).resolve() == output_path:
+                    continue
                 # 计算 zip 内的相对路径（带顶层文件夹）
                 rel = os.path.relpath(full_path, str(dist_dir))
                 arcname = os.path.join(arc_prefix, rel)
