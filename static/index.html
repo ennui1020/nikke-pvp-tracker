@@ -498,7 +498,9 @@ main{max-width:1200px;margin:0 auto;padding:24px}
   <div id="tab-records" class="tab-panel">
     <div class="records-controls">
       <select id="filter-result" onchange="renderRecords()"><option value="">全部结果</option><option value="win">胜利</option><option value="lose">失败</option></select>
-      <input type="text" id="filter-records-q" placeholder="搜索对手/角色..." oninput="renderRecords()">
+      <select id="filter-records-scope" onchange="renderRecords()"><option value="all">全部字段</option><option value="my">我方</option><option value="opp">对方</option><option value="opponent">对手名</option></select>
+      <select id="filter-records-logic" onchange="renderRecords()"><option value="or">OR 任一</option><option value="and">AND 全部</option><option value="not">NOT 排除</option></select>
+      <input type="text" id="filter-records-q" placeholder="用空格/逗号分隔关键词..." oninput="scheduleRenderRecords()">
       <span style="font-size:12px;color:var(--text-dim)" id="records-count"></span>
     </div>
     <div class="records-table-wrap">
@@ -510,15 +512,20 @@ main{max-width:1200px;margin:0 auto;padding:24px}
 <script>
 // ═══════════════════ 状态 ═══════════════════
 const state = {
+  allCharacters: [],
+  characterById: new Map(),
+  avatarMap: {},
   characters: [],
   myTeam: [null,null,null,null,null],
   oppTeam: [null,null,null,null,null],
   records: [],
   enums: {},
   filters: {manufacturer:'',weapon:'',code:'',burst:'',class:''},
+  poolSearch: '',
 };
 
 let editingCharId = null; // 编辑中的角色ID
+let recordsRenderTimer = null;
 
 // ═══════════════════ Toast ═══════════════════
 function toast(msg, type='info'){
@@ -554,6 +561,48 @@ async function api(url, opts={}){
   return resp.json().catch(()=>null);
 }
 
+function indexCharacters(chars){
+  state.allCharacters = chars || [];
+  state.characterById = new Map();
+  state.avatarMap = {};
+  state.allCharacters.forEach(c => {
+    state.characterById.set(c.id, c);
+    if(c.name) state.avatarMap[c.name] = c.avatar_url;
+    if(c.alias) state.avatarMap[c.alias] = c.avatar_url;
+  });
+}
+
+async function refreshAllCharacters(){
+  indexCharacters(await api('/api/characters') || []);
+  return state.allCharacters;
+}
+
+async function ensureAllCharacters(){
+  if(!state.allCharacters.length) await refreshAllCharacters();
+  return state.allCharacters;
+}
+
+function matchesPoolQuery(c, q){
+  if(!q) return true;
+  const haystack = `${c.name || ''} ${c.alias || ''}`.toLowerCase();
+  return haystack.includes(q.toLowerCase());
+}
+
+function applyCharacterFilters(){
+  const el = document.getElementById('pool-search');
+  if(el) state.poolSearch = el.value;
+  const q = (state.poolSearch || '').trim();
+  state.characters = state.allCharacters.filter(c => {
+    if(state.filters.manufacturer && c.manufacturer !== state.filters.manufacturer) return false;
+    if(state.filters.weapon && c.weapon !== state.filters.weapon) return false;
+    if(state.filters.code && c.code !== state.filters.code) return false;
+    if(state.filters.burst && c.burst !== state.filters.burst && c.burst !== '全') return false;
+    if(state.filters.class && c.class !== state.filters.class) return false;
+    if(state.filters.starred && !c.starred) return false;
+    return matchesPoolQuery(c, q);
+  });
+}
+
 // ═══════════════════ Enums ═══════════════════
 async function loadEnums(){
   state.enums = await api('/api/enums') || {};
@@ -584,7 +633,7 @@ function renderFilterBar(){
     </select>`;
   }).join('') +
   `<button class="btn btn-sm ${state.filters.starred ? 'btn-primary' : 'btn-outline'}" onclick="toggleStarFilter()">⭐ ${state.filters.starred ? '已标星' : '全部'}</button>
-  <input type="text" id="pool-search" placeholder="搜索名称/别名...🗲" style="background:var(--card);border:1px solid var(--border);padding:5px 10px;color:var(--text);font-size:12px;width:160px;min-width:0" oninput="loadCharacters()" onkeyup="loadCharacters()">
+  <input type="text" id="pool-search" value="${escHtml(state.poolSearch)}" placeholder="搜索名称/别名...🗲" style="background:var(--card);border:1px solid var(--border);padding:5px 10px;color:var(--text);font-size:12px;width:160px;min-width:0" oninput="state.poolSearch=this.value;loadCharacters()">
   <button class="btn btn-sm btn-outline" onclick="clearFilters()">✕ 清除</button>`;
 }
 
@@ -601,6 +650,7 @@ function setFilter(key, val){
 
 function clearFilters(){
   Object.keys(state.filters).forEach(k => state.filters[k]='');
+  state.poolSearch = '';
   document.querySelectorAll('#filter-bar select').forEach(s => s.value='');
   const searchInput = document.getElementById('pool-search');
   if(searchInput) searchInput.value = '';
@@ -611,16 +661,10 @@ function clearFilters(){
 // ═══════════════════ Characters ═══════════════════
 async function loadCharacters(){
   try{
-    const params = new URLSearchParams();
-    Object.entries(state.filters).forEach(([k,v]) => {if(v) params.set(k,v);});
-    const el = document.getElementById('pool-search');
-    if(!el) { renderCharPool(); return; }
-    const q = el.value.trim().toLowerCase();
-    if(q) params.set('q',q);
-    state.characters = await api(`/api/characters?${params}`) || [];
-    const total = await api('/api/characters');
+    await ensureAllCharacters();
+    applyCharacterFilters();
     document.getElementById('pool-count').textContent =
-      `${state.characters.length} / ${(total||[]).length} 个角色`;
+      `${state.characters.length} / ${state.allCharacters.length} 个角色`;
     renderCharPool();
   }catch(e){
     console.error('loadCharacters error:', e);
@@ -668,6 +712,7 @@ async function addCharacter(){
     msg.textContent='✅ 保存成功';
     clearCharForm();
     msg.style.color='var(--win)';
+    await refreshAllCharacters();
     await loadCharacters();
     renderCharMgmt();
   }catch(e){
@@ -693,8 +738,8 @@ function cancelEdit(){clearCharForm()}
 
 // ═══════════════════ Char Pool ═══════════════════
 async function editCharacter(id){
-  const all = await api('/api/characters');
-  const c = all.find(x => x.id === id);
+  await ensureAllCharacters();
+  const c = state.characterById.get(id);
   if(!c){toast('❌ 角色不存在','error');return}
   editingCharId = id;
   document.getElementById('char-name').value = c.name;
@@ -721,6 +766,7 @@ async function deleteCharacter(id){
     if(state.oppTeam[i] && state.oppTeam[i].id===id) state.oppTeam[i]=null;
   }
   renderSlots();
+  await refreshAllCharacters();
   await loadCharacters();
   renderCharMgmt();
 }
@@ -755,7 +801,7 @@ function renderCharPool(){
          ondragstart="onCharDragStart(event,'${c.id}')">
       <button class="star-btn ${c.starred?'starred':''}" onclick="event.stopPropagation();toggleStar('${c.id}')">${c.starred?'⭐':'☆'}</button>
       ${c.avatar_url
-        ? `<img src="${c.avatar_url}" alt="${c.name}" onerror="this.outerHTML=fallbackAvatar('${c.name}',85)">`
+        ? `<img src="${c.avatar_url}" alt="${c.name}" loading="lazy" decoding="async" onerror="this.outerHTML=fallbackAvatar('${c.name}',85)">`
         : fallbackAvatar(c.name,85)
       }
       ${c.burst ? `<div class="burst-badge burst-${c.burst}">${burstLabel(c.burst)}</div>` : ''}
@@ -770,6 +816,8 @@ async function toggleStar(charId){
   if(result && result.status === 'ok'){
     const c = state.characters.find(x => x.id === charId);
     if(c) c.starred = result.starred;
+    const full = state.characterById.get(charId);
+    if(full) full.starred = result.starred;
     renderCharPool();
   }
 }
@@ -823,6 +871,7 @@ function renderSlots(){
           ${filled ? `
             <img class="slot-avatar" src="${char.avatar_url||''}"
                  alt="${char.name}"
+                 decoding="async"
                  onerror="this.outerHTML=fallbackAvatar('${char.name}')">
             <div class="slot-name">${char.name}</div>
             ${char.burst ? `<div class="burst-badge burst-${char.burst}">${burstLabel(char.burst)}</div>` : ''}
@@ -845,7 +894,7 @@ function onSlotDrop(e, side, index){
   e.preventDefault();
   e.currentTarget.classList.remove('drag-over');
   const charId = e.dataTransfer.getData('text/plain');
-  const char = state.characters.find(c=>c.id===charId);
+  const char = state.characterById.get(charId) || state.characters.find(c=>c.id===charId);
   if(!char) return;
   const team = side==='my' ? state.myTeam : state.oppTeam;
   team[index] = char;
@@ -911,13 +960,12 @@ async function importRecords(input){
 
 // ═══════════════════ Stats ═══════════════════
 async function renderStats(){
+  await ensureAllCharacters();
   const [overview, byUnit, byTeam] = await Promise.all([
     api('/api/stats/overview'),api('/api/stats/by-unit'),api('/api/stats/by-team'),
   ]);
   if(!overview) return;
-  // 建立角色名→头像 URL 映射
-  const avatarMap = {};
-  (state.characters||[]).forEach(c => { avatarMap[c.name] = c.avatar_url; if(c.alias) avatarMap[c.alias] = c.avatar_url; });
+  const avatarMap = state.avatarMap;
   document.getElementById('stats-cards').innerHTML = `
     <div class="stat-card"><div class="label">总场次</div><div class="num purple">${overview.total}</div></div>
     <div class="stat-card"><div class="label">总胜率</div><div class="num ${overview.win_rate>=50?'green':'red'}">${overview.win_rate}%</div><div class="sub">${overview.wins}W / ${overview.losses}L</div></div>
@@ -941,19 +989,25 @@ async function renderStats(){
   ` : '<div class="empty-state"><p>暂无数据</p></div>';
 }
 function avatarCell(name, url){
-  if(url) return `<img class="cell-avatar" src="${url}" alt="" onerror="this.outerHTML=''"> `;
+  if(url) return `<img class="cell-avatar" src="${url}" alt="${escHtml(name)}" loading="lazy" decoding="async" onerror="this.outerHTML=''"> `;
   return '';
 }
 
 // ═══════════════════ Records List ═══════════════════
+function scheduleRenderRecords(){
+  clearTimeout(recordsRenderTimer);
+  recordsRenderTimer = setTimeout(renderRecords, 180);
+}
+
 async function renderRecords(){
+  await ensureAllCharacters();
   const params = new URLSearchParams({limit:'200'});
   const r = document.getElementById('filter-result').value; if(r) params.set('result',r);
+  const scope = document.getElementById('filter-records-scope').value; if(scope) params.set('q_scope',scope);
+  const logic = document.getElementById('filter-records-logic').value; if(logic) params.set('q_logic',logic);
   const q = document.getElementById('filter-records-q').value.trim(); if(q) params.set('q',q);
   const records = await api(`/api/records?${params}`) || [];
-  // 建立角色名→头像 URL 映射
-  const avatarMap = {};
-  (state.characters||[]).forEach(c => { avatarMap[c.name] = c.avatar_url; if(c.alias) avatarMap[c.alias] = c.avatar_url; });
+  const avatarMap = state.avatarMap;
   document.getElementById('records-count').textContent = `共 ${records.length} 条`;
   const table = document.getElementById('records-table');
   if(!records.length){table.innerHTML='<div class="empty-state"><p>暂无对战记录</p></div>';return}
@@ -984,9 +1038,9 @@ function fmtTime(ts){
 // ═══════════════════ Character Management List ═══════════════════
 function renderCharMgmt(){
   (async ()=>{
+    await ensureAllCharacters();
     const q = document.getElementById('char-mgmt-search').value.trim();
-    const url = q ? `/api/characters?q=${encodeURIComponent(q)}` : '/api/characters';
-    const all = await api(url) || [];
+    const all = q ? state.allCharacters.filter(c => matchesPoolQuery(c, q)) : state.allCharacters;
     document.getElementById('char-count').textContent = q
       ? `(${all.length} / 过滤)`
       : `(${all.length})`;
@@ -996,7 +1050,7 @@ function renderCharMgmt(){
       return `
         <div class="char-list-item">
           ${c.avatar_url
-            ? `<img class="char-preview" src="${c.avatar_url}" alt="${c.name}" onerror="this.outerHTML=fallbackAvatar('${c.name}',85)">`
+            ? `<img class="char-preview" src="${c.avatar_url}" alt="${c.name}" loading="lazy" decoding="async" onerror="this.outerHTML=fallbackAvatar('${c.name}',85)">`
             : fallbackAvatar(c.name,85)
           }
           <div class="info">
@@ -1016,6 +1070,7 @@ function renderCharMgmt(){
 // ═══════════════════ Init ═══════════════════
 (async function init(){
   await loadEnums();
+  await refreshAllCharacters();
   await loadCharacters();
   initSlots();
 })();

@@ -238,6 +238,33 @@ def _is_similar(a, b):
     return False
 
 
+def _canonical_variants(text):
+    try:
+        from zhconv import convert
+        variants = {text, convert(text, 'zh-hans'), convert(text, 'zh-hant')}
+    except Exception:
+        variants = {text, _to_simplified(text), _to_traditional(text)}
+    return {v.lower() for v in variants if v}
+
+
+def _matches_query(text, q):
+    import re
+    if not text or not q:
+        return False
+    q_variants = _canonical_variants(q)
+    text_variants = _canonical_variants(text)
+    for qv in q_variants:
+        norm_q = _norm(qv)
+        stripped_q = re.sub(r"[:：·\s]", "", norm_q)
+        for tv in text_variants:
+            norm_tv = _norm(tv)
+            if norm_q in norm_tv:
+                return True
+            if stripped_q and stripped_q in re.sub(r"[:：·\s]", "", norm_tv):
+                return True
+    return False
+
+
 # 简繁字符映射表（zhconv 不可用时的备用方案）
 _SIMPLIFIED_TABLE = str.maketrans({
     '愛': '爱', '蓮': '莲', '紅': '红', '長': '长', '髮': '发', '發': '发',
@@ -491,49 +518,7 @@ def api_list_characters():
     if starred:
         chars = [c for c in chars if c.get("starred")]
     if q:
-        try:
-            from zhconv import convert
-            q_hant = convert(q, "zh-hant")
-            q_hans = convert(q, "zh-hans")
-            def _match(c):
-                name = c["name"].lower()
-                alias = (c.get("alias") or "").lower()
-                # Direct: converted query against raw name/alias
-                if q_hant in name or q_hans in name:
-                    return True
-                if alias and (q_hant in alias or q_hans in alias):
-                    return True
-                # Cross-conversion: also convert name/alias to simplified
-                # 解决 zhconv 短词歧义问题（如 长发→長發但数据是 長髮）
-                name_hans = convert(c["name"], "zh-hans").lower()
-                if q_hans in name_hans:
-                    return True
-                if alias:
-                    alias_hans = convert(alias, "zh-hans").lower()
-                    if q_hans in alias_hans:
-                        return True
-                return False
-            chars = [c for c in chars if _match(c)]
-        except Exception:
-            # zhconv 不可用时降级：双向简繁匹配
-            q_hans = _to_simplified(q)
-            q_hant = _to_traditional(q)
-            def _match(c):
-                name = c["name"].lower()
-                alias = (c.get("alias") or "").lower()
-                if q_hant in name or q_hans in name:
-                    return True
-                if alias and (q_hant in alias or q_hans in alias):
-                    return True
-                name_hans = _to_simplified(name)
-                if q_hans in name_hans:
-                    return True
-                if alias:
-                    alias_hans = _to_simplified(alias)
-                    if q_hans in alias_hans:
-                        return True
-                return False
-            chars = [c for c in chars if _match(c)]
+        chars = [c for c in chars if _matches_query(c.get("name", ""), q) or _matches_query(c.get("alias", "") or "", q)]
 
     return jsonify(chars)
 
@@ -683,6 +668,12 @@ def api_list_records():
     result = request.args.get("result")
     opponent = request.args.get("opponent")
     q = request.args.get("q", "").strip().lower()
+    q_scope = request.args.get("q_scope", "all")
+    q_logic = request.args.get("q_logic", "or")
+    if q_scope not in ("all", "my", "opp", "opponent"):
+        q_scope = "all"
+    if q_logic not in ("or", "and", "not"):
+        q_logic = "or"
 
     if mode:
         records = [r for r in records if r["mode"] == mode]
@@ -691,31 +682,32 @@ def api_list_records():
     if opponent:
         records = [r for r in records if opponent.lower() in r.get("opponent", "").lower()]
     if q:
-        try:
-            from zhconv import convert
-            q_hant = convert(q, "zh-hant")
-            q_hans = convert(q, "zh-hans")
-            records = [
-                r for r in records
-                if q_hant in r.get("opponent", "").lower()
-                or q_hans in r.get("opponent", "").lower()
-                or any(q_hant in n.lower() for n in r.get("my_team", []))
-                or any(q_hans in n.lower() for n in r.get("my_team", []))
-                or any(q_hant in n.lower() for n in r.get("opp_team", []))
-                or any(q_hans in n.lower() for n in r.get("opp_team", []))
-            ]
-        except Exception:
-            q_hans = _to_simplified(q)
-            q_hant = _to_traditional(q)
-            records = [
-                r for r in records
-                if q_hant in r.get("opponent", "").lower()
-                or q_hans in r.get("opponent", "").lower()
-                or any(q_hant in n.lower() for n in r.get("my_team", []))
-                or any(q_hans in n.lower() for n in r.get("my_team", []))
-                or any(q_hant in n.lower() for n in r.get("opp_team", []))
-                or any(q_hans in n.lower() for n in r.get("opp_team", []))
-            ]
+        tokens = [t for t in re.split(r"[\s,，、]+", q) if t]
+        if not tokens:
+            tokens = [q]
+
+        def record_texts(record, scope):
+            texts = []
+            if scope in ("all", "opponent"):
+                texts.append(record.get("opponent", ""))
+            if scope in ("all", "my"):
+                texts.extend(record.get("my_team", []))
+            if scope in ("all", "opp"):
+                texts.extend(record.get("opp_team", []))
+            return texts
+
+        def matches_token(record, token):
+            return any(_matches_query(text, token) for text in record_texts(record, q_scope))
+
+        def matches_record(record):
+            hits = [matches_token(record, token) for token in tokens]
+            if q_logic == "and":
+                return all(hits)
+            if q_logic == "not":
+                return not any(hits)
+            return any(hits)
+
+        records = [r for r in records if matches_record(r)]
 
     records.sort(key=lambda r: r["timestamp"], reverse=True)
     if limit and limit > 0:
@@ -863,26 +855,7 @@ def api_stats_by_opponent():
 def api_search_characters():
     q = request.args.get("q", "").strip().lower()
     chars = load_characters()
-    results = []
-    try:
-        from zhconv import convert
-        q_hant = convert(q, "zh-hant")
-        q_hans = convert(q, "zh-hans")
-        for c in chars:
-            if q_hant in c["name"] or (c.get("alias") and q_hant in c["alias"])\
-               or q_hans in c["name"] or (c.get("alias") and q_hans in c["alias"]):
-                results.append(c)
-    except Exception:
-        q_hans = _to_simplified(q)
-        q_hant = _to_traditional(q)
-        for c in chars:
-            name = c["name"].lower()
-            alias = (c.get("alias") or "").lower()
-            if q_hant in name or q_hans in name \
-               or (alias and (q_hant in alias or q_hans in alias)) \
-               or q_hans in _to_simplified(name) \
-               or (alias and q_hans in _to_simplified(alias)):
-                results.append(c)
+    results = [c for c in chars if _matches_query(c.get("name", ""), q) or _matches_query(c.get("alias", "") or "", q)]
     return jsonify(results)
 
 
