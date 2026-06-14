@@ -446,6 +446,7 @@ def api_add_character():
         "id": str(uuid.uuid4())[:8],
         "name": name,
         "alias": alias,
+        "name_simplified": data.get("name_simplified") or None,
         "class": data.get("class", ""),
         "manufacturer": data.get("manufacturer", ""),
         "weapon": data.get("weapon", ""),
@@ -465,6 +466,7 @@ def api_update_character(char_id):
     chars = load_characters()
     name = data.get("name")
     alias = data.get("alias") if "alias" in data else None
+    name_simplified = data.get("name_simplified") if "name_simplified" in data else None
 
     if name:
         name = name.strip()
@@ -482,6 +484,9 @@ def api_update_character(char_id):
             c["name"] = new_name
             if alias is not None:
                 c["alias"] = new_alias
+            if name_simplified is not None:
+                ns = name_simplified.strip() if name_simplified else None
+                c["name_simplified"] = ns if ns else None
             c["class"] = data.get("class", c.get("class", ""))
             c["manufacturer"] = data.get("manufacturer", c.get("manufacturer", ""))
             c["weapon"] = data.get("weapon", c.get("weapon", ""))
