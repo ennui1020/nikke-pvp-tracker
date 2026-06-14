@@ -9,7 +9,27 @@ a = Analysis(
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=[],
+    excludes=[
+        # Not used: numpy, cryptography, jedi, IPython
+        'numpy', 'numpy.*',
+        'cryptography', 'cryptography.*',
+        'jedi', 'jedi.*',
+        'IPython', 'IPython.*',
+        # Not used: scipy, matplotlib
+        'scipy', 'scipy.*',
+        'matplotlib', 'matplotlib.*',
+        'typing_extensions',
+        # CLI/dev tools not needed
+        'setuptools', 'wheel', 'pip', 'distutils',
+        'test', 'unittest', 'doctest',
+        'ensurepip',
+        # Web framework not needed beyond flask
+        'aiohttp', 'asyncio',
+        # Database/ORM not used
+        'sqlalchemy', 'django',
+        # Not used by requests (we don't do streaming/big uploads)
+        'chardet',
+    ],
     noarchive=False,
     optimize=0,
 )
