@@ -585,7 +585,7 @@ def api_list_records():
                     return True
             # 匹配 name_simplified
             _chars = load_characters()
-            _s2n = {c.get("name_simplified",""): c["name"] for c in _chars if c.get("name_simplified")}
+            _s2n = {c["name"]: c.get("name_simplified","") for c in _chars if c.get("name_simplified")}
             for text in texts:
                 sn = _s2n.get(text)
                 if sn and tl in sn.lower():
