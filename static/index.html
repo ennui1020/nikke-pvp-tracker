@@ -584,17 +584,9 @@ async function ensureAllCharacters(){
 
 function matchesPoolQuery(c, q){
   if(!q) return true;
-  // 简繁映射表
-  const sTable = {'愛':'爱','蓮':'莲','紅':'红','長':'长','髮':'发','發':'发','麗':'丽','絲':'丝','貝':'贝','爾':'尔','聖':'圣','潔':'洁','亞':'亚','瑪':'玛','維':'维','緋':'绯','蒼':'苍','鋒':'锋','颯':'飒','華':'华','櫻':'樱','純':'纯','戀':'恋','極':'极','樂':'乐','淨':'净','風':'风','壓':'压','水':'水','冷':'冷','鐵':'铁','甲':'甲','燃':'燃','燒':'烧','電':'电','擊':'击','無':'无','禦':'御','衝':'冲','槍':'枪','機':'机','關':'关'};
-  const tTable = Object.fromEntries(Object.entries(sTable).map(([k,v])=>[v,k]));
-  const toS = s => s.split('').map(c=>sTable[c]||c).join('');
-  const toT = s => s.split('').map(c=>tTable[c]||c).join('');
-  const qLo = q.toLowerCase();
-  const qS = toS(qLo), qT = toT(qLo);
-  const name = (c.name||'')+' '+(c.alias||'');
-  const nLo = name.toLowerCase();
-  return nLo.includes(qLo) || nLo.includes(qS) || nLo.includes(qT)
-      || toS(nLo).includes(qS) || toT(nLo).includes(qT);
+  q = q.toLowerCase();
+  const haystack = [c.name||'', c.alias||'', c.name_simplified||''].join(' ').toLowerCase();
+  return haystack.includes(q);
 }
 
 function applyCharacterFilters(){

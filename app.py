@@ -181,7 +181,7 @@ def find_character(name_or_id):
 
 
 def resolve_team_names(team_list):
-    """将别名/ID 列表解析为角色名列表（支持简繁匹配）"""
+    """将别名/ID 列表解析为角色名列表（支持 name_simplified 匹配）"""
     resolved = []
     chars = load_characters()
     name_map = {}
@@ -190,52 +190,16 @@ def resolve_team_names(team_list):
         name_map[c["name"]] = c["name"]
         if c.get("alias"):
             name_map[c["alias"]] = c["name"]
+        if c.get("name_simplified"):
+            name_map[c["name_simplified"]] = c["name"]
 
     for item in team_list:
         item = item.strip()
         if item in name_map:
             resolved.append(name_map[item])
         else:
-            # 简繁模糊匹配：如果输入是简体，尝试匹配繁体
-            matched = False
-            for key, val in name_map.items():
-                if _is_similar(item, key):
-                    resolved.append(val)
-                    matched = True
-                    break
-            if not matched:
-                resolved.append(item)
+            resolved.append(item)
     return resolved
-
-
-def _norm(text):
-    """统一文本对比基准：NFKC + 小写 + 去空格"""
-    import unicodedata
-    return unicodedata.normalize("NFKC", text.strip().lower())
-
-
-def _is_similar(a, b):
-    """判断两个文本是否视为同一角色名（处理繁简差异 + 分隔符差异）"""
-    try:
-        from zhconv import convert
-        variants_a = {a, convert(a, "zh-hans"), convert(a, "zh-hant")}
-        variants_b = {b, convert(b, "zh-hans"), convert(b, "zh-hant")}
-        # 精确匹配
-        for va in variants_a:
-            for vb in variants_b:
-                if _norm(va) == _norm(vb):
-                    return True
-        # 宽松匹配：去除常见的分隔符（: ：·）后再比
-        import re
-        for va in variants_a:
-            stripped_a = re.sub(r"[:：·\s]", "", _norm(va))
-            for vb in variants_b:
-                stripped_b = re.sub(r"[:：·\s]", "", _norm(vb))
-                if stripped_a == stripped_b:
-                    return True
-    except ImportError:
-        return _norm(a) == _norm(b)
-    return False
 
 
 AVATAR_LOOKUP = {
@@ -613,18 +577,18 @@ def api_list_records():
             return texts
 
         def matches_token(record, token):
-            import re as _re
-            # 简繁映射（与前端一致）
-            _stbl = {'愛':'爱','蓮':'莲','紅':'红','長':'长','髮':'发','發':'发','麗':'丽','絲':'丝','貝':'贝','爾':'尔','聖':'圣','潔':'洁','亞':'亚','瑪':'玛','維':'维','緋':'绯','蒼':'苍','鋒':'锋','颯':'飒','華':'华','櫻':'樱','純':'纯','戀':'恋','極':'极','樂':'乐','淨':'净','風':'风','壓':'压','水':'水','冷':'冷','鐵':'铁','甲':'甲','燃':'燃','燒':'烧','電':'电','擊':'击','無':'无','禦':'御','衝':'冲','槍':'枪','機':'机','關':'关'}
-            _ttbl = {v:k for k,v in _stbl.items()}
-            def _ts(s): return ''.join(_stbl.get(c,c) for c in s)
-            def _tt(s): return ''.join(_ttbl.get(c,c) for c in s)
             tl = token.lower()
-            ts = _ts(tl)
-            tt = _tt(tl)
-            for text in record_texts(record, q_scope):
-                tl2 = text.lower()
-                if tl in tl2 or ts in tl2 or tt in tl2:
+            texts = record_texts(record, q_scope)
+            # 直接匹配原名
+            for text in texts:
+                if tl in text.lower():
+                    return True
+            # 匹配 name_simplified
+            _chars = load_characters()
+            _s2n = {c.get("name_simplified",""): c["name"] for c in _chars if c.get("name_simplified")}
+            for text in texts:
+                sn = _s2n.get(text)
+                if sn and tl in sn.lower():
                     return True
             return False
 
