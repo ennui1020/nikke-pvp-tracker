@@ -238,65 +238,7 @@ def _is_similar(a, b):
     return False
 
 
-def _canonical_variants(text):
-    try:
-        from zhconv import convert
-        variants = {text, convert(text, 'zh-hans'), convert(text, 'zh-hant')}
-    except Exception:
-        variants = {text, _to_simplified(text), _to_traditional(text)}
-    return {v.lower() for v in variants if v}
-
-
-def _matches_query(text, q):
-    import re
-    if not text or not q:
-        return False
-    q_variants = _canonical_variants(q)
-    text_variants = _canonical_variants(text)
-    for qv in q_variants:
-        norm_q = _norm(qv)
-        stripped_q = re.sub(r"[:：·\s]", "", norm_q)
-        for tv in text_variants:
-            norm_tv = _norm(tv)
-            if norm_q in norm_tv:
-                return True
-            if stripped_q and stripped_q in re.sub(r"[:：·\s]", "", norm_tv):
-                return True
-    return False
-
-
-# 简繁字符映射表（zhconv 不可用时的备用方案）
-_SIMPLIFIED_TABLE = str.maketrans({
-    '愛': '爱', '蓮': '莲', '紅': '红', '長': '长', '髮': '发', '發': '发',
-    '麗': '丽', '絲': '丝', '貝': '贝', '爾': '尔', '聖': '圣', '潔': '洁',
-    '亞': '亚', '瑪': '玛', '維': '维', '爾': '尔', '爾': '尔',
-    '緋': '绯', '蒼': '苍', '鋒': '锋', '颯': '飒', '華': '华',
-    '櫻': '樱', '純': '纯', '戀': '恋', '戀': '恋',
-    '極': '极', '樂': '乐', '淨': '净', '土': '土',
-    '泰': '泰', '特': '特', '拉': '拉',
-    '米': '米', '西': '西', '利': '利', '斯': '斯',
-    '朝': '朝', '聖': '圣', '者': '者',
-    '反': '反', '常': '常',
-    '風': '风', '壓': '压', '水': '水', '冷': '冷',
-    '鐵': '铁', '甲': '甲', '燃': '燃', '燒': '烧',
-    '電': '电', '擊': '击', '無': '无',
-    '火': '火', '力': '力', '防': '防', '禦': '御',
-    '支': '支', '援': '援',
-    '軍': '军', '火': '火', '衝': '冲', '槍': '枪',
-    '步': '步', '機': '机', '關': '关',
-    '全': '全',
-})
-_TRADITIONAL_TABLE = str.maketrans({v: k for k, v in _SIMPLIFIED_TABLE.items()})
-
-def _to_simplified(text):
-    return text.translate(_SIMPLIFIED_TABLE)
-
-
-def _to_traditional(text):
-    return text.translate(_TRADITIONAL_TABLE)
-
 AVATAR_LOOKUP = {
-    # 常用 PVP 角色名 → Prydwen 图标 ID
     "红莲": "scarlet",
     "scarlet": "scarlet",
     "哈兰": "harran",
@@ -518,7 +460,7 @@ def api_list_characters():
     if starred:
         chars = [c for c in chars if c.get("starred")]
     if q:
-        chars = [c for c in chars if _matches_query(c.get("name", ""), q) or _matches_query(c.get("alias", "") or "", q)]
+        pass  # 前端已做客户端过滤，后端不再处理 q 参数
 
     return jsonify(chars)
 
@@ -619,32 +561,6 @@ def api_upload_avatar(char_id):
     return jsonify({"error": "角色不存在"}), 404
 
 
-@app.route("/api/characters/sync-avatars", methods=["POST"])
-def api_sync_avatars():
-    """手動從 seed 文件同步所有角色的 avatar_url"""
-    seed_file = _find_seed_file()
-    if not seed_file:
-        return jsonify({"error": "找不到角色種子文件"}), 500
-    with open(str(seed_file), "r", encoding="utf-8") as f:
-        seed_data = json.load(f)
-    seed_map = {}
-    for c in seed_data:
-        seed_map[c["name"]] = c.get("avatar_url") or None
-        if c.get("alias"):
-            seed_map[c["alias"]] = c.get("avatar_url") or None
-
-    chars = load_characters()
-    updated = 0
-    for c in chars:
-        url = seed_map.get(c["name"]) or seed_map.get(c.get("alias", ""))
-        if url and c.get("avatar_url") != url:
-            c["avatar_url"] = url
-            updated += 1
-    if updated:
-        save_characters(chars)
-    return jsonify({"status": "ok", "updated": updated, "total": len(chars)})
-
-
 @app.route("/api/characters/<char_id>/toggle-star", methods=["POST"])
 def api_toggle_star(char_id):
     """切换角色标⭐状态"""
@@ -697,7 +613,20 @@ def api_list_records():
             return texts
 
         def matches_token(record, token):
-            return any(_matches_query(text, token) for text in record_texts(record, q_scope))
+            import re as _re
+            # 简繁映射（与前端一致）
+            _stbl = {'愛':'爱','蓮':'莲','紅':'红','長':'长','髮':'发','發':'发','麗':'丽','絲':'丝','貝':'贝','爾':'尔','聖':'圣','潔':'洁','亞':'亚','瑪':'玛','維':'维','緋':'绯','蒼':'苍','鋒':'锋','颯':'飒','華':'华','櫻':'樱','純':'纯','戀':'恋','極':'极','樂':'乐','淨':'净','風':'风','壓':'压','水':'水','冷':'冷','鐵':'铁','甲':'甲','燃':'燃','燒':'烧','電':'电','擊':'击','無':'无','禦':'御','衝':'冲','槍':'枪','機':'机','關':'关'}
+            _ttbl = {v:k for k,v in _stbl.items()}
+            def _ts(s): return ''.join(_stbl.get(c,c) for c in s)
+            def _tt(s): return ''.join(_ttbl.get(c,c) for c in s)
+            tl = token.lower()
+            ts = _ts(tl)
+            tt = _tt(tl)
+            for text in record_texts(record, q_scope):
+                tl2 = text.lower()
+                if tl in tl2 or ts in tl2 or tt in tl2:
+                    return True
+            return False
 
         def matches_record(record):
             hits = [matches_token(record, token) for token in tokens]
@@ -849,16 +778,6 @@ def api_stats_by_opponent():
     return jsonify(result)
 
 
-# ── 角色名补全 ──
-
-@app.route("/api/search/characters")
-def api_search_characters():
-    q = request.args.get("q", "").strip().lower()
-    chars = load_characters()
-    results = [c for c in chars if _matches_query(c.get("name", ""), q) or _matches_query(c.get("alias", "") or "", q)]
-    return jsonify(results)
-
-
 # ── 筛选枚举 ──
 
 @app.route("/api/enums")
@@ -870,36 +789,6 @@ def api_enums():
         "codes": CHAR_CODES,
         "bursts": CHAR_BURSTS,
     })
-
-
-# ── 重新導入角色（從 nikke_characters.json）──
-
-@app.route("/api/characters/seed", methods=["POST"])
-def api_seed_characters():
-    """從 nikke_characters.json 重新導入角色數據（不清除已有記錄）"""
-    chars = load_characters()
-    if chars:
-        return jsonify({"status": "ok", "message": "角色數據已存在，無需導入", "count": len(chars)})
-
-    seed_candidates = [
-        BASE_DIR / "data" / "nikke_characters.json",
-    ]
-    if getattr(_sys, '_MEIPASS', None):
-        seed_candidates.append(Path(_sys._MEIPASS) / "data" / "nikke_characters.json")
-
-    for seed_file in seed_candidates:
-        if seed_file.exists():
-            import shutil
-            # 讀取並補 id 字段（源數據可能缺 id）
-            with open(str(seed_file), "r", encoding="utf-8") as f:
-                raw = json.load(f)
-            for c in raw:
-                if "id" not in c or not c["id"]:
-                    c["id"] = str(uuid.uuid4())[:8]
-            save_characters(raw)
-            return jsonify({"status": "ok", "message": f"成功導入 {len(raw)} 個角色", "count": len(raw)})
-
-    return jsonify({"error": "找不到 nikke_characters.json 數據文件"}), 404
 
 
 # ── 批量导出 ──
