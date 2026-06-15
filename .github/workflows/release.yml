@@ -38,12 +38,24 @@ jobs:
           cd dist/nikke-pvp-tracker
           zip -r ../../nikke-pvp-tracker-${{ github.event.inputs.version }}.zip .
 
-      - name: Upload to GitHub Release
+      - name: Create or Update Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create ${{ github.event.inputs.version }} \
-            nikke-pvp-tracker-${{ github.event.inputs.version }}.zip \
-            --title ${{ github.event.inputs.version }} \
-            --generate-notes \
-            --clobber
+          # Try to create release; if it exists, delete old asset first
+          if ! gh release view ${{ github.event.inputs.version }} &>/dev/null; then
+            gh release create ${{ github.event.inputs.version }} \
+              nikke-pvp-tracker-${{ github.event.inputs.version }}.zip \
+              --title ${{ github.event.inputs.version }} \
+              --generate-notes
+          else
+            # Delete existing zip asset if present
+            ASSET_ID=$(gh release view ${{ github.event.inputs.version }} \
+              --json assets \
+              -q '.assets[] | select(.name == "nikke-pvp-tracker-${{ github.event.inputs.version }}.zip") | .id' 2>/dev/null)
+            if [ -n "$ASSET_ID" ]; then
+              gh release delete-assets ${{ github.event.inputs.version }} --asset "nikke-pvp-tracker-${{ github.event.inputs.version }}.zip" &>/dev/null || true
+            fi
+            gh release upload ${{ github.event.inputs.version }} \
+              nikke-pvp-tracker-${{ github.event.inputs.version }}.zip
+          fi
