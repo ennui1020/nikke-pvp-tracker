@@ -1,0 +1,49 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g. v1.4)'
+        required: true
+        default: 'v1.4'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+
+      - name: Build Windows executable
+        run: |
+          pyinstaller --clean --noconfirm nikke-pvp-tracker.spec
+
+      - name: Create zip package
+        run: |
+          cd dist/nikke-pvp-tracker
+          zip -r ../../nikke-pvp-tracker-${{ github.event.inputs.version }}.zip .
+
+      - name: Upload to GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ github.event.inputs.version }} \
+            nikke-pvp-tracker-${{ github.event.inputs.version }}.zip \
+            --title ${{ github.event.inputs.version }} \
+            --generate-notes \
+            --clobber
