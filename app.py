@@ -247,8 +247,6 @@ def api_list_characters():
             chars = [c for c in chars if c.get("burst") == burst or c.get("burst") == "Bp"]
     if starred:
         chars = [c for c in chars if c.get("starred")]
-    if q:
-        pass  # 前端已做客户端过滤，后端不再处理 q 参数
 
     return jsonify(chars)
 
@@ -391,6 +389,10 @@ def api_list_records():
     if opponent:
         records = [r for r in records if opponent.lower() in r.get("opponent", "").lower()]
     if q:
+        # 预构建 name → name_simplified 映射（避免每条记录重复加载）
+        _chars = load_characters()
+        _s2n = {c["name"]: c.get("name_simplified", "") for c in _chars if c.get("name_simplified")}
+
         tokens = [t for t in re.split(r"[\s,，、]+", q) if t]
         if not tokens:
             tokens = [q]
@@ -412,9 +414,7 @@ def api_list_records():
             for text in texts:
                 if tl in text.lower():
                     return True
-            # 匹配 name_simplified
-            _chars = load_characters()
-            _s2n = {c["name"]: c.get("name_simplified","") for c in _chars if c.get("name_simplified")}
+            # 匹配 name_simplified（使用预构建的映射表）
             for text in texts:
                 sn = _s2n.get(text)
                 if sn and tl in sn.lower():
