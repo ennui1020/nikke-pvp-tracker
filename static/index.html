@@ -123,6 +123,23 @@ main{max-width:1200px;margin:0 auto;padding:24px}
 .filter-bar input{height:28px}
 .filter-bar .btn{height:28px;line-height:1}
 
+/* ── Burst Tabs (ALL / Ⅰ / Ⅱ / Ⅲ) ── */
+.burst-tabs{display:flex;gap:2px;margin-bottom:8px}
+.burst-tab{
+  padding:6px 16px;border:1px solid transparent;background:transparent;
+  color:var(--text-dim);cursor:pointer;font-size:13px;
+  transition:all .2s;position:relative
+}
+.burst-tab:hover{color:var(--primary);border-color:var(--border)}
+.burst-tab.active{
+  color:var(--primary);border-color:var(--primary);
+  box-shadow:inset 0 -1px 0 var(--primary),0 0 12px var(--primary-glow)
+}
+.burst-tab.active::after{
+  content:'';position:absolute;bottom:-1px;left:0;right:0;
+  height:1px;background:var(--primary);box-shadow:0 0 6px var(--primary)
+}
+
 /* ── Character Pool ── */
 .char-pool{background:var(--surface);padding:18px;border:1px solid var(--border);position:relative}
 .char-pool::before{
@@ -356,6 +373,13 @@ main{max-width:1200px;margin:0 auto;padding:24px}
             <span style="font-size:12px;color:var(--text-dim)" id="pool-count"></span>
           </div>
         </div>
+        <!-- 爆裂分页栏 -->
+        <div class="burst-tabs" id="burst-tabs">
+          <button class="burst-tab active" data-burst="" onclick="setBurstTab('')">ALL</button>
+          <button class="burst-tab" data-burst="B1" onclick="setBurstTab('B1')">Ⅰ</button>
+          <button class="burst-tab" data-burst="B2" onclick="setBurstTab('B2')">Ⅱ</button>
+          <button class="burst-tab" data-burst="B3" onclick="setBurstTab('B3')">Ⅲ</button>
+        </div>
         <div class="filter-bar" id="filter-bar"></div>
         <div class="char-grid" id="char-pool-grid"></div>
       </div>
@@ -525,6 +549,7 @@ const state = {
   records: [],
   enums: {},
   filters: {manufacturer:'',weapon:'',code:'',burst:'',class:''},
+  burstTab: '',
   poolSearch: '',
 };
 
@@ -664,17 +689,42 @@ function toggleStarFilter(){
 
 function setFilter(key, val){
   state.filters[key] = val;
+  // Sync burst tab when dropdown changes
+  if(key === 'burst'){
+    state.burstTab = val;
+    renderBurstTabs();
+  }
   loadCharacters();
 }
 
 function clearFilters(){
   Object.keys(state.filters).forEach(k => state.filters[k]='');
+  state.burstTab = '';
   state.poolSearch = '';
   document.querySelectorAll('#filter-bar select').forEach(s => s.value='');
   const searchInput = document.getElementById('pool-search');
   if(searchInput) searchInput.value = '';
+  renderBurstTabs();
   renderFilterBar();
   loadCharacters();
+}
+
+// ═══════════════════ Burst Tabs ────────────────────────
+function setBurstTab(val){
+  state.burstTab = val;
+  state.filters.burst = val;
+  renderBurstTabs();
+  // Sync dropdown
+  const burstSel = document.getElementById('char-burst');
+  if(burstSel) burstSel.value = val;
+  loadCharacters();
+}
+
+function renderBurstTabs(){
+  document.querySelectorAll('.burst-tab').forEach(btn => {
+    const isActive = btn.dataset.burst === state.burstTab;
+    btn.classList.toggle('active', isActive);
+  });
 }
 
 // ═══════════════════ Characters ═══════════════════
@@ -1094,6 +1144,7 @@ function renderCharMgmt(){
 // ═══════════════════ Init ═══════════════════
 (async function init(){
   await loadEnums();
+  renderBurstTabs();
   await refreshAllCharacters();
   await loadCharacters();
   initSlots();

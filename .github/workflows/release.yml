@@ -12,8 +12,8 @@ permissions:
   contents: write
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-windows:
+    runs-on: windows-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,40 +22,61 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+          architecture: 'x64'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Install PyInstaller
-        run: pip install pyinstaller
+        run: pip install -r requirements.txt pyinstaller
 
       - name: Build Windows executable
         run: |
-          pyinstaller --clean --noconfirm nikke-pvp-tracker.spec
+          python -m PyInstaller --clean --noconfirm nikke-pvp-tracker.spec
+
+      - name: Verify PE format
+        run: |
+          if (!(Test-Path "dist\nikke-pvp-tracker\nikke-pvp-tracker.exe")) {
+            Write-Error "Build output not found!"
+            exit 1
+          }
+          $bytes = [System.IO.File]::ReadAllBytes("dist\nikke-pvp-tracker\nikke-pvp-tracker.exe")
+          if ($bytes[0] -ne 0x4D -or $bytes[1] -ne 0x5A) {
+            Write-Error "Not a valid PE file (bad MZ header)"
+            exit 1
+          }
+          Write-Host "OK: Valid Windows PE executable"
 
       - name: Create zip package
         run: |
-          cd dist/nikke-pvp-tracker
-          zip -r ../../nikke-pvp-tracker-${{ github.event.inputs.version }}.zip .
+          $version = "${{ github.event.inputs.version }}"
+          $zipName = "nikke-pvp-tracker-$version.zip"
+          $zipPath = Join-Path $env:TEMP $zipName
+          Compress-Archive -Path "dist\nikke-pvp-tracker\*" -DestinationPath $zipPath -Force
+          Write-Host "Created: $zipPath"
+          dir $zipPath
+          # Store path for next step
+          echo "ZIP_PATH=$zipPath" | Out-File -FilePath $env:GITHUB_ENV -Append
 
-      - name: Create or Update Release
+      - name: Upload Release Asset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Try to create release; if it exists, delete old asset first
-          if ! gh release view ${{ github.event.inputs.version }} &>/dev/null; then
-            gh release create ${{ github.event.inputs.version }} \
-              nikke-pvp-tracker-${{ github.event.inputs.version }}.zip \
-              --title ${{ github.event.inputs.version }} \
+          $version = "${{ github.event.inputs.version }}"
+          $zipPath = $env:ZIP_PATH
+
+          # Check if release exists
+          $releaseExists = gh release view "$version" 2>$null
+          if ($LASTEXITCODE -ne 0) {
+            # Create new release
+            gh release create "$version" `
+              "$zipPath" `
+              --title "$version" `
               --generate-notes
-          else
+          } else {
             # Delete existing zip asset if present
-            ASSET_ID=$(gh release view ${{ github.event.inputs.version }} \
-              --json assets \
-              -q '.assets[] | select(.name == "nikke-pvp-tracker-${{ github.event.inputs.version }}.zip") | .id' 2>/dev/null)
-            if [ -n "$ASSET_ID" ]; then
-              gh release delete-assets ${{ github.event.inputs.version }} --asset "nikke-pvp-tracker-${{ github.event.inputs.version }}.zip" &>/dev/null || true
-            fi
-            gh release upload ${{ github.event.inputs.version }} \
-              nikke-pvp-tracker-${{ github.event.inputs.version }}.zip
-          fi
+            $assetId = gh release view "$version" `
+              --json assets `
+              -q '.assets[] | select(.name == "nikke-pvp-tracker-' + $version + '.zip") | .id' 2>$null
+            if ($assetId) {
+              gh release delete-assets "$version" --asset "nikke-pvp-tracker-$version.zip" 2>$null
+            }
+            gh release upload "$version" "$zipPath" --clobber
+          }

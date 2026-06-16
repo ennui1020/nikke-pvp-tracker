@@ -165,6 +165,7 @@ CHAR_MANUFACTURERS = ["极乐净土", "泰特拉", "米西利斯", "朝圣者", 
 CHAR_WEAPONS = ["AR", "SMG", "SG", "SR", "MG", "RL"]
 CHAR_CODES = ["風壓", "水冷", "鐵甲", "燃燒", "電擊", "無"]
 CHAR_BURSTS = ["B1", "B2", "B3", "全"]
+CHAR_RARITIES = ["SSR", "SR"]
 
 
 
