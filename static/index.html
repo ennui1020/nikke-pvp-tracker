@@ -593,20 +593,34 @@ function matchesPoolQuery(c, q){
   return haystack.includes(q);
 }
 
-function applyCharacterFilters(){
-  const el = document.getElementById('pool-search');
-  if(el) state.poolSearch = el.value;
-  const q = (state.poolSearch || '').trim();
-  state.characters = state.allCharacters.filter(c => {
-    if(state.filters.manufacturer && c.manufacturer !== state.filters.manufacturer) return false;
-    if(state.filters.weapon && c.weapon !== state.filters.weapon) return false;
-    if(state.filters.code && c.code !== state.filters.code) return false;
-    if(state.filters.burst && c.burst !== state.filters.burst && c.burst !== '全') return false;
-    if(state.filters.class && c.class !== state.filters.class) return false;
-    if(state.filters.starred && !c.starred) return false;
-    return matchesPoolQuery(c, q);
-  });
+// 优先使用 name_simplified 显示，没有则用 name
+function displayName(c){
+  return c.name_simplified || c.name;
 }
+
+function applyBurstFilter(c, burstFilter) {
+    if (!burstFilter) return true;
+    if (burstFilter === '全') return true; // "全" 匹配所有
+    // Bp（小红帽）是全阶段爆裂，选择 B1/B2/B3 时也应匹配
+    if (c.burst === 'Bp') return true;
+    if (c.burst === burstFilter) return true;
+    return false;
+  }
+
+  function applyCharacterFilters(){
+    const el = document.getElementById('pool-search');
+    if(el) state.poolSearch = el.value;
+    const q = (state.poolSearch || '').trim();
+    state.characters = state.allCharacters.filter(c => {
+      if(state.filters.manufacturer && c.manufacturer !== state.filters.manufacturer) return false;
+      if(state.filters.weapon && c.weapon !== state.filters.weapon) return false;
+      if(state.filters.code && c.code !== state.filters.code) return false;
+      if(!applyBurstFilter(c, state.filters.burst)) return false;
+      if(state.filters.class && c.class !== state.filters.class) return false;
+      if(state.filters.starred && !c.starred) return false;
+      return matchesPoolQuery(c, q);
+    });
+  }
 
 // ═══════════════════ Enums ═══════════════════
 async function loadEnums(){
@@ -813,7 +827,7 @@ function renderCharPool(){
         : fallbackAvatar(c.name,85)
       }
       ${c.burst ? `<div class="burst-badge burst-${c.burst}">${burstLabel(c.burst)}</div>` : ''}
-      <div class="char-name">${c.name}</div>
+      <div class="char-name">${displayName(c)}</div>
       ${c.weapon ? `<div class="char-tag">${c.weapon}</div>` : ''}
     </div>
   `).join('');
@@ -836,10 +850,12 @@ function fallbackAvatar(name, size){
   const initial = name.charAt(0) || '?';
   const fontSize = Math.round(size * 0.46);
   const y = Math.round(size * 0.65);
-  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" style="border-radius:4px;flex-shrink:0">
-    <rect width="${size}" height="${size}" fill="${color}" rx="4"/>
-    <text x="${size/2}" y="${y}" text-anchor="middle" font-size="${fontSize}" fill="white" font-family="sans-serif" font-weight="600">${escHtml(initial)}</text>
-  </svg>`;
+  // 优先使用 default-avatar.png，加载失败则生成 SVG
+  return `<img src="/default-avatar.png" width="${size}" height="${size}" style="object-fit:cover;border-radius:4px" alt="${escHtml(name)}" onerror="this.onerror=null;this.outerHTML=generateFallbackSVG(${size},${JSON.stringify(color)},${JSON.stringify(initial)},${fontSize},${y})">`;
+}
+
+function generateFallbackSVG(size, color, initial, fontSize, y){
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size + '"><rect width="' + size + '" height="' + size + '" fill="' + color + '" rx="4"/><text x="' + (size/2) + '" y="' + y + '" text-anchor="middle" font-size="' + fontSize + '" fill="white" font-family="sans-serif" font-weight="600">' + initial + '</text></svg>';
 }
 
 function onCharDragStart(e, charId){
@@ -1062,7 +1078,7 @@ function renderCharMgmt(){
             : fallbackAvatar(c.name,85)
           }
           <div class="info">
-            <div class="name">${c.name} ${c.alias ? `<span style="color:var(--text-dim);font-size:11px">📎${c.alias}</span>`:''}</div>
+            <div class="name">${displayName(c)} ${c.alias ? `<span style="color:var(--text-dim);font-size:11px">📎${c.alias}</span>`:''}</div>
             <div class="tags">${tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
           </div>
           <div style="display:flex;gap:4px">

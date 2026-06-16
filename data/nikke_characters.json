@@ -1,147 +1,159 @@
 [
   {
     "name": "2B",
-    "class": "火力",
+    "class": "防禦",
     "manufacturer": "反常",
     "weapon": "AR",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/2B.webp",
     "id": "49ba7582",
-    "alias": null
+    "alias": null,
+    "name_simplified": "2B"
   },
   {
     "name": "A2",
     "class": "火力",
     "manufacturer": "反常",
-    "weapon": "MG",
-    "code": "燃烧",
+    "weapon": "RL",
+    "code": "燃燒",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/A2.webp",
     "id": "c6bdf6f6",
-    "alias": null
+    "alias": null,
+    "name_simplified": "A2"
   },
   {
     "name": "D",
     "class": "火力",
     "manufacturer": "极乐净土",
     "weapon": "SMG",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/D.webp",
     "id": "f623e75a",
-    "alias": null
+    "alias": null,
+    "name_simplified": "D"
   },
   {
     "name": "D：殺手妻子",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "极乐净土",
     "weapon": "SR",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/D：殺手妻子.webp",
     "id": "c2bfe0de",
-    "alias": null
+    "alias": null,
+    "name_simplified": "D：杀手妻子"
   },
   {
     "name": "E.H.",
     "class": "火力",
     "manufacturer": "极乐净土",
-    "weapon": "SG",
-    "code": "风压",
+    "weapon": "SMG",
+    "code": "風壓",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/E.H..webp",
     "id": "daf4d71e",
-    "alias": null
+    "alias": null,
+    "name_simplified": "E.H."
   },
   {
     "name": "K",
     "class": "火力",
     "manufacturer": "极乐净土",
     "weapon": "SMG",
-    "code": "电击",
+    "code": "電擊",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/K.webp",
     "id": "a5f3c6a1",
-    "alias": null
+    "alias": null,
+    "name_simplified": "K"
   },
   {
     "name": "iDoll太陽",
-    "class": "支援",
-    "manufacturer": "米西利斯",
-    "weapon": "MG",
-    "code": "铁甲",
+    "class": "輔助",
+    "manufacturer": "泰特拉",
+    "weapon": "AR",
+    "code": "鐵甲",
     "burst": "B3",
-    "rarity": "SSR",
+    "rarity": "SR",
     "avatar_url": "/avatars/iDoll太陽.webp",
     "id": "ac083ec6",
-    "alias": null
+    "alias": null,
+    "name_simplified": "iDoll太阳"
   },
   {
     "name": "iDoll海",
-    "class": "支援",
-    "manufacturer": "米西利斯",
+    "class": "輔助",
+    "manufacturer": "泰特拉",
     "weapon": "SMG",
     "code": "水冷",
     "burst": "B1",
-    "rarity": "SSR",
+    "rarity": "SR",
     "avatar_url": "/avatars/iDoll海.webp",
     "id": "6d3b947a",
-    "alias": null
+    "alias": null,
+    "name_simplified": "iDoll海"
   },
   {
     "name": "iDoll花",
-    "class": "支援",
-    "manufacturer": "米西利斯",
-    "weapon": "SMG",
-    "code": "风压",
+    "class": "防禦",
+    "manufacturer": "泰特拉",
+    "weapon": "RL",
+    "code": "風壓",
     "burst": "B1",
-    "rarity": "SSR",
+    "rarity": "SR",
     "avatar_url": "/avatars/iDoll花.webp",
     "id": "98e267c1",
-    "alias": null
+    "alias": null,
+    "name_simplified": "iDoll花"
   },
   {
     "name": "伊芙",
     "class": "火力",
     "manufacturer": "反常",
-    "weapon": "SR",
-    "code": "铁甲",
+    "weapon": "AR",
+    "code": "鐵甲",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/伊芙.webp",
     "id": "8a8054cf",
-    "alias": null
+    "alias": null,
+    "name_simplified": "伊芙"
   },
   {
     "name": "伊莎貝爾",
     "class": "火力",
     "manufacturer": "朝圣者",
-    "weapon": "SG",
-    "code": "电击",
+    "weapon": "SMG",
+    "code": "電擊",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/伊莎貝爾.webp",
     "id": "4f4fdd8c",
-    "alias": null
+    "alias": null,
+    "name_simplified": "伊莎贝尔"
   },
   {
     "name": "伊萊格",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "米西利斯",
     "weapon": "MG",
-    "code": "电击",
+    "code": "電擊",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/伊萊格.webp",
     "id": "77514d85",
-    "alias": null
+    "alias": null,
+    "name_simplified": "伊莱格"
   },
   {
     "name": "伊萊格：BOOM與驚嚇",
@@ -153,23 +165,25 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/伊萊格：BOOM與驚嚇.webp",
     "id": "e04dbfca",
-    "alias": null
+    "alias": null,
+    "name_simplified": "伊莱格：BOOM与惊吓"
   },
   {
     "name": "佩珀",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "米西利斯",
-    "weapon": "SG",
-    "code": "风压",
+    "weapon": "SMG",
+    "code": "風壓",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/佩珀.webp",
     "id": "99fc8998",
-    "alias": null
+    "alias": null,
+    "name_simplified": "佩珀"
   },
   {
     "name": "克勞斯特",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "RL",
     "code": "水冷",
@@ -177,91 +191,99 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/克勞斯特.webp",
     "id": "baaad8b2",
-    "alias": null
+    "alias": null,
+    "name_simplified": "克劳斯特"
   },
   {
     "name": "克蕾兒",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "反常",
-    "weapon": "AR",
-    "code": "电击",
+    "weapon": "RL",
+    "code": "電擊",
     "burst": "B1",
-    "rarity": "SSR",
+    "rarity": "SR",
     "avatar_url": "/avatars/克蕾兒.webp",
     "id": "ad58eee0",
-    "alias": null
+    "alias": null,
+    "name_simplified": "克蕾儿"
   },
   {
     "name": "克雷伊",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
-    "weapon": "RL",
-    "code": "水冷",
+    "weapon": "SMG",
+    "code": "電擊",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/克雷伊.webp",
     "id": "9111510e",
-    "alias": null
+    "alias": null,
+    "name_simplified": "克雷伊"
   },
   {
     "name": "千束",
     "class": "火力",
     "manufacturer": "反常",
-    "weapon": "AR",
-    "code": "铁甲",
+    "weapon": "SMG",
+    "code": "鐵甲",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/千束.webp",
     "id": "87c779bb",
-    "alias": null
+    "alias": null,
+    "name_simplified": "千束"
   },
   {
     "name": "可可",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "SR",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/可可.webp",
     "id": "fd866488",
-    "alias": null
+    "alias": null,
+    "name_simplified": "可可"
   },
   {
     "name": "吉兒",
     "class": "火力",
     "manufacturer": "反常",
-    "weapon": "SMG",
-    "code": "燃烧",
+    "weapon": "AR",
+    "code": "電擊",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/吉兒.webp",
     "id": "26e2d03f",
-    "alias": null
+    "alias": null,
+    "name_simplified": "吉儿"
   },
   {
     "name": "吉爾提",
     "class": "火力",
     "manufacturer": "米西利斯",
-    "weapon": "SG",
-    "code": "风压",
+    "weapon": "SMG",
+    "code": "風壓",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/吉爾提.webp",
     "id": "188e0e72",
-    "alias": null
+    "alias": null,
+    "name_simplified": "吉尔提"
   },
   {
     "name": "吉蘿婷",
     "class": "火力",
     "manufacturer": "极乐净土",
     "weapon": "MG",
-    "code": "电击",
+    "code": "水冷",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/吉蘿婷.webp",
     "id": "f9262fe0",
-    "alias": null
+    "alias": null,
+    "name_simplified": "吉萝婷"
   },
   {
     "name": "吉蘿婷：寒冬殺手",
@@ -273,31 +295,34 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/吉蘿婷：寒冬殺手.webp",
     "id": "52be94f5",
-    "alias": null
+    "alias": null,
+    "name_simplified": "吉萝婷：寒冬杀手"
   },
   {
     "name": "哈蘭",
     "class": "火力",
     "manufacturer": "朝圣者",
     "weapon": "SR",
-    "code": "电击",
+    "code": "電擊",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/哈蘭.webp",
     "id": "374e3a2a",
-    "alias": null
+    "alias": null,
+    "name_simplified": "哈兰"
   },
   {
     "name": "坎西",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "米西利斯",
     "weapon": "SMG",
-    "code": "电击",
+    "code": "電擊",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/坎西.webp",
     "id": "f206c18d",
-    "alias": null
+    "alias": null,
+    "name_simplified": "坎西"
   },
   {
     "name": "坎西：逃生女王",
@@ -309,163 +334,177 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/坎西：逃生女王.webp",
     "id": "4bd4040c",
-    "alias": null
+    "alias": null,
+    "name_simplified": "坎西：逃生女王"
   },
   {
     "name": "基里",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "极乐净土",
     "weapon": "RL",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/基里.webp",
     "id": "cbf5e283",
-    "alias": null
+    "alias": null,
+    "name_simplified": "基里"
   },
   {
     "name": "士兵E.G.",
     "class": "火力",
-    "manufacturer": "米西利斯",
-    "weapon": "SMG",
-    "code": "风压",
+    "manufacturer": "极乐净土",
+    "weapon": "AR",
+    "code": "電擊",
     "burst": "B3",
-    "rarity": "SSR",
+    "rarity": "SR",
     "avatar_url": "/avatars/士兵E.G..webp",
     "id": "4dccc828",
-    "alias": null
+    "alias": null,
+    "name_simplified": "士兵E.G."
   },
   {
     "name": "士兵F.A.",
-    "class": "火力",
-    "manufacturer": "米西利斯",
-    "weapon": "AR",
-    "code": "铁甲",
+    "class": "防禦",
+    "manufacturer": "极乐净土",
+    "weapon": "SMG",
+    "code": "鐵甲",
     "burst": "B2",
-    "rarity": "SSR",
+    "rarity": "SR",
     "avatar_url": "/avatars/士兵F.A..webp",
     "id": "9159fb0a",
-    "alias": null
+    "alias": null,
+    "name_simplified": "士兵F.A."
   },
   {
     "name": "士兵O.W.",
-    "class": "支援",
-    "manufacturer": "米西利斯",
+    "class": "輔助",
+    "manufacturer": "极乐净土",
     "weapon": "SMG",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B1",
-    "rarity": "SSR",
+    "rarity": "SR",
     "avatar_url": "/avatars/士兵O.W..webp",
     "id": "ea8e2010",
-    "alias": null
+    "alias": null,
+    "name_simplified": "士兵O.W."
   },
   {
     "name": "姬野",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "反常",
     "weapon": "SR",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B2",
-    "rarity": "SSR",
+    "rarity": "SR",
     "avatar_url": "/avatars/姬野.webp",
     "id": "11979638",
-    "alias": null
+    "alias": null,
+    "name_simplified": "姬野"
   },
   {
     "name": "娜嘉",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "米西利斯",
-    "weapon": "SG",
-    "code": "电击",
+    "weapon": "SMG",
+    "code": "電擊",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/娜嘉.webp",
     "id": "eb71da68",
-    "alias": null
+    "alias": null,
+    "name_simplified": "娜嘉"
   },
   {
     "name": "娜由塔",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "朝圣者",
-    "weapon": "SR",
-    "code": "风压",
+    "weapon": "SMG",
+    "code": "風壓",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/娜由塔.webp",
     "id": "87c72ab2",
-    "alias": null
+    "alias": null,
+    "name_simplified": "娜由塔"
   },
   {
     "name": "安妮：奇蹟仙女",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "米西利斯",
     "weapon": "RL",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/安妮：奇蹟仙女.webp",
     "id": "ce88e91b",
-    "alias": null
+    "alias": null,
+    "name_simplified": "安妮：奇迹仙女"
   },
   {
     "name": "小紅帽",
     "class": "火力",
     "manufacturer": "朝圣者",
     "weapon": "SR",
-    "code": "铁甲",
-    "burst": "全",
+    "code": "鐵甲",
+    "burst": "Bp",
     "rarity": "SSR",
     "avatar_url": "/avatars/小紅帽.webp",
     "id": "1dd683e2",
-    "alias": null
+    "alias": null,
+    "name_simplified": "小红帽"
   },
   {
     "name": "小美人魚",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "朝圣者",
-    "weapon": "RL",
-    "code": "风压",
+    "weapon": "SMG",
+    "code": "風壓",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/小美人魚.webp",
     "id": "5fdbfdeb",
-    "alias": null
+    "alias": null,
+    "name_simplified": "小美人鱼"
   },
   {
     "name": "尤妮",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "米西利斯",
     "weapon": "RL",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/尤妮.webp",
     "id": "a89246d4",
-    "alias": null
+    "alias": null,
+    "name_simplified": "尤妮"
   },
   {
     "name": "尤爾夏",
     "class": "火力",
     "manufacturer": "泰特拉",
     "weapon": "SR",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/尤爾夏.webp",
     "id": "266d61f9",
-    "alias": null
+    "alias": null,
+    "name_simplified": "尤尔夏"
   },
   {
     "name": "尼希利斯塔",
     "class": "火力",
     "manufacturer": "朝圣者",
     "weapon": "SR",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/尼希利斯塔.webp",
     "id": "f6212790",
-    "alias": null
+    "alias": null,
+    "name_simplified": "尼希利斯塔"
   },
   {
     "name": "尼恩：藍色海洋",
@@ -477,31 +516,34 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/尼恩：藍色海洋.webp",
     "id": "0c568aa9",
-    "alias": null
+    "alias": null,
+    "name_simplified": "尼恩：蓝色海洋"
   },
   {
     "name": "尼恩：透視之眼",
     "class": "火力",
     "manufacturer": "米西利斯",
-    "weapon": "SR",
-    "code": "风压",
+    "weapon": "RL",
+    "code": "電擊",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/尼恩：透視之眼.webp",
     "id": "19f5986a",
-    "alias": null
+    "alias": null,
+    "name_simplified": "尼恩：透视之眼"
   },
   {
     "name": "尼羅",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "泰特拉",
     "weapon": "SMG",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/尼羅.webp",
     "id": "cc6a4b09",
-    "alias": null
+    "alias": null,
+    "name_simplified": "尼罗"
   },
   {
     "name": "布蕾德",
@@ -513,19 +555,21 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/布蕾德.webp",
     "id": "48b0dab5",
-    "alias": null
+    "alias": null,
+    "name_simplified": "布蕾德"
   },
   {
     "name": "布蘭兒",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "泰特拉",
     "weapon": "AR",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/布蘭兒.webp",
     "id": "8bb23065",
-    "alias": null
+    "alias": null,
+    "name_simplified": "布兰儿"
   },
   {
     "name": "布麗德",
@@ -537,47 +581,51 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/布麗德.webp",
     "id": "72d6d933",
-    "alias": null
+    "alias": null,
+    "name_simplified": "布丽德"
   },
   {
     "name": "布麗德：靜默軌道",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "极乐净土",
-    "weapon": "AR",
-    "code": "燃烧",
+    "weapon": "SMG",
+    "code": "燃燒",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/布麗德：靜默軌道.webp",
     "id": "96c5b480",
-    "alias": null
+    "alias": null,
+    "name_simplified": "布丽德：静默轨道"
   },
   {
     "name": "帕斯卡",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "反常",
     "weapon": "RL",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B1",
-    "rarity": "SSR",
+    "rarity": "SR",
     "avatar_url": "/avatars/帕斯卡.webp",
     "id": "32e90640",
-    "alias": null
+    "alias": null,
+    "name_simplified": "帕斯卡"
   },
   {
     "name": "帕瓦",
     "class": "火力",
     "manufacturer": "反常",
     "weapon": "RL",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/帕瓦.webp",
     "id": "0919623e",
-    "alias": null
+    "alias": null,
+    "name_simplified": "帕瓦"
   },
   {
     "name": "德爾塔：怪盜忍者",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "极乐净土",
     "weapon": "MG",
     "code": "水冷",
@@ -585,95 +633,103 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/德爾塔：怪盜忍者.webp",
     "id": "b5695348",
-    "alias": null
+    "alias": null,
+    "name_simplified": "德尔塔：怪盗忍者"
   },
   {
     "name": "德雷克",
     "class": "火力",
     "manufacturer": "米西利斯",
-    "weapon": "SG",
-    "code": "燃烧",
+    "weapon": "SMG",
+    "code": "燃燒",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/德雷克.webp",
     "id": "6ade2a51",
-    "alias": null
+    "alias": null,
+    "name_simplified": "德雷克"
   },
   {
     "name": "愛因",
     "class": "火力",
     "manufacturer": "米西利斯",
     "weapon": "SR",
-    "code": "电击",
+    "code": "電擊",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/愛因.webp",
     "id": "0ffdc718",
-    "alias": null
+    "alias": null,
+    "name_simplified": "爱因"
   },
   {
     "name": "愛德",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "AR",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/愛德.webp",
     "id": "31c34c44",
-    "alias": null
+    "alias": null,
+    "name_simplified": "爱德"
   },
   {
     "name": "愛德：特務兔女郎",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "SR",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/愛德：特務兔女郎.webp",
     "id": "630ac335",
-    "alias": null
+    "alias": null,
+    "name_simplified": "爱德：特务兔女郎"
   },
   {
     "name": "愛蜜莉雅",
     "class": "火力",
     "manufacturer": "反常",
-    "weapon": "AR",
+    "weapon": "RL",
     "code": "水冷",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/愛蜜莉雅.webp",
     "id": "064b547a",
-    "alias": null
+    "alias": null,
+    "name_simplified": "爱蜜莉雅"
   },
   {
     "name": "愛麗絲",
     "class": "火力",
     "manufacturer": "泰特拉",
     "weapon": "SR",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/愛麗絲.webp",
     "id": "4e328e62",
-    "alias": null
+    "alias": null,
+    "name_simplified": "爱丽丝"
   },
   {
     "name": "愛麗絲：仙境兔女郎",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
-    "weapon": "SR",
+    "weapon": "SMG",
     "code": "水冷",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/愛麗絲：仙境兔女郎.webp",
     "id": "df19a2d5",
-    "alias": null
+    "alias": null,
+    "name_simplified": "爱丽丝：仙境兔女郎"
   },
   {
     "name": "托比",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "米西利斯",
     "weapon": "AR",
     "code": "水冷",
@@ -681,83 +737,90 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/托比.webp",
     "id": "da6f09a1",
-    "alias": null
+    "alias": null,
+    "name_simplified": "托比"
   },
   {
     "name": "拉姆",
-    "class": "火力",
+    "class": "防禦",
     "manufacturer": "反常",
     "weapon": "SR",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B1",
-    "rarity": "SSR",
+    "rarity": "SR",
     "avatar_url": "/avatars/拉姆.webp",
     "id": "f01151d7",
-    "alias": null
+    "alias": null,
+    "name_simplified": "拉姆"
   },
   {
     "name": "拉普拉斯",
     "class": "火力",
     "manufacturer": "米西利斯",
     "weapon": "RL",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/拉普拉斯.webp",
     "id": "5c5dff6d",
-    "alias": null
+    "alias": null,
+    "name_simplified": "拉普拉斯"
   },
   {
     "name": "拉毗：小紅帽",
     "class": "火力",
     "manufacturer": "极乐净土",
     "weapon": "MG",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/拉毗：小紅帽.webp",
     "id": "17c0206f",
-    "alias": null
+    "alias": null,
+    "name_simplified": "拉毗：小红帽"
   },
   {
     "name": "敏特",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
-    "weapon": "AR",
-    "code": "铁甲",
+    "weapon": "RL",
+    "code": "鐵甲",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/敏特.webp",
     "id": "ad47f3c7",
-    "alias": null
+    "alias": null,
+    "name_simplified": "敏特"
   },
   {
     "name": "明日香",
     "class": "火力",
     "manufacturer": "反常",
-    "weapon": "RL",
-    "code": "燃烧",
+    "weapon": "AR",
+    "code": "燃燒",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/明日香.webp",
     "id": "2edab02c",
-    "alias": null
+    "alias": null,
+    "name_simplified": "明日香"
   },
   {
     "name": "普琳瑪",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "SR",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/普琳瑪.webp",
     "id": "6e1a8796",
-    "alias": null
+    "alias": null,
+    "name_simplified": "普琳玛"
   },
   {
     "name": "普莉卡",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "SR",
     "code": "水冷",
@@ -765,59 +828,64 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/普莉卡.webp",
     "id": "be8cdb0f",
-    "alias": null
+    "alias": null,
+    "name_simplified": "普莉卡"
   },
   {
     "name": "普麗瓦蒂",
     "class": "火力",
     "manufacturer": "极乐净土",
     "weapon": "AR",
-    "code": "水冷",
+    "code": "電擊",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/普麗瓦蒂.webp",
     "id": "29de82a2",
-    "alias": null
+    "alias": null,
+    "name_simplified": "普丽瓦蒂"
   },
   {
     "name": "普麗瓦蒂：不友善的女僕",
     "class": "火力",
     "manufacturer": "极乐净土",
-    "weapon": "SG",
-    "code": "电击",
+    "weapon": "SMG",
+    "code": "電擊",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/普麗瓦蒂：不友善的女僕.webp",
     "id": "d68421e8",
-    "alias": null
+    "alias": null,
+    "name_simplified": "普丽瓦蒂：不友善的女仆"
   },
   {
     "name": "朵拉",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "SR",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/朵拉.webp",
     "id": "5ce5956f",
-    "alias": null
+    "alias": null,
+    "name_simplified": "朵拉"
   },
   {
     "name": "格拉維",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "朝圣者",
-    "weapon": "RL",
-    "code": "燃烧",
+    "weapon": "AR",
+    "code": "燃燒",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/格拉維.webp",
     "id": "49284ebc",
-    "alias": null
+    "alias": null,
+    "name_simplified": "格拉维"
   },
   {
     "name": "桃樂絲",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "朝圣者",
     "weapon": "AR",
     "code": "水冷",
@@ -825,71 +893,77 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/桃樂絲.webp",
     "id": "7320e9eb",
-    "alias": null
+    "alias": null,
+    "name_simplified": "桃乐丝"
   },
   {
     "name": "桃樂絲：機緣巧遇",
     "class": "火力",
     "manufacturer": "朝圣者",
-    "weapon": "AR",
+    "weapon": "SMG",
     "code": "水冷",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/桃樂絲：機緣巧遇.webp",
     "id": "90ae6582",
-    "alias": null
+    "alias": null,
+    "name_simplified": "桃乐丝：机缘巧遇"
   },
   {
     "name": "桑迪",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "米西利斯",
     "weapon": "RL",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/桑迪.webp",
     "id": "29739d00",
-    "alias": null
+    "alias": null,
+    "name_simplified": "桑迪"
   },
   {
     "name": "梅登",
     "class": "火力",
     "manufacturer": "极乐净土",
-    "weapon": "SG",
-    "code": "电击",
+    "weapon": "SMG",
+    "code": "電擊",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/梅登.webp",
     "id": "6f453e33",
-    "alias": null
+    "alias": null,
+    "name_simplified": "梅登"
   },
   {
     "name": "梅登：冰玫瑰",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "极乐净土",
     "weapon": "RL",
-    "code": "电击",
+    "code": "電擊",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/梅登：冰玫瑰.webp",
     "id": "e442aa96",
-    "alias": null
+    "alias": null,
+    "name_simplified": "梅登：冰玫瑰"
   },
   {
     "name": "梅里",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
-    "weapon": "SG",
-    "code": "水冷",
+    "weapon": "SMG",
+    "code": "電擊",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/梅里.webp",
     "id": "0f0db1ed",
-    "alias": null
+    "alias": null,
+    "name_simplified": "梅里"
   },
   {
     "name": "梅里：海灣女神",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "SR",
     "code": "水冷",
@@ -897,127 +971,138 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/梅里：海灣女神.webp",
     "id": "d8b72b67",
-    "alias": null
+    "alias": null,
+    "name_simplified": "梅里：海湾女神"
   },
   {
     "name": "森",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "米西利斯",
-    "weapon": "RL",
-    "code": "水冷",
+    "weapon": "AR",
+    "code": "電擊",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/森.webp",
     "id": "0d9aeb6e",
-    "alias": null
+    "alias": null,
+    "name_simplified": "森"
   },
   {
     "name": "楊",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "RL",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/楊.webp",
     "id": "95c89dad",
-    "alias": null
+    "alias": null,
+    "name_simplified": "杨"
   },
   {
     "name": "櫻",
-    "class": "支援",
-    "manufacturer": "反常",
-    "weapon": "SR",
+    "class": "輔助",
+    "manufacturer": "极乐净土",
+    "weapon": "SMG",
     "code": "水冷",
     "burst": "B1",
-    "rarity": "SSR",
+    "rarity": "SR",
     "avatar_url": "/avatars/櫻.webp",
     "id": "59e408a7",
-    "alias": null
+    "alias": null,
+    "name_simplified": "樱"
   },
   {
     "name": "櫻花",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "SR",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/櫻花.webp",
     "id": "fb6fea9f",
-    "alias": null
+    "alias": null,
+    "name_simplified": "樱花"
   },
   {
     "name": "櫻花：夏日綻放",
     "class": "火力",
     "manufacturer": "泰特拉",
-    "weapon": "SR",
-    "code": "风压",
+    "weapon": "AR",
+    "code": "風壓",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/櫻花：夏日綻放.webp",
     "id": "79610139",
-    "alias": null
+    "alias": null,
+    "name_simplified": "樱花：夏日绽放"
   },
   {
     "name": "毒蛇",
     "class": "火力",
     "manufacturer": "泰特拉",
-    "weapon": "SG",
+    "weapon": "SMG",
     "code": "水冷",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/毒蛇.webp",
     "id": "df2d7601",
-    "alias": null
+    "alias": null,
+    "name_simplified": "毒蛇"
   },
   {
     "name": "沃綸姆",
     "class": "火力",
     "manufacturer": "泰特拉",
     "weapon": "SMG",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/沃綸姆.webp",
     "id": "af493ac4",
-    "alias": null
+    "alias": null,
+    "name_simplified": "沃纶姆"
   },
   {
     "name": "波莉",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "极乐净土",
-    "weapon": "SG",
+    "weapon": "SMG",
     "code": "水冷",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/波莉.webp",
     "id": "b64ac89c",
-    "alias": null
+    "alias": null,
+    "name_simplified": "波莉"
   },
   {
     "name": "海倫",
     "class": "火力",
     "manufacturer": "极乐净土",
     "weapon": "SR",
-    "code": "水冷",
+    "code": "電擊",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/海倫.webp",
     "id": "71fe03e5",
-    "alias": null
+    "alias": null,
+    "name_simplified": "海伦"
   },
   {
     "name": "海倫：海藍寶石",
     "class": "火力",
     "manufacturer": "极乐净土",
     "weapon": "AR",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/海倫：海藍寶石.webp",
     "id": "1d985d50",
-    "alias": null
+    "alias": null,
+    "name_simplified": "海伦：海蓝宝石"
   },
   {
     "name": "潘托姆",
@@ -1029,127 +1114,138 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/潘托姆.webp",
     "id": "3939fa79",
-    "alias": null
+    "alias": null,
+    "name_simplified": "潘托姆"
   },
   {
     "name": "瀧奈",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "反常",
     "weapon": "SR",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/瀧奈.webp",
     "id": "1d20fe67",
-    "alias": null
+    "alias": null,
+    "name_simplified": "泷奈"
   },
   {
     "name": "灰姑娘",
-    "class": "火力",
+    "class": "防禦",
     "manufacturer": "朝圣者",
     "weapon": "RL",
-    "code": "风压",
+    "code": "電擊",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/灰姑娘.webp",
     "id": "7530bd2c",
-    "alias": null
+    "alias": null,
+    "name_simplified": "灰姑娘"
   },
   {
     "name": "牡丹",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "泰特拉",
     "weapon": "AR",
-    "code": "水冷",
+    "code": "電擊",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/牡丹.webp",
     "id": "9fb5f53c",
-    "alias": null
+    "alias": null,
+    "name_simplified": "牡丹"
   },
   {
     "name": "瑪娜",
     "class": "火力",
     "manufacturer": "米西利斯",
     "weapon": "AR",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/瑪娜.webp",
     "id": "8153c88d",
-    "alias": null
+    "alias": null,
+    "name_simplified": "玛娜"
   },
   {
     "name": "瑪律恰那",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "极乐净土",
-    "weapon": "SG",
-    "code": "铁甲",
+    "weapon": "SMG",
+    "code": "鐵甲",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/瑪律恰那.webp",
     "id": "a35e8ba7",
-    "alias": null
+    "alias": null,
+    "name_simplified": "玛律恰那"
   },
   {
     "name": "產品08",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "米西利斯",
     "weapon": "SR",
-    "code": "燃烧",
+    "code": "電擊",
     "burst": "B1",
-    "rarity": "SSR",
+    "rarity": "SR",
     "avatar_url": "/avatars/產品08.webp",
     "id": "083f0c22",
-    "alias": null
+    "alias": null,
+    "name_simplified": "产品08"
   },
   {
     "name": "產品12",
     "class": "火力",
     "manufacturer": "米西利斯",
     "weapon": "MG",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B3",
-    "rarity": "SSR",
+    "rarity": "SR",
     "avatar_url": "/avatars/產品12.webp",
     "id": "90e09c98",
-    "alias": null
+    "alias": null,
+    "name_simplified": "产品12"
   },
   {
     "name": "產品23",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "米西利斯",
     "weapon": "SMG",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B2",
-    "rarity": "SSR",
+    "rarity": "SR",
     "avatar_url": "/avatars/產品23.webp",
     "id": "0578b41a",
-    "alias": null
+    "alias": null,
+    "name_simplified": "产品23"
   },
   {
     "name": "白雪公主",
     "class": "火力",
     "manufacturer": "朝圣者",
     "weapon": "AR",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/白雪公主.webp",
     "id": "055bec20",
-    "alias": null
+    "alias": null,
+    "name_simplified": "白雪公主"
   },
   {
     "name": "白雪公主：純真年代",
     "class": "火力",
     "manufacturer": "朝圣者",
-    "weapon": "MG",
-    "code": "铁甲",
+    "weapon": "AR",
+    "code": "鐵甲",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/白雪公主：純真年代.webp",
     "id": "e6271c8d",
-    "alias": null
+    "alias": null,
+    "name_simplified": "白雪公主：纯真年代"
   },
   {
     "name": "白雪公主：重型武裝",
@@ -1161,103 +1257,112 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/白雪公主：重型武裝.webp",
     "id": "86a862fc",
-    "alias": null
+    "alias": null,
+    "name_simplified": "白雪公主：重型武装"
   },
   {
     "name": "白鶴",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "米西利斯",
     "weapon": "SR",
-    "code": "水冷",
+    "code": "燃燒",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/白鶴.webp",
     "id": "09d64bd6",
-    "alias": null
+    "alias": null,
+    "name_simplified": "白鹤"
   },
   {
     "name": "百合",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "反常",
     "weapon": "SMG",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B2",
-    "rarity": "SSR",
+    "rarity": "SR",
     "avatar_url": "/avatars/百合.webp",
     "id": "1138cf90",
-    "alias": null
+    "alias": null,
+    "name_simplified": "百合"
   },
   {
     "name": "皇冠",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "朝圣者",
-    "weapon": "RL",
-    "code": "铁甲",
+    "weapon": "MG",
+    "code": "鐵甲",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/皇冠.webp",
     "id": "b00d0ff1",
-    "alias": null
+    "alias": null,
+    "name_simplified": "皇冠"
   },
   {
     "name": "真理",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "反常",
     "weapon": "SR",
-    "code": "铁甲",
+    "code": "電擊",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/真理.webp",
     "id": "fec369bd",
-    "alias": null
+    "alias": null,
+    "name_simplified": "真理"
   },
   {
     "name": "真紀真",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "反常",
-    "weapon": "MG",
+    "weapon": "SMG",
     "code": "水冷",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/真紀真.webp",
     "id": "d782024b",
-    "alias": null
+    "alias": null,
+    "name_simplified": "真纪真"
   },
   {
     "name": "神罰",
     "class": "火力",
     "manufacturer": "朝圣者",
     "weapon": "MG",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/神罰.webp",
     "id": "417d98c5",
-    "alias": null
+    "alias": null,
+    "name_simplified": "神罚"
   },
   {
     "name": "米卡：雪地夥伴",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "SMG",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/米卡：雪地夥伴.webp",
     "id": "dd7e3519",
-    "alias": null
+    "alias": null,
+    "name_simplified": "米卡：雪地伙伴"
   },
   {
     "name": "米哈拉：羈絆鎖鏈",
     "class": "火力",
     "manufacturer": "米西利斯",
     "weapon": "MG",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/米哈拉：羈絆鎖鏈.webp",
     "id": "43e4a9b0",
-    "alias": null
+    "alias": null,
+    "name_simplified": "米哈拉：羁绊锁链"
   },
   {
     "name": "米爾克",
@@ -1269,83 +1374,90 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/米爾克.webp",
     "id": "5e1f9756",
-    "alias": null
+    "alias": null,
+    "name_simplified": "米尔克"
   },
   {
     "name": "米爾克：花漾兔女郎",
     "class": "火力",
     "manufacturer": "泰特拉",
     "weapon": "SR",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/米爾克：花漾兔女郎.webp",
     "id": "e0ad457b",
-    "alias": null
+    "alias": null,
+    "name_simplified": "米尔克：花漾兔女郎"
   },
   {
     "name": "米蘭達",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "极乐净土",
     "weapon": "SMG",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/米蘭達.webp",
     "id": "56606656",
-    "alias": null
+    "alias": null,
+    "name_simplified": "米兰达"
   },
   {
     "name": "紅蓮",
     "class": "火力",
     "manufacturer": "朝圣者",
     "weapon": "AR",
-    "code": "电击",
+    "code": "電擊",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/紅蓮.webp",
     "id": "b0536b27",
-    "alias": null
+    "alias": null,
+    "name_simplified": "红莲"
   },
   {
     "name": "紅蓮：暗影",
     "class": "火力",
     "manufacturer": "朝圣者",
     "weapon": "RL",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/紅蓮：暗影.webp",
     "id": "73b422f0",
-    "alias": null
+    "alias": null,
+    "name_simplified": "红莲：暗影"
   },
   {
     "name": "索拉",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "极乐净土",
     "weapon": "RL",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/索拉.webp",
     "id": "7ebd641d",
-    "alias": null
+    "alias": null,
+    "name_simplified": "索拉"
   },
   {
     "name": "索林",
     "class": "火力",
     "manufacturer": "极乐净土",
     "weapon": "SMG",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/索林.webp",
     "id": "4ec1b9c8",
-    "alias": null
+    "alias": null,
+    "name_simplified": "索林"
   },
   {
     "name": "索林：霜雪車票",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "极乐净土",
     "weapon": "SMG",
     "code": "水冷",
@@ -1353,179 +1465,194 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/索林：霜雪車票.webp",
     "id": "1435ea9b",
-    "alias": null
+    "alias": null,
+    "name_simplified": "索林：霜雪车票"
   },
   {
     "name": "索達",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "MG",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/索達.webp",
     "id": "7b0b7cae",
-    "alias": null
+    "alias": null,
+    "name_simplified": "索达"
   },
   {
     "name": "索達：閃亮兔女郎",
     "class": "火力",
     "manufacturer": "泰特拉",
-    "weapon": "RL",
-    "code": "铁甲",
+    "weapon": "SMG",
+    "code": "鐵甲",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/索達：閃亮兔女郎.webp",
     "id": "96883043",
-    "alias": null
+    "alias": null,
+    "name_simplified": "索达：闪亮兔女郎"
   },
   {
     "name": "羅珊娜：高雅海洋",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
-    "weapon": "MG",
-    "code": "风压",
+    "weapon": "AR",
+    "code": "風壓",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/羅珊娜：高雅海洋.webp",
     "id": "4670ae38",
-    "alias": null
+    "alias": null,
+    "name_simplified": "罗珊娜：高雅海洋"
   },
   {
     "name": "胡桃",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "反常",
-    "weapon": "RL",
-    "code": "铁甲",
+    "weapon": "AR",
+    "code": "鐵甲",
     "burst": "B1",
-    "rarity": "SSR",
+    "rarity": "SR",
     "avatar_url": "/avatars/胡桃.webp",
     "id": "f7df9d55",
-    "alias": null
+    "alias": null,
+    "name_simplified": "胡桃"
   },
   {
     "name": "舒格",
     "class": "火力",
     "manufacturer": "泰特拉",
-    "weapon": "SG",
-    "code": "铁甲",
+    "weapon": "SMG",
+    "code": "鐵甲",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/舒格.webp",
     "id": "2d4a061e",
-    "alias": null
+    "alias": null,
+    "name_simplified": "舒格"
   },
   {
     "name": "艾可希雅",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "SR",
-    "code": "电击",
+    "code": "電擊",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/艾可希雅.webp",
     "id": "6f495f2a",
-    "alias": null
+    "alias": null,
+    "name_simplified": "艾可希雅"
   },
   {
     "name": "艾德米",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "米西利斯",
     "weapon": "SR",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/艾德米.webp",
     "id": "c3bbaae3",
-    "alias": null
+    "alias": null,
+    "name_simplified": "艾德米"
   },
   {
     "name": "艾瑪",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "极乐净土",
     "weapon": "MG",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/艾瑪.webp",
     "id": "472c62cc",
-    "alias": null
+    "alias": null,
+    "name_simplified": "艾玛"
   },
   {
     "name": "艾瑪：戰術升級",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "极乐净土",
     "weapon": "MG",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/艾瑪：戰術升級.webp",
     "id": "5c53a9b0",
-    "alias": null
+    "alias": null,
+    "name_simplified": "艾玛：战术升级"
   },
   {
     "name": "艾菲涅爾",
     "class": "火力",
     "manufacturer": "米西利斯",
     "weapon": "SMG",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/艾菲涅爾.webp",
     "id": "27e55192",
-    "alias": null
+    "alias": null,
+    "name_simplified": "艾菲涅尔"
   },
   {
     "name": "艾達",
     "class": "火力",
     "manufacturer": "反常",
-    "weapon": "AR",
-    "code": "燃烧",
+    "weapon": "RL",
+    "code": "電擊",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/艾達.webp",
     "id": "626e2be6",
-    "alias": null
+    "alias": null,
+    "name_simplified": "艾达"
   },
   {
     "name": "芙羅拉",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "米西利斯",
     "weapon": "MG",
-    "code": "电击",
+    "code": "電擊",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/芙羅拉.webp",
     "id": "c239ef97",
-    "alias": null
+    "alias": null,
+    "name_simplified": "芙罗拉"
   },
   {
     "name": "茨瓦伊",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "极乐净土",
-    "weapon": "SG",
-    "code": "电击",
+    "weapon": "SMG",
+    "code": "電擊",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/茨瓦伊.webp",
     "id": "bda7b740",
-    "alias": null
+    "alias": null,
+    "name_simplified": "茨瓦伊"
   },
   {
     "name": "莉貝雷利奧",
     "class": "火力",
     "manufacturer": "朝圣者",
     "weapon": "SR",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/莉貝雷利奧.webp",
     "id": "96c766b6",
-    "alias": null
+    "alias": null,
+    "name_simplified": "莉贝雷利奥"
   },
   {
     "name": "萊伊",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "泰特拉",
     "weapon": "SMG",
     "code": "水冷",
@@ -1533,103 +1660,112 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/萊伊.webp",
     "id": "7b1e4363",
-    "alias": null
+    "alias": null,
+    "name_simplified": "莱伊"
   },
   {
     "name": "萊昂納",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
-    "weapon": "SG",
+    "weapon": "SMG",
     "code": "水冷",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/萊昂納.webp",
     "id": "f821ac2e",
-    "alias": null
+    "alias": null,
+    "name_simplified": "莱昂纳"
   },
   {
     "name": "蒂亞",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "米西利斯",
     "weapon": "RL",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/蒂亞.webp",
     "id": "e43a8099",
-    "alias": null
+    "alias": null,
+    "name_simplified": "蒂亚"
   },
   {
     "name": "蕾貝兒",
-    "class": "火力",
-    "manufacturer": "极乐净土",
-    "weapon": "SR",
-    "code": "燃烧",
-    "burst": "B3",
+    "class": "防禦",
+    "manufacturer": "反常",
+    "weapon": "AR",
+    "code": "鐵甲",
+    "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/蕾貝兒.webp",
     "id": "6d8b6adf",
-    "alias": null
+    "alias": null,
+    "name_simplified": "蕾贝儿"
   },
   {
     "name": "薇爾維特",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "SR",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/薇爾維特.webp",
     "id": "a8f7ecf1",
-    "alias": null
+    "alias": null,
+    "name_simplified": "薇尔维特"
   },
   {
     "name": "西格娜",
     "class": "火力",
     "manufacturer": "极乐净土",
     "weapon": "SMG",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/西格娜.webp",
     "id": "869b7017",
-    "alias": null
+    "alias": null,
+    "name_simplified": "西格娜"
   },
   {
     "name": "諾亞爾",
     "class": "火力",
     "manufacturer": "泰特拉",
-    "weapon": "SG",
-    "code": "风压",
+    "weapon": "SMG",
+    "code": "風壓",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/諾亞爾.webp",
     "id": "796b007f",
-    "alias": null
+    "alias": null,
+    "name_simplified": "诺亚尔"
   },
   {
     "name": "諾伊斯",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "RL",
-    "code": "电击",
+    "code": "電擊",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/諾伊斯.webp",
     "id": "c7c08f51",
-    "alias": null
+    "alias": null,
+    "name_simplified": "诺伊斯"
   },
   {
     "name": "豺狼",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "米西利斯",
     "weapon": "RL",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/豺狼.webp",
     "id": "10e65073",
-    "alias": null
+    "alias": null,
+    "name_simplified": "豺狼"
   },
   {
     "name": "貝斯蒂",
@@ -1641,179 +1777,194 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/貝斯蒂.webp",
     "id": "04d51b70",
-    "alias": null
+    "alias": null,
+    "name_simplified": "贝斯蒂"
   },
   {
     "name": "貝斯蒂：戰術升級",
     "class": "火力",
     "manufacturer": "极乐净土",
     "weapon": "RL",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/貝斯蒂：戰術升級.webp",
     "id": "9bb198c3",
-    "alias": null
+    "alias": null,
+    "name_simplified": "贝斯蒂：战术升级"
   },
   {
     "name": "迪塞爾",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "极乐净土",
     "weapon": "MG",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/迪塞爾.webp",
     "id": "5a6781bd",
-    "alias": null
+    "alias": null,
+    "name_simplified": "迪塞尔"
   },
   {
     "name": "迪塞爾：冬日甜心",
     "class": "火力",
     "manufacturer": "极乐净土",
-    "weapon": "SMG",
-    "code": "燃烧",
+    "weapon": "RL",
+    "code": "燃燒",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/迪塞爾：冬日甜心.webp",
     "id": "39ccf539",
-    "alias": null
+    "alias": null,
+    "name_simplified": "迪塞尔：冬日甜心"
   },
   {
     "name": "銀華",
     "class": "火力",
     "manufacturer": "极乐净土",
     "weapon": "SR",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/銀華.webp",
     "id": "a4071a8d",
-    "alias": null
+    "alias": null,
+    "name_simplified": "银华"
   },
   {
     "name": "銀華：戰術升級",
     "class": "火力",
     "manufacturer": "极乐净土",
     "weapon": "SR",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/銀華：戰術升級.webp",
     "id": "d9d83d4c",
-    "alias": null
+    "alias": null,
+    "name_simplified": "银华：战术升级"
   },
   {
     "name": "長髮公主",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "朝圣者",
     "weapon": "RL",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/長髮公主.webp",
     "id": "ccfc5db0",
-    "alias": null
+    "alias": null,
+    "name_simplified": "长发公主"
   },
   {
     "name": "長髮公主：純潔恩典",
-    "class": "支援",
+    "class": "防禦",
     "manufacturer": "朝圣者",
     "weapon": "SR",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/長髮公主：純潔恩典.webp",
     "id": "679682a5",
-    "alias": null
+    "alias": null,
+    "name_simplified": "长发公主：纯洁恩典"
   },
   {
     "name": "阿妮斯：超級巨星",
-    "class": "火力",
+    "class": "防禦",
     "manufacturer": "泰特拉",
     "weapon": "RL",
-    "code": "燃烧",
+    "code": "電擊",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/阿妮斯：超級巨星.webp",
     "id": "1c1ef0a9",
-    "alias": null
+    "alias": null,
+    "name_simplified": "阿妮斯：超级巨星"
   },
   {
     "name": "阿妮斯：閃耀夏日",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
-    "weapon": "SG",
-    "code": "水冷",
+    "weapon": "SMG",
+    "code": "電擊",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/阿妮斯：閃耀夏日.webp",
     "id": "b0454700",
-    "alias": null
+    "alias": null,
+    "name_simplified": "阿妮斯：闪耀夏日"
   },
   {
     "name": "阿爾卡娜：命運伴侶",
     "class": "火力",
     "manufacturer": "极乐净土",
-    "weapon": "RL",
-    "code": "燃烧",
+    "weapon": "SMG",
+    "code": "燃燒",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/阿爾卡娜：命運伴侶.webp",
     "id": "8c4ee713",
-    "alias": null
+    "alias": null,
+    "name_simplified": "阿尔卡娜：命运伴侣"
   },
   {
     "name": "阿維斯塔",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "极乐净土",
-    "weapon": "SG",
-    "code": "铁甲",
+    "weapon": "MG",
+    "code": "電擊",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/阿維斯塔.webp",
     "id": "2711f24a",
-    "alias": null
+    "alias": null,
+    "name_simplified": "阿维斯塔"
   },
   {
     "name": "阿莉亞",
     "class": "火力",
     "manufacturer": "泰特拉",
     "weapon": "MG",
-    "code": "水冷",
+    "code": "電擊",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/阿莉亞.webp",
     "id": "cf90a185",
-    "alias": null
+    "alias": null,
+    "name_simplified": "阿莉亚"
   },
   {
     "name": "零",
     "class": "火力",
     "manufacturer": "反常",
-    "weapon": "SMG",
-    "code": "燃烧",
+    "weapon": "MG",
+    "code": "燃燒",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/零.webp",
     "id": "777fda6c",
-    "alias": null
+    "alias": null,
+    "name_simplified": "零"
   },
   {
     "name": "零（暫稱）",
     "class": "火力",
     "manufacturer": "反常",
-    "weapon": "SMG",
-    "code": "风压",
+    "weapon": "AR",
+    "code": "風壓",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/零（暫稱）.webp",
     "id": "eec13c49",
-    "alias": null
+    "alias": null,
+    "name_simplified": "零（暂称）"
   },
   {
     "name": "雷姆",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "反常",
     "weapon": "MG",
     "code": "水冷",
@@ -1821,71 +1972,77 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/雷姆.webp",
     "id": "479655a6",
-    "alias": null
+    "alias": null,
+    "name_simplified": "雷姆"
   },
   {
     "name": "露姬",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "SR",
-    "code": "电击",
+    "code": "電擊",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/露姬.webp",
     "id": "c8a755f7",
-    "alias": null
+    "alias": null,
+    "name_simplified": "露姬"
   },
   {
     "name": "露菲",
     "class": "火力",
     "manufacturer": "泰特拉",
     "weapon": "AR",
-    "code": "铁甲",
+    "code": "電擊",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/露菲.webp",
     "id": "cad9156b",
-    "alias": null
+    "alias": null,
+    "name_simplified": "露菲"
   },
   {
     "name": "露菲：冬日購物狂",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "泰特拉",
     "weapon": "AR",
-    "code": "电击",
+    "code": "電擊",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/露菲：冬日購物狂.webp",
     "id": "0789a3df",
-    "alias": null
+    "alias": null,
+    "name_simplified": "露菲：冬日购物狂"
   },
   {
     "name": "餅乾",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "RL",
-    "code": "铁甲",
+    "code": "電擊",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/餅乾.webp",
     "id": "f7088395",
-    "alias": null
+    "alias": null,
+    "name_simplified": "饼干"
   },
   {
     "name": "馬斯特",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "极乐净土",
     "weapon": "SMG",
-    "code": "电击",
+    "code": "電擊",
     "burst": "B2",
     "rarity": "SSR",
     "avatar_url": "/avatars/馬斯特.webp",
     "id": "425b7a9b",
-    "alias": null
+    "alias": null,
+    "name_simplified": "马斯特"
   },
   {
     "name": "馬斯特：浪漫的女僕",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "极乐净土",
     "weapon": "MG",
     "code": "水冷",
@@ -1893,11 +2050,12 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/馬斯特：浪漫的女僕.webp",
     "id": "a7ea2a0b",
-    "alias": null
+    "alias": null,
+    "name_simplified": "马斯特：浪漫的女仆"
   },
   {
     "name": "魯德米拉",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "泰特拉",
     "weapon": "SMG",
     "code": "水冷",
@@ -1905,7 +2063,8 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/魯德米拉.webp",
     "id": "a21946c7",
-    "alias": null
+    "alias": null,
+    "name_simplified": "鲁德米拉"
   },
   {
     "name": "魯德米拉：冬日之主",
@@ -1917,47 +2076,51 @@
     "rarity": "SSR",
     "avatar_url": "/avatars/魯德米拉：冬日之主.webp",
     "id": "a3a4e113",
-    "alias": null
+    "alias": null,
+    "name_simplified": "鲁德米拉：冬日之主"
   },
   {
     "name": "魯瑪妮",
-    "class": "支援",
+    "class": "防禦",
     "manufacturer": "泰特拉",
-    "weapon": "AR",
-    "code": "燃烧",
+    "weapon": "RL",
+    "code": "燃燒",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/魯瑪妮.webp",
     "id": "b513d5bb",
-    "alias": null
+    "alias": null,
+    "name_simplified": "鲁玛妮"
   },
   {
     "name": "麗塔",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "米西利斯",
     "weapon": "SMG",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B1",
     "rarity": "SSR",
     "avatar_url": "/avatars/麗塔.webp",
     "id": "8b3a8fbb",
-    "alias": null
+    "alias": null,
+    "name_simplified": "丽塔"
   },
   {
     "name": "麥斯威爾",
     "class": "火力",
     "manufacturer": "米西利斯",
     "weapon": "SR",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B3",
     "rarity": "SSR",
     "avatar_url": "/avatars/麥斯威爾.webp",
     "id": "8ef002dc",
-    "alias": null
+    "alias": null,
+    "name_simplified": "麦斯威尔"
   },
   {
     "name": "N102",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "米西利斯",
     "weapon": "RL",
     "code": "水冷",
@@ -1965,175 +2128,190 @@
     "rarity": "SR",
     "avatar_url": "/avatars/N102.webp",
     "id": "0f077a45",
-    "alias": null
+    "alias": null,
+    "name_simplified": "N102"
   },
   {
     "name": "克拉烏",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "米西利斯",
     "weapon": "SMG",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B3",
-    "rarity": "SR",
+    "rarity": "SSR",
     "avatar_url": "/avatars/克拉烏.webp",
     "id": "65d75c0e",
-    "alias": null
+    "alias": null,
+    "name_simplified": "克拉乌"
   },
   {
     "name": "吉洛",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "米西利斯",
     "weapon": "MG",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B3",
-    "rarity": "SR",
+    "rarity": "SSR",
     "avatar_url": "/avatars/吉洛.webp",
     "id": "30c2cd55",
-    "alias": null
+    "alias": null,
+    "name_simplified": "吉洛"
   },
   {
     "name": "安克",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "极乐净土",
     "weapon": "RL",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B1",
     "rarity": "SR",
     "avatar_url": "/avatars/安克.webp",
     "id": "14595589",
-    "alias": null
+    "alias": null,
+    "name_simplified": "安克"
   },
   {
     "name": "安克：天真的女僕",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "极乐净土",
     "weapon": "RL",
     "code": "水冷",
     "burst": "B2",
-    "rarity": "SR",
+    "rarity": "SSR",
     "avatar_url": "/avatars/安克：天真的女僕.webp",
     "id": "1ee3b841",
-    "alias": null
+    "alias": null,
+    "name_simplified": "安克：天真的女仆"
   },
   {
     "name": "富克旺",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "泰特拉",
     "weapon": "AR",
     "code": "水冷",
     "burst": "B2",
-    "rarity": "SR",
+    "rarity": "SSR",
     "avatar_url": "/avatars/富克旺.webp",
     "id": "531e75b4",
-    "alias": null
+    "alias": null,
+    "name_simplified": "富克旺"
   },
   {
     "name": "尤莉亞",
     "class": "火力",
     "manufacturer": "米西利斯",
     "weapon": "AR",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B3",
-    "rarity": "SR",
+    "rarity": "SSR",
     "avatar_url": "/avatars/尤莉亞.webp",
     "id": "dd91b498",
-    "alias": null
+    "alias": null,
+    "name_simplified": "尤莉亚"
   },
   {
     "name": "尼夫",
     "class": "火力",
     "manufacturer": "泰特拉",
-    "weapon": "SG",
+    "weapon": "SMG",
     "code": "水冷",
     "burst": "B3",
     "rarity": "SR",
     "avatar_url": "/avatars/尼夫.webp",
     "id": "f9f9009e",
-    "alias": null
+    "alias": null,
+    "name_simplified": "尼夫"
   },
   {
     "name": "尼恩",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "极乐净土",
-    "weapon": "SG",
-    "code": "燃烧",
+    "weapon": "SMG",
+    "code": "燃燒",
     "burst": "B1",
     "rarity": "SR",
     "avatar_url": "/avatars/尼恩.webp",
     "id": "53f5b01b",
-    "alias": null
+    "alias": null,
+    "name_simplified": "尼恩"
   },
   {
     "name": "德爾塔",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "极乐净土",
     "weapon": "SR",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B2",
     "rarity": "SR",
     "avatar_url": "/avatars/德爾塔.webp",
     "id": "db10189e",
-    "alias": null
+    "alias": null,
+    "name_simplified": "德尔塔"
   },
   {
     "name": "拉毗",
     "class": "火力",
     "manufacturer": "极乐净土",
     "weapon": "AR",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B3",
     "rarity": "SR",
     "avatar_url": "/avatars/拉毗.webp",
     "id": "6e211e5c",
-    "alias": null
+    "alias": null,
+    "name_simplified": "拉毗"
   },
   {
     "name": "明日香：WILLE",
     "class": "火力",
     "manufacturer": "反常",
-    "weapon": "SG",
-    "code": "风压",
+    "weapon": "MG",
+    "code": "風壓",
     "burst": "B3",
-    "rarity": "SR",
+    "rarity": "SSR",
     "avatar_url": "/avatars/明日香：WILLE.webp",
     "id": "9897112d",
-    "alias": null
+    "alias": null,
+    "name_simplified": "明日香：WILLE"
   },
   {
     "name": "特羅尼",
     "class": "火力",
     "manufacturer": "米西利斯",
     "weapon": "SR",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B3",
-    "rarity": "SR",
+    "rarity": "SSR",
     "avatar_url": "/avatars/特羅尼.webp",
     "id": "37ef75f2",
-    "alias": null
+    "alias": null,
+    "name_simplified": "特罗尼"
   },
   {
     "name": "特蕾娜",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "米西利斯",
     "weapon": "RL",
-    "code": "电击",
+    "code": "電擊",
     "burst": "B2",
-    "rarity": "SR",
+    "rarity": "SSR",
     "avatar_url": "/avatars/特蕾娜.webp",
     "id": "8f66c969",
-    "alias": null
+    "alias": null,
+    "name_simplified": "特蕾娜"
   },
   {
     "name": "米卡",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "泰特拉",
     "weapon": "RL",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B1",
     "rarity": "SR",
     "avatar_url": "/avatars/米卡.webp",
     "id": "e5d0da44",
-    "alias": null
+    "alias": null,
+    "name_simplified": "米卡"
   },
   {
     "name": "米哈拉",
@@ -2145,150 +2323,163 @@
     "rarity": "SR",
     "avatar_url": "/avatars/米哈拉.webp",
     "id": "dae59e0d",
-    "alias": null
+    "alias": null,
+    "name_simplified": "米哈拉"
   },
   {
     "name": "羅珊娜",
     "class": "火力",
     "manufacturer": "泰特拉",
     "weapon": "MG",
-    "code": "电击",
+    "code": "電擊",
     "burst": "B1",
-    "rarity": "SR",
+    "rarity": "SSR",
     "avatar_url": "/avatars/羅珊娜.webp",
     "id": "5eddd8af",
-    "alias": null
+    "alias": null,
+    "name_simplified": "罗珊娜"
   },
   {
     "name": "美里",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "反常",
-    "weapon": "RL",
-    "code": "铁甲",
+    "weapon": "SMG",
+    "code": "鐵甲",
     "burst": "B1",
     "rarity": "SR",
     "avatar_url": "/avatars/美里.webp",
     "id": "d7de93f2",
-    "alias": null
+    "alias": null,
+    "name_simplified": "美里"
   },
   {
     "name": "艾瑟兒",
-    "class": "支援",
+    "class": "防禦",
     "manufacturer": "米西利斯",
-    "weapon": "SG",
-    "code": "风压",
+    "weapon": "SMG",
+    "code": "電擊",
     "burst": "B1",
     "rarity": "SR",
     "avatar_url": "/avatars/艾瑟兒.webp",
     "id": "47148f70",
-    "alias": null
+    "alias": null,
+    "name_simplified": "艾瑟儿"
   },
   {
     "name": "莫莉",
-    "class": "支援",
+    "class": "防禦",
     "manufacturer": "米西利斯",
     "weapon": "AR",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B2",
-    "rarity": "SR",
+    "rarity": "SSR",
     "avatar_url": "/avatars/莫莉.webp",
     "id": "9d9180f7",
-    "alias": null
+    "alias": null,
+    "name_simplified": "莫莉"
   },
   {
     "name": "蕾雯",
     "class": "火力",
     "manufacturer": "反常",
-    "weapon": "AR",
-    "code": "铁甲",
+    "weapon": "RL",
+    "code": "鐵甲",
     "burst": "B3",
-    "rarity": "SR",
+    "rarity": "SSR",
     "avatar_url": "/avatars/蕾雯.webp",
     "id": "4888ed35",
-    "alias": null
+    "alias": null,
+    "name_simplified": "蕾雯"
   },
   {
     "name": "諾薇兒",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "泰特拉",
     "weapon": "SMG",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B2",
-    "rarity": "SR",
+    "rarity": "SSR",
     "avatar_url": "/avatars/諾薇兒.webp",
     "id": "1d16f7dc",
-    "alias": null
+    "alias": null,
+    "name_simplified": "诺薇儿"
   },
   {
     "name": "諾雅",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "朝圣者",
     "weapon": "RL",
-    "code": "风压",
+    "code": "風壓",
     "burst": "B2",
-    "rarity": "SR",
+    "rarity": "SSR",
     "avatar_url": "/avatars/諾雅.webp",
     "id": "cca45461",
-    "alias": null
+    "alias": null,
+    "name_simplified": "诺雅"
   },
   {
     "name": "貝伊",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "泰特拉",
     "weapon": "RL",
-    "code": "燃烧",
+    "code": "燃燒",
     "burst": "B2",
-    "rarity": "SR",
+    "rarity": "SSR",
     "avatar_url": "/avatars/貝伊.webp",
     "id": "8ab77c02",
-    "alias": null
+    "alias": null,
+    "name_simplified": "贝伊"
   },
   {
     "name": "貝洛塔",
     "class": "火力",
     "manufacturer": "泰特拉",
     "weapon": "RL",
-    "code": "铁甲",
+    "code": "電擊",
     "burst": "B2",
     "rarity": "SR",
     "avatar_url": "/avatars/貝洛塔.webp",
     "id": "aafbb4c1",
-    "alias": null
+    "alias": null,
+    "name_simplified": "贝洛塔"
   },
   {
     "name": "鐘鳴",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "朝圣者",
     "weapon": "SMG",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B2",
-    "rarity": "SR",
+    "rarity": "SSR",
     "avatar_url": "/avatars/鐘鳴.webp",
     "id": "fefd6963",
-    "alias": null
+    "alias": null,
+    "name_simplified": "钟鸣"
   },
   {
     "name": "阿妮斯",
-    "class": "防御",
+    "class": "防禦",
     "manufacturer": "泰特拉",
     "weapon": "RL",
-    "code": "铁甲",
+    "code": "鐵甲",
     "burst": "B2",
     "rarity": "SR",
     "avatar_url": "/avatars/阿妮斯.webp",
     "id": "13dbe814",
-    "alias": null
+    "alias": null,
+    "name_simplified": "阿妮斯"
   },
   {
     "name": "阿爾卡娜",
-    "class": "支援",
+    "class": "輔助",
     "manufacturer": "极乐净土",
     "weapon": "RL",
-    "code": "电击",
+    "code": "電擊",
     "burst": "B2",
-    "rarity": "SR",
+    "rarity": "SSR",
     "avatar_url": "/avatars/阿爾卡娜.webp",
     "id": "382ef9aa",
-    "alias": null
+    "alias": null,
+    "name_simplified": "阿尔卡娜"
   }
 ]

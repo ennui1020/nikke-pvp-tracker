@@ -160,10 +160,10 @@ if not default_avatar.exists():
 """
 角色分类枚举
 """
-CHAR_CLASSES = ["火力", "防御", "支援"]
+CHAR_CLASSES = ["火力", "防禦", "輔助"]
 CHAR_MANUFACTURERS = ["极乐净土", "泰特拉", "米西利斯", "朝圣者", "反常"]
 CHAR_WEAPONS = ["AR", "SMG", "SG", "SR", "MG", "RL"]
-CHAR_CODES = ["风压", "水冷", "铁甲", "燃烧", "电击", "无"]
+CHAR_CODES = ["風壓", "水冷", "鐵甲", "燃燒", "電擊", "無"]
 CHAR_BURSTS = ["B1", "B2", "B3", "全"]
 
 
@@ -420,7 +420,12 @@ def api_list_characters():
     if code:
         chars = [c for c in chars if c.get("code") == code]
     if burst:
-        chars = [c for c in chars if c.get("burst") == burst or c.get("burst") == "全"]
+        # blablalink 筛选逻辑：Bp（小红帽）是全阶段爆裂
+        # 选择 B1/B2/B3 时，Bp 角色也应出现在结果中
+        if burst == '全':
+            pass  # 匹配所有
+        else:
+            chars = [c for c in chars if c.get("burst") == burst or c.get("burst") == "Bp"]
     if starred:
         chars = [c for c in chars if c.get("starred")]
     if q:
@@ -868,12 +873,23 @@ def _run_tray(port):
         draw.ellipse([1, 1, 30, 30], fill=(0, 212, 255, 255))
         draw.text((8, 5), "P", fill=(0, 0, 0, 255))
 
+        # 尝试加载 ICO 文件作为托盘图标
+        icon_path = None
+        icon_candidates = [
+            BASE_DIR / "static" / "nikke-tray.ico",
+        ]
+        if getattr(_sys, '_MEIPASS', None):
+            icon_candidates.append(Path(_sys._MEIPASS) / "static" / "nikke-tray.ico")
+        for p in icon_candidates:
+            if p.exists():
+                icon_path = str(p)
+                break
+
         def on_open():
             import webbrowser
             webbrowser.open(f"http://localhost:{port}")
 
         def on_exit():
-            # 先强行退出，Flask 主线程随之结束
             import os as _os
             _os._exit(0)
 
@@ -883,7 +899,11 @@ def _run_tray(port):
             pystray.MenuItem("退出 (Exit)", on_exit),
         )
 
-        icon = pystray.Icon("nikke-pvp", img, "NIKKE PVP Tracker", menu)
+        # 优先使用 ICO 文件（Windows 托盘图标兼容性好），否则用内存 PIL Image
+        if icon_path:
+            icon = pystray.Icon("nikke-pvp", icon_path, "NIKKE PVP Tracker", menu)
+        else:
+            icon = pystray.Icon("nikke-pvp", img, "NIKKE PVP Tracker", menu)
         icon.run()
     except Exception:
         # 托盘启动失败不阻塞主流程
