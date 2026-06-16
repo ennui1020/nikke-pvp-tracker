@@ -2481,5 +2481,19 @@
     "id": "382ef9aa",
     "alias": null,
     "name_simplified": "阿尔卡娜"
+  },
+  {
+    "id": "ec85c3c3",
+    "name": "方舟黑色游侠",
+    "name_simplified": "方舟黑色游侠",
+    "code": "風壓",
+    "class": "火力",
+    "weapon": "AR",
+    "rarity": "SSR",
+    "burst": "B3",
+    "manufacturer": "泰特拉",
+    "alias": null,
+    "avatar_url": null,
+    "starred": false
   }
 ]

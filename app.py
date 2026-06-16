@@ -162,7 +162,7 @@ if not default_avatar.exists():
 CHAR_CLASSES = ["火力", "防禦", "輔助"]
 CHAR_MANUFACTURERS = ["极乐净土", "泰特拉", "米西利斯", "朝圣者", "反常"]
 CHAR_WEAPONS = ["AR", "SMG", "SG", "SR", "MG", "RL"]
-CHAR_CODES = ["風壓", "水冷", "鐵甲", "燃燒", "電擊", "無"]
+CHAR_CODES = ["風壓", "水冷", "鐵甲", "燃燒", "電擊"]
 CHAR_BURSTS = ["B1", "B2", "B3", "全"]
 def resolve_team_names(team_list):
     """将别名/ID 列表解析为角色名列表（支持 name_simplified 匹配）"""
@@ -669,7 +669,7 @@ def _run_tray(port):
         draw.text((8, 5), "P", fill=(0, 0, 0, 255))
 
         # 尝试加载 ICO 文件作为托盘图标
-        icon_path = None
+        icon_img = None
         icon_candidates = [
             BASE_DIR / "static" / "nikke-tray.ico",
         ]
@@ -677,8 +677,11 @@ def _run_tray(port):
             icon_candidates.append(Path(_sys._MEIPASS) / "static" / "nikke-tray.ico")
         for p in icon_candidates:
             if p.exists():
-                icon_path = str(p)
-                break
+                try:
+                    icon_img = Image.open(str(p))
+                    break
+                except Exception:
+                    pass
 
         def on_open():
             import webbrowser
@@ -694,9 +697,9 @@ def _run_tray(port):
             pystray.MenuItem("退出 (Exit)", on_exit),
         )
 
-        # 优先使用 ICO 文件（Windows 托盘图标兼容性好），否则用内存 PIL Image
-        if icon_path:
-            icon = pystray.Icon("nikke-pvp", icon_path, "NIKKE PVP Tracker", menu)
+        # pystray 需要 PIL.Image.Image 对象，不是文件路径字符串
+        if icon_img:
+            icon = pystray.Icon("nikke-pvp", icon_img, "NIKKE PVP Tracker", menu)
         else:
             icon = pystray.Icon("nikke-pvp", img, "NIKKE PVP Tracker", menu)
         icon.run()
