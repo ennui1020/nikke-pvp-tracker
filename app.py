@@ -11,7 +11,6 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
-import requests
 from flask import Flask, jsonify, request, send_from_directory, send_file, Response
 
 # ──────────────────────────────────────
@@ -165,22 +164,6 @@ CHAR_MANUFACTURERS = ["极乐净土", "泰特拉", "米西利斯", "朝圣者", 
 CHAR_WEAPONS = ["AR", "SMG", "SG", "SR", "MG", "RL"]
 CHAR_CODES = ["風壓", "水冷", "鐵甲", "燃燒", "電擊", "無"]
 CHAR_BURSTS = ["B1", "B2", "B3", "全"]
-CHAR_RARITIES = ["SSR", "SR"]
-
-
-
-def find_character(name_or_id):
-    chars = load_characters()
-    for c in chars:
-        if c["id"] == name_or_id:
-            return c
-        if c["name"] == name_or_id:
-            return c
-        if c.get("alias") == name_or_id:
-            return c
-    return None
-
-
 def resolve_team_names(team_list):
     """将别名/ID 列表解析为角色名列表（支持 name_simplified 匹配）"""
     resolved = []
@@ -201,171 +184,6 @@ def resolve_team_names(team_list):
         else:
             resolved.append(item)
     return resolved
-
-
-AVATAR_LOOKUP = {
-    "红莲": "scarlet",
-    "scarlet": "scarlet",
-    "哈兰": "harran",
-    "harran": "harran",
-    "长发公主": "rapunzel",
-    "长发": "rapunzel",
-    "rapunzel": "rapunzel",
-    "诺雅": "noah",
-    "noah": "noah",
-    "豺狼": "jackal",
-    "jackal": "jackal",
-    "森提": "centi",
-    "centi": "centi",
-    "水阿": "anis-summer",
-    "水阿尼斯": "anis-summer",
-    "阿尼斯": "anis",
-    "anis": "anis",
-    "饼干": "biscuit",
-    "biscuit": "biscuit",
-    "罗珊娜": "rosanna",
-    "rosanna": "rosanna",
-    "桑迪": "sandi",
-    "sandi": "sandi",
-    "白兔": "blanc",
-    "blanc": "blanc",
-    "黑兔": "noir",
-    "noir": "noir",
-    "小红帽": "red-hood",
-    "红帽": "red-hood",
-    "red-hood": "red-hood",
-    "红莲暗影": "scarlet-black-shadow",
-    "黑莲": "scarlet-black-shadow",
-    "神罚": "modernia",
-    "modernia": "modernia",
-    "爱丽丝": "alice",
-    "alice": "alice",
-    "麦斯威尔": "maxwell",
-    "maxwell": "maxwell",
-    "诺伊斯": "noise",
-    "noise": "noise",
-    "佩珀": "pepper",
-    "pepper": "pepper",
-    "艾米莉亚": "emilia",
-    "emilia": "emilia",
-    "灰姑娘": "cinderella",
-    "cinderella": "cinderella",
-    "贝斯蒂": "bvesti",
-    "海伦": "helen",
-    "海伦珍藏": "helen-treasure",
-    "普丽瓦蒂": "privaty",
-    "privaty": "privaty",
-    "普丽瓦蒂不洁": "privaty-unkind-maid",
-    "波莉": "polly",
-    "polly": "polly",
-    "毒蛇": "viper",
-    "viper": "viper",
-    "梅登": "maiden",
-    "maiden": "maiden",
-    "梅登冰": "maiden-ice-rose",
-    "安妮": "anne-miracle-fairy",
-    "圣安妮": "anne-miracle-fairy",
-    "露德米拉": "ludmilla",
-    "ludmilla": "ludmilla",
-    "红莲暗影": "scarlet-black-shadow",
-    "尼罗": "nero",
-    "nero": "尼罗",
-    "马斯特": "mast",
-    "mast": "mast",
-    "桃乐丝": "dorothy",
-    "dorothy": "dorothy",
-    "丽塔": "litter",
-    "litter": "litter",
-    "艾可希雅": "exia",
-    "exia": "exia",
-    "朵拉": "dolla",
-    "dolla": "dolla",
-    "玛纳": "mana",
-    "mana": "mana",
-    "莫兰": "moran",
-    "moran": "moran",
-    "鲁玛尼": "rumani",
-    "rumani": "rumani",
-    "拉普拉斯": "laplace",
-    "laplace": "laplace",
-    "德雷克": "drake",
-    "drake": "drake",
-    "2B": "2b",
-    "A2": "a2",
-    "帕斯卡": "pascal",
-    "pascal": "pascal",
-    "枫": "sakura",
-    "sakura": "sakura",
-    "迪塞尔": "diesel",
-    "diesel": "diesel",
-    "玛律恰那": "marciana",
-    "marciana": "marciana",
-    "艾玛": "emma",
-    "emma": "emma",
-    "可可": "cocoa",
-    "cocoa": "cocoa",
-    "尼恩": "neon",
-    "neon": "neon",
-    "尼恩珍藏": "neon-treasure",
-    "米哈拉": "mihara",
-    "mihara": "mihara",
-    "尤妮": "yuni",
-    "yuni": "yuni",
-    "米卡": "mica",
-    "mica": "mica",
-    "贝尔塔": "belorta",
-    "belorta": "belorta",
-    "梅里克": "mercy",
-    "mercy": "mercy",
-    "莱伊": "rei",
-    "rei": "rei",
-    "阿妮斯尼恩双人": "anis-neon",
-    "索达": "soda",
-    "soda": "soda",
-    "索达兔": "soda-bunny",
-    "坎西": "quency",
-    "quency": "quency",
-    "坎西逃": "quency-escape-queen",
-}
-
-PRYDWEN_BASE = "https://img.prydwen.gg/nikke/characters"
-
-
-def _try_download_avatar(char_name, avatar_id):
-    """尝试从 Prydwen 下载角色头像"""
-    urls = [
-        f"{PRYDWEN_BASE}/icon_{avatar_id}.png",
-        f"{PRYDWEN_BASE}/avatar_{avatar_id}.png",
-    ]
-    for url in urls:
-        try:
-            resp = requests.get(url, timeout=5)
-            if resp.status_code == 200 and len(resp.content) > 1000:
-                safe_name = char_name.replace(" ", "_")
-                path = AVATAR_DIR / f"{safe_name}.png"
-                with open(path, "wb") as f:
-                    f.write(resp.content)
-                return f"/avatars/{safe_name}.png"
-        except requests.RequestException:
-            continue
-    return None
-
-
-def get_avatar_url(char_name):
-    # 先检查本地
-    safe = re.sub(r"[^A-Za-z0-9_.-]", "_", char_name.replace(" ", "_"))
-    local = AVATAR_DIR / f"{safe}.png"
-    if local.exists():
-        return f"/avatars/{safe}.png"
-
-    # 查映射表下载
-    key = char_name.lower().strip()
-    avatar_id = AVATAR_LOOKUP.get(char_name) or AVATAR_LOOKUP.get(key)
-    if avatar_id:
-        url = _try_download_avatar(char_name, avatar_id)
-        if url:
-            return url
-    return None
 
 
 # ──────────────────────────────────────
@@ -722,30 +540,6 @@ def api_stats_by_team():
     for key, stats in sorted(team_stats.items(), key=lambda x: -x[1]["appearances"]):
         result.append({
             "team": stats["team"],
-            "appearances": stats["appearances"],
-            "wins": stats["wins"],
-            "win_rate": round(stats["wins"] / stats["appearances"] * 100, 1),
-        })
-    return jsonify(result)
-
-
-@app.route("/api/stats/by-opponent")
-def api_stats_by_opponent():
-    records = load_records()
-    opp_stats = {}
-
-    for r in records:
-        name = r.get("opponent", "未知")
-        if name not in opp_stats:
-            opp_stats[name] = {"appearances": 0, "wins": 0, "lost_teams": []}
-        opp_stats[name]["appearances"] += 1
-        if r["result"] == "win":
-            opp_stats[name]["wins"] += 1
-
-    result = []
-    for name, stats in sorted(opp_stats.items(), key=lambda x: -x[1]["appearances"]):
-        result.append({
-            "opponent": name,
             "appearances": stats["appearances"],
             "wins": stats["wins"],
             "win_rate": round(stats["wins"] / stats["appearances"] * 100, 1),

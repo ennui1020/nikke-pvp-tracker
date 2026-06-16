@@ -7,3 +7,13 @@ dist/
 data/backup/
 data/records.json
 create_zip.py
+
+# Data preparation / one-shot scripts (not part of runtime)
+generate_characters.py
+parse_blablalink.py
+regenerate.py
+download_avatars.py
+
+# Sensitive / local files
+.env*
+*.local
