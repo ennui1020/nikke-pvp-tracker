@@ -625,7 +625,6 @@ function displayName(c){
 
 function applyBurstFilter(c, burstFilter) {
     if (!burstFilter) return true;
-    if (burstFilter === '全') return true; // "全" 匹配所有
     // Bp（小红帽）是全阶段爆裂，选择 B1/B2/B3 时也应匹配
     if (c.burst === 'Bp') return true;
     if (c.burst === burstFilter) return true;
@@ -656,7 +655,7 @@ async function loadEnums(){
     const sel = document.getElementById('char-'+k);
     if(!sel) return;
     sel.innerHTML = '<option value="">--</option>' +
-      opts.map(v => `<option value="${v}">${k === 'burst' && v === '全' ? 'Λ' : v}</option>`).join('');
+      opts.map(v => `<option value="${v}">${v}</option>`).join('');
   });
   // Filter bar
   renderFilterBar();
@@ -666,14 +665,14 @@ function renderFilterBar(){
   const bar = document.getElementById('filter-bar');
   const en = state.enums;
   // 枚举键名映射（前端key → 后端API枚举字段）
-  const enumKeys = {manufacturer:'manufacturers',weapon:'weapons',code:'codes',burst:'bursts',class:'classes'};
-  const labels = {manufacturer:'企业',weapon:'武器',code:'代码',burst:'爆裂',class:'职业'};
+  const enumKeys = {manufacturer:'manufacturers',weapon:'weapons',code:'codes',class:'classes'};
+  const labels = {manufacturer:'企业',weapon:'武器',code:'代码',class:'职业'};
   bar.innerHTML = Object.entries(labels).map(([k,label]) => {
     const opts = en[enumKeys[k]] || [];
     return `
     <select onchange="setFilter('${k}',this.value)">
       <option value="">${label}</option>
-      ${opts.map(v => `<option value="${v}">${k === 'burst' && v === '全' ? '\u039b' : v}</option>`).join('')}
+      ${opts.map(v => `<option value="${v}">${v}</option>`).join('')}
     </select>`;
   }).join('') +
   `<button class="btn btn-sm ${state.filters.starred ? 'btn-primary' : 'btn-outline'}" onclick="toggleStarFilter()">⭐ ${state.filters.starred ? '已标星' : '全部'}</button>
@@ -689,22 +688,15 @@ function toggleStarFilter(){
 
 function setFilter(key, val){
   state.filters[key] = val;
-  // Sync burst tab when dropdown changes
-  if(key === 'burst'){
-    state.burstTab = val;
-    renderBurstTabs();
-  }
   loadCharacters();
 }
 
 function clearFilters(){
   Object.keys(state.filters).forEach(k => state.filters[k]='');
-  state.burstTab = '';
   state.poolSearch = '';
   document.querySelectorAll('#filter-bar select').forEach(s => s.value='');
   const searchInput = document.getElementById('pool-search');
   if(searchInput) searchInput.value = '';
-  renderBurstTabs();
   renderFilterBar();
   loadCharacters();
 }
